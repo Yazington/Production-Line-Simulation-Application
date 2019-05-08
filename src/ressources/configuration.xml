@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<metadonnees>
+		<usine type="usine-matiere">
+			<icones>
+				<icone type="vide" path="src/ressources/UMP0%.png"/>
+				<icone type="un-tiers" path="src/ressources/UMP33%.png"/>
+				<icone type="deux-tiers" path="src/ressources/UMP66%.png"/>
+				<icone type="plein" path="src/ressources/UMP100%.png"/>
+			</icones>
+			<sortie type = "metal"/>
+			<interval-production>100</interval-production>
+		</usine>
+		<usine type="usine-aile">
+			<icones>
+				<icone type="vide" path="src/ressources/UT0%.png"/>
+				<icone type="un-tiers" path="src/ressources/UT33%.png"/>
+				<icone type="deux-tiers" path="src/ressources/UT66%.png"/>
+				<icone type="plein" path="src/ressources/UT100%.png"/>
+			</icones>
+			<entree type="metal" quantite="2"/>
+			<sortie type="aile"/>
+			<interval-production>50</interval-production>
+		</usine>
+		<usine type="usine-moteur">
+			<icones>			
+				<icone type="vide" path="src/ressources/UM0%.png"/>
+				<icone type="un-tiers" path="src/ressources/UM33%.png"/>
+				<icone type="deux-tiers" path="src/ressources/UM66%.png"/>
+				<icone type="plein" path="src/ressources/UM100%.png"/>
+			</icones>
+			<entree type="metal" quantite="4"/>
+			<sortie type="moteur"/>
+			<interval-production>75</interval-production>
+		</usine>
+		<usine type="usine-assemblage">
+			<icones>
+				<icone type="vide" path="src/ressources/UA0%.png"/>
+				<icone type="un-tiers" path="src/ressources/UA33%.png"/>
+				<icone type="deux-tiers" path="src/ressources/UA66%.png"/>
+				<icone type="plein" path="src/ressources/UA100%.png"/>
+			</icones>
+			<entree type="aile" quantite="2"/>
+			<entree type="moteur" quantite="4"/>
+			<sortie type="avion"/>
+			<interval-production>110</interval-production>
+		</usine>
+		<usine type="entrepot">
+			<icones>
+				<icone type="vide" path="src/ressources/E0%.png"/>
+				<icone type="un-tiers" path="src/ressources/E33%.png"/>
+				<icone type="deux-tiers" path="src/ressources/E66%.png"/>
+				<icone type="plein" path="src/ressources/E100%.png"/>
+			</icones>
+			<entree type="avion" capacite="5"/>
+		</usine>
+	</metadonnees>
+
+	<simulation>
+		<usine type="usine-matiere" id="11" x="32" y="32"/>
+		<usine type="usine-aile" id="21" x="320" y="32"/>
+		<usine type="usine-assemblage" id="41" x="160" y="192"/> 
+		<usine type="entrepot" id="51" x="640" y="192"/>
+		<usine type="usine-matiere" id="13" x="544" y="576"/>
+		<usine type="usine-matiere" id="12" x="96" y="352"/>
+		<usine type="usine-moteur" id="31" x="320" y="352"/>
+		<chemins>
+			<chemin de="11" vers="21" />
+			<chemin de="21" vers="41" />
+			<chemin de="41" vers="51" />
+			<chemin de="12" vers="31" />
+			<chemin de="13" vers="31" />
+			<chemin de="31" vers="41" />
+		</chemins>
+	</simulation>
+
+</configuration>
