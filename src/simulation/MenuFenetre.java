@@ -2,7 +2,7 @@ package simulation;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
-
+import java.io.IOException;
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -10,6 +10,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
+import xmlUtility.*;
+
 
 public class MenuFenetre extends JMenuBar {
 
@@ -47,9 +49,14 @@ public class MenuFenetre extends JMenuBar {
 			int returnValue = fileChooser.showOpenDialog(null);
 
 			if (returnValue == JFileChooser.APPROVE_OPTION) {
-				// TODO - Parser le fichier XML selectionne
 				File selectedFile = fileChooser.getSelectedFile();
-				System.out.println(selectedFile.getAbsolutePath());
+				
+//				TODO: createXMLSourcer and get infos
+				XMLSourcer xmlSourcer = new XMLSourcer(selectedFile.getAbsolutePath());
+				xmlSourcer.getData();
+				System.out.println(xmlSourcer.metaList);
+				System.out.println(xmlSourcer.simList);
+				
 			}
 		});
 		

@@ -6,9 +6,9 @@
 				<icone type="vide" path="src/ressources/UMP0%.png"/>
 				<icone type="un-tiers" path="src/ressources/UMP33%.png"/>
 				<icone type="deux-tiers" path="src/ressources/UMP66%.png"/>
-				<icone type="plein" path="src/ressources/UMP100%.png"/>
+				<icone type="plein" path="src/ressources/UMP100%.png"></icone>
 			</icones>
-			<sortie type = "metal"/>
+			<sortie type = "metal"></sortie>
 			<interval-production>100</interval-production>
 		</usine>
 		<usine type="usine-aile">

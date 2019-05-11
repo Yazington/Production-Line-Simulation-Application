@@ -3,7 +3,7 @@ package simulation;
 public class Simulation {
 
 	/**
-	 * Cette classe represente l'application dans son ensemble.
+	 * Cette classe représente l'application dans son ensemble.
 	 */
 	public static void main(String[] args) {
 		Environnement environnement = new Environnement();
