@@ -4,14 +4,17 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import javax.swing.JPanel;
 
 import dataForSimulation.*;
 import dataForSimulation.UsineIntermediaires.*;
+import observerPattern.IObservable;
 import xmlUtility.XMLSourcer;
+import observerPattern.IObserver;
 
-public class PanneauPrincipal extends JPanel {
+public class PanneauPrincipal extends JPanel implements IObserver {
 
 	private static final long serialVersionUID = 1L;
 	private static final int numberOfUsineSimulationElements = 4;
@@ -24,7 +27,8 @@ public class PanneauPrincipal extends JPanel {
 	private List<String> simulationD;
 	private MenuFenetre menuFenetre;
 	private List<Usine> usines;
-	private List<Point> points;
+	private List<Point> pointsUsine;
+	private List<Chemin> chemins;
 
 	public PanneauPrincipal(MenuFenetre menuFenetre) {
 		super();
@@ -44,11 +48,42 @@ public class PanneauPrincipal extends JPanel {
 	{
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g;
-		if(this.points != null) 
+		if(this.pointsUsine != null) 
 		{
-			for(var usinePosition: this.points)
+			for(var usinePosition: this.pointsUsine)
 			{
+//				usinePosition.x = 
+//				this.add(usinePosition)
 				g2d.fillRect(usinePosition.x, usinePosition.y, taille, taille);
+				
+				
+			}
+		}
+		
+//		if(this.usines != null)
+//		{
+//			for(var usine:this.usines)
+//			{
+//				usine.setIcon(icon);
+//			}
+//		}
+		
+		if(this.chemins != null)
+		{
+			for(var cheminID: this.chemins)
+			{
+				Usine usine1 = 
+						this.usines.stream()
+								   .filter(u-> u.getId() == cheminID.getDe())
+								   .findFirst()
+								   .get();
+				Usine usine2 = 
+						this.usines.stream()
+								   .filter(u-> u.getId() == cheminID.getVers())
+								   .findFirst()
+								   .get();
+				g2d.drawLine(usine1.getPosition()[0], usine1.getPosition()[1], usine2.getPosition()[0], usine2.getPosition()[1]);
+				
 			}
 		}
 
@@ -58,15 +93,23 @@ public class PanneauPrincipal extends JPanel {
 		this.metadonneesD = xmlInfo.getMetaList();
 		this.simulationD = xmlInfo.getSimList();
 
+		List<Point> pointsUsine = new ArrayList<Point>();
+		List<Integer> pointsChemins = new ArrayList<Integer>();
+		
+		// Dessiner usines
 		var usines = createInstances(this.metadonneesD, this.simulationD);
 		this.usines = usines;
-		List<Point> points = new ArrayList<Point>();
 		for(var usine : usines)
 		{
 			Point point = new Point(usine.getPosition()[0], usine.getPosition()[1]);
-			points.add(point);
+			pointsUsine.add(point);
 		}
-		this.points = points;
+		this.pointsUsine = pointsUsine;
+		
+		// Dessiner chemins
+		var chemins = getChemins(this.simulationD);
+		this.chemins = chemins;
+		
 		Graphics g = this.getGraphics();
 		paintComponent(g);
 		
@@ -134,8 +177,8 @@ public class PanneauPrincipal extends JPanel {
 				int[] position = { Integer.parseInt(parameters.get(2)), Integer.parseInt(parameters.get(3)) };
 				List<Icone> icones = getIcones(metadonneesD, parameters.get(1));
 				var sortieIntervalEntree = getSortieIntervalEntree(metadonneesD, extremeValues[0], extremeValues[1]);
-				Entree entree = new Entree(sortieIntervalEntree[3], Integer.parseInt(sortieIntervalEntree[2]));
-				List<Entree> entrees = new LinkedList<Entree>();
+				ProductionItem entree = new ProductionItem(sortieIntervalEntree[3], Integer.parseInt(sortieIntervalEntree[2]));
+				List<ProductionItem> entrees = new LinkedList<ProductionItem>();
 				entrees.add(entree);
 				
 				Usine usineAile = new UsineAile(Integer.parseInt(parameters.get(0)), position, parameters.get(1), icones,
@@ -148,9 +191,9 @@ public class PanneauPrincipal extends JPanel {
 				int[] position = { Integer.parseInt(parameters.get(2)), Integer.parseInt(parameters.get(3)) };
 				List<Icone> icones = getIcones(metadonneesD, parameters.get(1));
 				var sortieIntervalEntree = getSortieIntervalEntree(metadonneesD, extremeValues[0], extremeValues[1]);
-				Entree entree = new Entree(sortieIntervalEntree[3], Integer.parseInt(sortieIntervalEntree[2]));
-				Entree entree2 = new Entree(sortieIntervalEntree[5], Integer.parseInt(sortieIntervalEntree[4]));
-				List<Entree> entrees = new LinkedList<Entree>();
+				ProductionItem entree = new ProductionItem(sortieIntervalEntree[3], Integer.parseInt(sortieIntervalEntree[2]));
+				ProductionItem entree2 = new ProductionItem(sortieIntervalEntree[5], Integer.parseInt(sortieIntervalEntree[4]));
+				List<ProductionItem> entrees = new LinkedList<ProductionItem>();
 				entrees.add(entree);
 				entrees.add(entree2);
 				
@@ -164,8 +207,8 @@ public class PanneauPrincipal extends JPanel {
 				int[] position = { Integer.parseInt(parameters.get(2)), Integer.parseInt(parameters.get(3)) };
 				List<Icone> icones = getIcones(metadonneesD, parameters.get(1));
 				var sortieIntervalEntree = getSortieIntervalEntree(metadonneesD, extremeValues[0], extremeValues[1]);
-				Entree entree = new Entree(sortieIntervalEntree[3], Integer.parseInt(sortieIntervalEntree[2]));
-				List<Entree> entrees = new LinkedList<Entree>();
+				ProductionItem entree = new ProductionItem(sortieIntervalEntree[3], Integer.parseInt(sortieIntervalEntree[2]));
+				List<ProductionItem> entrees = new LinkedList<ProductionItem>();
 				entrees.add(entree);
 				
 				Usine usineMoteur = new UsineMoteur(Integer.parseInt(parameters.get(0)), position, parameters.get(1), icones,
@@ -178,8 +221,8 @@ public class PanneauPrincipal extends JPanel {
 				int[] position = { Integer.parseInt(parameters.get(2)), Integer.parseInt(parameters.get(3)) };
 				List<Icone> icones = getIcones(metadonneesD, parameters.get(1));
 				var sortieIntervalEntree = getSortieIntervalEntree(metadonneesD, extremeValues[0], extremeValues[1]);
-				Entree entree = new Entree(sortieIntervalEntree[3], Integer.parseInt(sortieIntervalEntree[2]));
-				List<Entree> entrees = new LinkedList<Entree>();
+				ProductionItem entree = new ProductionItem(sortieIntervalEntree[3], Integer.parseInt(sortieIntervalEntree[2]));
+				List<ProductionItem> entrees = new LinkedList<ProductionItem>();
 				entrees.add(entree);
 				
 				Usine entrepot = new Entrepot(Integer.parseInt(parameters.get(0)), position, parameters.get(1), icones, entrees);
@@ -190,6 +233,30 @@ public class PanneauPrincipal extends JPanel {
 		}
 
 		return usines;
+	}
+	
+	private List<Chemin> getChemins(List<String> simulationD)
+	{
+		List<Chemin> chemins = new ArrayList<Chemin>();
+		simulationD = new ArrayList<String>();
+		simulationD.addAll(this.simulationD);
+		List<String> cheminsEnString = 
+				simulationD.stream()
+						   .filter(sim -> sim.contains("chemin") || sim.contains("de:") || sim.contains("vers:"))
+						   .collect(Collectors.toList());
+		
+		for(int i = 0; i< cheminsEnString.size();i++)
+		{
+			if(cheminsEnString.get(i).equals("chemin"))
+			{
+				int de = Integer.parseInt(cheminsEnString.get(i+1).replace("de:", ""));
+				int vers = Integer.parseInt(cheminsEnString.get(i+2).replace("vers:", ""));
+				Chemin chemin = new Chemin(de, vers);
+				chemins.add(chemin);
+			}
+		}
+		
+		return chemins;
 	}
 	
 	private int[] getExtremeIndexesValues(int indexe, List<Integer> indexes)
@@ -288,8 +355,10 @@ public class PanneauPrincipal extends JPanel {
 		return results;
 	}
 	
-	
-	public void UpdateO() {
+
+
+	@Override
+	public void UpdateObserver() {
 		var xmlSourcer = this.menuFenetre.getXmlSourcer();
 		createNetwork(xmlSourcer);
 	}

@@ -15,5 +15,10 @@ public abstract class Usine extends JLabel{
 	public int[] getPosition() {
 		return position;
 	}
+
+	public int getId() {
+		return id;
+	}
+	
 	
 }

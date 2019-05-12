@@ -12,10 +12,13 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
+
+import observerPattern.IObservable;
+import observerPattern.IObserver;
 import xmlUtility.*;
 
 
-public class MenuFenetre extends JMenuBar {
+public class MenuFenetre extends JMenuBar implements IObservable {
 
 	private static final long serialVersionUID = 1L;
 	private static final String MENU_FICHIER_TITRE = "Fichier";
@@ -28,7 +31,7 @@ public class MenuFenetre extends JMenuBar {
 
 	
 	private XMLSourcer xmlSourcer;
-	private PanneauPrincipal panneauPrincipalO;
+	private IObserver panneauPrincipalO;
 
 	public MenuFenetre() {
 		ajouterMenuFichier();
@@ -60,7 +63,7 @@ public class MenuFenetre extends JMenuBar {
 				XMLSourcer xmlSourcer = new XMLSourcer(selectedFile.getAbsolutePath());
 				xmlSourcer.getData();
 				this.xmlSourcer = xmlSourcer;
-				notifyPanneau();
+				notifyObserver();
 				
 			}
 		});
@@ -111,18 +114,25 @@ public class MenuFenetre extends JMenuBar {
 		});
 		add(menuAide);
 	}
-
-	public void registerPanneauPrincipal(PanneauPrincipal panneauPrincipal) {
-		this.panneauPrincipalO = panneauPrincipal;
+	@Override
+	public void registerObserver(IObserver o) {
+		this.panneauPrincipalO = o;
 	}
 	
-	public void notifyPanneau()
+	public void notifyObserver()
 	{
-		this.panneauPrincipalO.UpdateO();
+		this.panneauPrincipalO.UpdateObserver();
 	}
 
 	public XMLSourcer getXmlSourcer() {
 		return this.xmlSourcer;
+	}
+
+
+	@Override
+	public void unregisterObserver(IObserver o) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

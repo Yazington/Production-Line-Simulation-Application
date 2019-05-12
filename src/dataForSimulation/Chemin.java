@@ -10,4 +10,14 @@ public class Chemin {
 		this.de = de;
 		this.vers = vers;
 	}
+
+	public int getDe() {
+		return de;
+	}
+
+	public int getVers() {
+		return vers;
+	}
+	
+	
 }

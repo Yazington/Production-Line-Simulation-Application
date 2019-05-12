@@ -5,9 +5,9 @@ import java.util.List;
 public class Entrepot extends Usine{
 
 	private String type;
-	private List<Entree> entree;
+	private List<ProductionItem> entree;
 	
-	public Entrepot(int id,int[] position , String type, List<Icone> icones, List<Entree> entree)
+	public Entrepot(int id,int[] position , String type, List<Icone> icones, List<ProductionItem> entree)
 	{
 
 		this.id = id;

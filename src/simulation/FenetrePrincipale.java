@@ -7,6 +7,8 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.JFrame;
 
+import observerPattern.IObserver;
+
 public class FenetrePrincipale extends JFrame implements PropertyChangeListener {
 
 	private static final long serialVersionUID = 1L;
@@ -16,9 +18,9 @@ public class FenetrePrincipale extends JFrame implements PropertyChangeListener 
 
 	public FenetrePrincipale() {
 		MenuFenetre menuFenetre = new MenuFenetre();
-		PanneauPrincipal panneauPrincipal = new PanneauPrincipal(menuFenetre);
-		menuFenetre.registerPanneauPrincipal(panneauPrincipal);
-		add(panneauPrincipal);
+		IObserver panneauPrincipal = new PanneauPrincipal(menuFenetre);
+		menuFenetre.registerObserver(panneauPrincipal);
+		add((PanneauPrincipal) panneauPrincipal);
 		add(menuFenetre, BorderLayout.NORTH);
 		// Faire en sorte que le X de la fenetre ferme la fenetre
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
