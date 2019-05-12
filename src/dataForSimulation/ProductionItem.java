@@ -1,9 +1,9 @@
 package dataForSimulation;
 
-public class ObjetProduit {
+public class ProductionItem {
 	private String nom;
 	
-	public ObjetProduit(String nom)
+	public ProductionItem(String nom)
 	{
 		this.nom = nom;
 	}

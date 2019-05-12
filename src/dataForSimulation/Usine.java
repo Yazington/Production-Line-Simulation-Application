@@ -2,12 +2,18 @@ package dataForSimulation;
 
 import java.util.List;
 
-public abstract class Usine{
+import javax.swing.JLabel;
+
+public abstract class Usine extends JLabel{
 
 	protected int id;
 	protected int[] position;
 	protected List<Icone> icones;
 	
-	public abstract ObjetProduit faitProduit();
+	public abstract ProductionItem faitProduit();
 
+	public int[] getPosition() {
+		return position;
+	}
+	
 }

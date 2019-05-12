@@ -3,6 +3,8 @@ package simulation;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
+
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -23,6 +25,10 @@ public class MenuFenetre extends JMenuBar {
 	private static final String MENU_SIMULATION_CHOISIR = "Choisir";
 	private static final String MENU_AIDE_TITRE = "Aide";
 	private static final String MENU_AIDE_PROPOS = " propos de...";
+
+	
+	private XMLSourcer xmlSourcer;
+	private PanneauPrincipal panneauPrincipalO;
 
 	public MenuFenetre() {
 		ajouterMenuFichier();
@@ -50,12 +56,11 @@ public class MenuFenetre extends JMenuBar {
 
 			if (returnValue == JFileChooser.APPROVE_OPTION) {
 				File selectedFile = fileChooser.getSelectedFile();
-				
 //				TODO: createXMLSourcer and get infos
 				XMLSourcer xmlSourcer = new XMLSourcer(selectedFile.getAbsolutePath());
 				xmlSourcer.getData();
-				System.out.println(xmlSourcer.metaList);
-				System.out.println(xmlSourcer.simList);
+				this.xmlSourcer = xmlSourcer;
+				notifyPanneau();
 				
 			}
 		});
@@ -107,4 +112,17 @@ public class MenuFenetre extends JMenuBar {
 		add(menuAide);
 	}
 
+	public void registerPanneauPrincipal(PanneauPrincipal panneauPrincipal) {
+		this.panneauPrincipalO = panneauPrincipal;
+	}
+	
+	public void notifyPanneau()
+	{
+		this.panneauPrincipalO.UpdateO();
+	}
+
+	public XMLSourcer getXmlSourcer() {
+		return this.xmlSourcer;
+	}
+	
 }

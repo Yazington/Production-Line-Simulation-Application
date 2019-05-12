@@ -13,9 +13,11 @@ public class FenetrePrincipale extends JFrame implements PropertyChangeListener 
 	private static final String TITRE_FENETRE = "Laboratoire 1 : LOG121 - Simulation";
 	private static final Dimension DIMENSION = new Dimension(700, 700);
 
+
 	public FenetrePrincipale() {
-		PanneauPrincipal panneauPrincipal = new PanneauPrincipal();
 		MenuFenetre menuFenetre = new MenuFenetre();
+		PanneauPrincipal panneauPrincipal = new PanneauPrincipal(menuFenetre);
+		menuFenetre.registerPanneauPrincipal(panneauPrincipal);
 		add(panneauPrincipal);
 		add(menuFenetre, BorderLayout.NORTH);
 		// Faire en sorte que le X de la fenetre ferme la fenetre
@@ -32,7 +34,6 @@ public class FenetrePrincipale extends JFrame implements PropertyChangeListener 
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		System.out.println("hi");
 		if (evt.getPropertyName().equals("TEST")) {
 			repaint();
 			System.out.println(evt.getNewValue());

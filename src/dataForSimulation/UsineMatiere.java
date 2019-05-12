@@ -20,8 +20,8 @@ public class UsineMatiere extends Usine{
 	}
 	
 	@Override
-	public ObjetProduit faitProduit() {
-		return new ObjetProduit(this.sortie);
+	public ProductionItem faitProduit() {
+		return new ProductionItem(this.sortie);
 	}
 
 }

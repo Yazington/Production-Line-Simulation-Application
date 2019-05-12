@@ -16,8 +16,8 @@ import static xmlUtility.ForeachUtility.asList;;
 public class XMLSourcer {
 	
 	private String filePath;
-	public List<String> simList;
-	public List<String> metaList;
+	private static List<String> simList;
+	private static List<String> metaList;
 
 
 	public XMLSourcer(String filePath)
@@ -73,8 +73,6 @@ public class XMLSourcer {
 		this.simList = simList;
 		this.metaList = metaList;
 		
-		System.out.println("Simulation : " + simList);
-		System.out.println("Metadonnees : " + metaList);
 
 	}
 	
@@ -96,11 +94,24 @@ public class XMLSourcer {
                 	}
                 	
                 }
+                else if(n.getNodeName() == "interval-production")
+                {
+                	list.add(n.getNodeName() + ":" + n.getFirstChild().getTextContent());
+                }
+
                 	
                 parse(doc, list, (Element) n);
             }
             
         }
+        System.out.println(list);
 	}
-	
+
+	public List<String> getSimList() {
+		return simList;
+	}
+
+	public List<String> getMetaList() {
+		return metaList;
+	}
 }

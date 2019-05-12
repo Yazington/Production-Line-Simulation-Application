@@ -5,11 +5,11 @@ import java.util.List;
 public class UsineIntermediaire extends Usine{
 	
 	private String type;
-	private Entree entree;
+	private List<Entree> entree;
 	private String sortie;
 	private int intervalProduction;
 	
-	public UsineIntermediaire(int id, int[] position, String type, List<Icone> icones, String sortie, Entree entree, int intervalProduction)
+	public UsineIntermediaire(int id, int[] position, String type, List<Icone> icones, String sortie, List<Entree> entree, int intervalProduction)
 	{
 		this.id = id;
 		this.position = position;
@@ -21,7 +21,7 @@ public class UsineIntermediaire extends Usine{
 	}
 
 	@Override
-	public ObjetProduit faitProduit() {
-		return new ObjetProduit(this.sortie);
+	public ProductionItem faitProduit() {
+		return new ProductionItem(this.sortie);
 	}
 }
