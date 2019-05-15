@@ -2,7 +2,10 @@ package simulation;
 
 import javax.swing.SwingWorker;
 
-public class Environnement extends SwingWorker<Object, String> {
+import observerPattern.IObservable;
+import observerPattern.IObserver;
+
+public class Environnement extends SwingWorker<Object, String>{
 	private boolean actif = true;
 	private static final int DELAI = 100;
 	
@@ -13,9 +16,8 @@ public class Environnement extends SwingWorker<Object, String> {
 			/**
 			 * C'est ici que vous aurez a faire la gestion de la notion de tour.
 			 */
-//			firePropertyChange("TEST", null, "Ceci est un test");
+			firePropertyChange("Create products", null, "Products created");
 		}
 		return null;
 	}
-
 }

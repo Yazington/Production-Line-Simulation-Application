@@ -20,4 +20,5 @@ public class UsineMoteur extends UsineIntermediaire {
 		return new ProductionItem(this.sortie);
 	}
 	
+	
 }

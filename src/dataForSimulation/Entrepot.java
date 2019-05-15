@@ -2,7 +2,10 @@ package dataForSimulation;
 
 import java.util.List;
 
-public class Entrepot extends Usine{
+import observerPattern.IObservable;
+import observerPattern.IObserver;
+
+public class Entrepot extends Usine implements IObservable{
 
 	private String type;
 	private List<ProductionItem> entree;
@@ -22,5 +25,25 @@ public class Entrepot extends Usine{
 		return null;
 
 	}
+
+	@Override
+	public void registerObserver(IObserver o) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void unregisterObserver(IObserver o) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void notifyObserver() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
 
 }

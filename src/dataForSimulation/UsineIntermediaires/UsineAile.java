@@ -20,5 +20,5 @@ public class UsineAile extends UsineIntermediaire {
 	public ProductionItem faitProduit() {
 		return new ProductionItem(this.sortie);
 	}
-	
+
 }

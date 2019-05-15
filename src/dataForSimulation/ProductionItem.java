@@ -1,6 +1,8 @@
 package dataForSimulation;
 
-public class ProductionItem {
+import javax.swing.JLabel;
+
+public class ProductionItem extends JLabel{
 
 	private String type;
 	private int quantite;

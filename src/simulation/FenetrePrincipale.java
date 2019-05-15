@@ -32,14 +32,13 @@ public class FenetrePrincipale extends JFrame implements PropertyChangeListener 
 		setLocationRelativeTo(null);
 		// Empecher la redimension de la fenetre
 		setResizable(false);
+		
 	}
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		if (evt.getPropertyName().equals("TEST")) {
+		if (evt.getPropertyName().equals("Create products")) {
 			repaint();
-			System.out.println(evt.getNewValue());
-			
 		}
 	}
 }

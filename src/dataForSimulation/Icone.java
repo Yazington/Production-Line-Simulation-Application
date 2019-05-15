@@ -1,6 +1,11 @@
 package dataForSimulation;
 
-public class Icone {
+import java.awt.Component;
+import java.awt.Graphics;
+
+import javax.swing.Icon;
+
+public class Icone{
 	private String type;
 	private String path;
 	
@@ -8,5 +13,11 @@ public class Icone {
 	{
 		this.path = path;
 		this.type = type;
+	}
+
+	public String getPath()
+	{
+		return path;
+		
 	}
 }

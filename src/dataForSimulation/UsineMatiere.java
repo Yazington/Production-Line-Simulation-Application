@@ -1,12 +1,17 @@
 package dataForSimulation;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.List;
 
-public class UsineMatiere extends Usine{
+import dataForSimulation.ProductionItems.Metal;
+import observerPattern.IObserver;
 
-	private String type;
+public class UsineMatiere extends Usine implements PropertyChangeListener, IObserver{
+
 	private String sortie;
 	private int intervalProduction;
+	private boolean entrepotIsFull;
 	
 	public UsineMatiere(int id, int[] position, String type, List<Icone> icones, String sortie, int intervalProduction)
 	{
@@ -21,7 +26,25 @@ public class UsineMatiere extends Usine{
 	
 	@Override
 	public ProductionItem faitProduit() {
-		return new ProductionItem(this.sortie);
+		return new Metal(this.sortie);
 	}
 
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		if (evt.getPropertyName().equals("Create products") && !this.entrepotIsFull) {
+			try {
+				evt.wait(100 - this.intervalProduction);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			var produit = faitProduit();
+		}
+	}
+
+	@Override
+	public void UpdateObserver() {
+		// TODO Auto-generated method stub
+		
+	}
 }
