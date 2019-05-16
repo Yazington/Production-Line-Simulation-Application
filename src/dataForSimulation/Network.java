@@ -1,7 +1,5 @@
 package dataForSimulation;
 
-import java.awt.Graphics;
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -10,7 +8,6 @@ import java.util.stream.Collectors;
 import dataForSimulation.UsineIntermediaires.UsineAile;
 import dataForSimulation.UsineIntermediaires.UsineAssemblage;
 import dataForSimulation.UsineIntermediaires.UsineMoteur;
-import xmlUtility.XMLSourcer;
 
 public class Network {
 
@@ -313,10 +310,6 @@ public class Network {
 		return simulationD;
 	}
 
-
-	public void setUsines(List<Usine> usines) {
-		this.usines = usines;
-	}
 
 
 	public List<Usine> getUsines() {

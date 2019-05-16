@@ -4,14 +4,9 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.util.*;
-import java.util.stream.Collectors;
-
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import dataForSimulation.*;
-import dataForSimulation.UsineIntermediaires.*;
-import observerPattern.IObservable;
 import xmlUtility.*;
 import observerPattern.IObserver;
 
@@ -25,7 +20,8 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 	private int taille = 32;
 	private MenuFenetre menuFenetre;
 	private Network reseau; 
-	private List<Chemin> chemins;
+	List<Point> cheminsPoints1;
+	List<Point> cheminsPoints2;
 
 
 	public PanneauPrincipal(MenuFenetre menuFenetre) {
@@ -42,17 +38,30 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 //		
 //	}
 	
+	
 	public void paintComponent(Graphics g)
 	{
 		Graphics2D g2d = (Graphics2D) g;
-		super.paintComponent(g);
+		super.paintComponent(g2d);
+		
+		if(this.cheminsPoints1 != null)
+		{
+			for(int i = 0; i< this.cheminsPoints1.size();i++)
+			{
+				var point1 = this.cheminsPoints1.get(i);
+				var point2 = this.cheminsPoints2.get(i);
+				g2d.drawLine(point1.x, point1.y, point2.x, point2.y);
+			}
+		}
+		
+		
 	}
 	
-	private void paintUsines()
+	private void paintUsines(List<Usine> usines)
 	{
 		// Dessiner usines si elles existent
 		if(this.reseau == null) throw new NullPointerException("Pas d usine");
-		for(var usine:this.reseau.getUsines())
+		for(var usine:usines)
 		{
 			usine.setIcone(usine.getIcones().get(0));
 			usine.setVisible(true);
@@ -61,14 +70,15 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 			Point p = new Point(usine.getPosition()[0] - 16, usine.getPosition()[1] - 16);
 			usine.setLocation(p);
 			this.add(usine);
-
 		}
 	}
 	
-	private void paintChemins(Graphics2D g2d)
+	private void paintChemins(Graphics g)
 	{
 		var chemins = this.reseau.getChemins();
 		// Dessiner chemins siles existent
+		this.cheminsPoints1 = new ArrayList<Point>();
+		this.cheminsPoints2 = new ArrayList<Point>();
 		if(chemins!= null)
 		{
 			for(var cheminID: chemins)
@@ -83,13 +93,17 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 								   .filter(u-> u.getId() == cheminID.getVers())
 								   .findFirst()
 								   .get();
-				g2d.drawLine(usine1.getPosition()[0], usine1.getPosition()[1], usine2.getPosition()[0], usine2.getPosition()[1]);
-//				this.repaint();
+				
+				Point point = new Point(usine1.getPosition()[0], usine1.getPosition()[1]);
+				Point point2 = new Point(usine2.getPosition()[0], usine2.getPosition()[1]);
+
+				this.cheminsPoints1.add(point);
+				this.cheminsPoints2.add(point2);
 			}
 		}
 	}
 	
-	public void createNetwork(XMLSourcer xmlInfo)
+	public List<Usine> createNetwork(XMLSourcer xmlInfo)
 	{
 		if(this.menuFenetre == null) throw new NullPointerException("pas de source xml");
 		
@@ -97,31 +111,17 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 		this.reseau = reseau;
 		var usines = this.reseau.createInstances(this.reseau.getMetadonneesD(), this.reseau.getSimulationD());
 		
-		
-		List<Point> pointsUsine = new ArrayList<Point>();
-		
-		// Dessiner usines
-		for(var usine : usines)
-		{
-			Point point = new Point(usine.getPosition()[0], usine.getPosition()[1]);
-			pointsUsine.add(point);
-		}
-		
-		
-		Graphics g = this.getGraphics();
-//		paintComponent(g);
-		
+
+		return usines;
 	}
 
 	@Override
 	public void UpdateObserver() {
 		var xmlSourcer = this.menuFenetre.getXmlSourcer();
-		createNetwork(xmlSourcer);
-		paintUsines();
-		paintChemins((Graphics2D)this.getGraphics());
-		
+		var usines = createNetwork(xmlSourcer);
+		paintChemins(this.getGraphics());
+		paintComponent(this.getGraphics());
+		paintUsines(usines);
+
 	}
-	
-
-
 }
