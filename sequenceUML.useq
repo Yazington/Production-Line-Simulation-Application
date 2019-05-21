@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sequence-diagram version="1.2.3" icons="true" generate-combined-fragments="true">  
+  <object id="1" language="java" name="simulation.MenuFenetre" project="simulation-squelette" 
+    file="/simulation-squelette/src/simulation/MenuFenetre.java" binary="false" label="menuFenetre" type="class" 
+    autoSize="true">    
+    <position height="-1" width="-1" x="194" y="0"/>    
+    <execution id="2">      
+      <position height="105" width="97" x="5" y="114"/>    
+    </execution>    
+    <execution id="5">      
+      <position height="21" width="7" x="50" y="156"/>    
+    </execution>  
+  </object>  
+  <object id="6" language="java" name="simulation.PanneauPrincipal" project="simulation-squelette" 
+    file="/simulation-squelette/src/simulation/PanneauPrincipal.java" binary="false" label="panneauPrincipal" 
+    type="class" autoSize="true">    
+    <position height="-1" width="-1" x="346" y="0"/>    
+    <execution id="4">      
+      <position height="63" width="123" x="106" y="135"/>    
+    </execution>  
+  </object>  
+  <message id="3" operation="UpdateObserver():void" asynchronous="false" x="54" y="113">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="4"/>  
+  </message>  
+  <message id="7" asynchronous="false">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="5"/>  
+  </message>
+</sequence-diagram>
