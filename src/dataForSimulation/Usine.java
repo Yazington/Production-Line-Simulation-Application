@@ -7,7 +7,7 @@ import javax.swing.JLabel;
 
 import observerPattern.IObserver;
 
-public abstract class Usine extends JLabel{
+public abstract class Usine{
 
 	/**
 	 * 
@@ -29,19 +29,14 @@ public abstract class Usine extends JLabel{
 	public int getId() {
 		return id;
 	}
-	
-	/**
-	 * Protected: set its own Icone using an Observable 
-	 * class that will notify it
-	 * @param currentIcone
-	 */
-	public void setIcone(Icone currentIcone)
-	{
-		this.setIcon(new ImageIcon(icones.get(0).getPath()));
-	}
-	
+
 	public List<Icone> getIcones()
 	{
 		return icones;
 	}
+
+	public String getType() {
+		return this.type;
+	}
+	
 }

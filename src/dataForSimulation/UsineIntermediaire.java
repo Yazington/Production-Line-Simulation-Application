@@ -4,10 +4,11 @@ import java.util.List;
 
 public class UsineIntermediaire extends Usine{
 	
-	private String type;
-	private List<ProductionItem> entree;
-	private String sortie;
-	private int intervalProduction;
+	protected List<ProductionItem> entree;
+	protected String sortie;
+	protected int intervalProduction;
+	protected ProductionItem produitFinal;
+	
 	
 	public UsineIntermediaire(int id, int[] position, String type, List<Icone> icones, String sortie, List<ProductionItem> entree, int intervalProduction)
 	{
@@ -24,4 +25,10 @@ public class UsineIntermediaire extends Usine{
 	public ProductionItem faitProduit() {
 		return new ProductionItem(this.sortie);
 	}
+
+	public ProductionItem getProduitFinal() {
+		return produitFinal;
+	}
+	
+	
 }

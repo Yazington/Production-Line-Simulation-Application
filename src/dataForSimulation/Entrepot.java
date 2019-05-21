@@ -6,8 +6,7 @@ import observerPattern.IObservable;
 import observerPattern.IObserver;
 
 public class Entrepot extends Usine implements IObservable{
-
-	private String type;
+	
 	private List<ProductionItem> entree;
 	
 	public Entrepot(int id,int[] position , String type, List<Icone> icones, List<ProductionItem> entree)

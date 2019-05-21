@@ -1,8 +1,12 @@
 package dataForSimulation;
 
+import java.awt.Point;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import dataForSimulation.UsineIntermediaires.UsineAile;
@@ -17,17 +21,80 @@ public class Network {
 	private List<String> simulationD;
 	private List<Usine> usines;
 	private List<Chemin> chemins;
+	private List<ProductionItem> productionItems;
 
 	public Network(List<String> metadonneesD, List<String> simulationD)
 	{
 		this.metadonneesD = metadonneesD;
 		this.simulationD = simulationD;
+	}
+	
+	public void updateItems()
+	{
+		var usines = new LinkedList<Usine>();
+		for(int i = 0; i< this.usines.size();i++)
+		{
+			if(this.usines.get(i).getType().equals("usine-matiere"))
+				usines.add(this.usines.get(i));
+		}
+		
+		List<ProductionItem> produits = new ArrayList<ProductionItem>();
+		for(int i = 0; i< usines.size(); i++)
+		{
+			var produit = usines.get(i).faitProduit();
+			int[] position2 = null;
+			for(int j = 0; j < this.chemins.size(); j++)
+			{
+				var currentIndex = j;
+				if(this.chemins.get(j).getDe() == usines.get(i).getId())
+				{
+					
+					var usine2 = this.usines.stream()
+											.filter(u -> u.getId() == this.chemins.get(currentIndex).getVers())
+											.findFirst().get();
+
+					position2 = usine2.getPosition();
+				}
+			}
+			
+			int xTranslate;
+			if(usines.get(i).getPosition()[0] < position2[0]) 
+			{
+				xTranslate = 1;
+			}
+			else if (usines.get(i).getPosition()[0]>position2[0])
+			{
+				xTranslate = -1;
+			}
+			else
+			{
+				xTranslate = 0;
+			}
+			
+			int yTranslate;
+			if(usines.get(i).getPosition()[1] < position2[1]) 
+			{
+				yTranslate = 1;
+			}
+			else if (usines.get(i).getPosition()[1]>position2[1])
+			{
+				yTranslate = -1;
+			}
+			else
+			{
+				yTranslate = 0;
+			}
+			produit.setPosition(usines.get(i).getPosition());
+			produit.setVitesse(new Point(xTranslate, yTranslate));
+			produits.add(produit);
+		}
+		
+		this.productionItems = produits;
 		
 	}
 	
-	
 	public List<Usine> createInstances(List<String> metadonneesD, List<String> simulationD) {
-		// chercher les indexes des usines dans le tableau
+		// chercher les indexes des usines dans le tableau(sim)
 		List<Integer> indexesSim = new ArrayList<Integer>();
 		for (int i = 0; i < simulationD.size(); i++) 
 		{
@@ -36,7 +103,7 @@ public class Network {
 
 		}
 
-		// chercher les indexes des usines dans le tableau
+		// chercher les indexes des usines dans le tableau(meta)
 		List<Integer> indexesMeta = new ArrayList<Integer>();
 		for (int i = 0; i < metadonneesD.size(); i++) 
 		{
@@ -320,6 +387,10 @@ public class Network {
 	public List<Chemin> getChemins() {
 		return chemins;
 	}
-	
-	
+
+
+	public List<ProductionItem> getProductionItems() {
+		return productionItems;
+	}
+
 }
