@@ -29,13 +29,32 @@ public class Network {
 		this.simulationD = simulationD;
 	}
 	
+<<<<<<< HEAD
 	public void updateItems()
+=======
+	public void execute()
+>>>>>>> master
 	{
 		var usines = new LinkedList<Usine>();
 		for(int i = 0; i< this.usines.size();i++)
 		{
+<<<<<<< HEAD
 			if(this.usines.get(i).getType().equals("usine-matiere"))
 				usines.add(this.usines.get(i));
+=======
+			var usine = this.usines.get(i);
+			if(usine.getType().equals("usine-matiere") && usine.getIconeByType("plein") == usine.getCurrentIcone())
+			{
+				usines.add(this.usines.get(i));
+//				usine.setCurrentIcone(usine.getIconeByType("vide"));
+			}
+			else if (usine.getType().equals("usine-matiere") && usine.getIconeByType("vide") == usine.getCurrentIcone())
+			{
+				usines.add(this.usines.get(i));
+//				usine.setCurrentIcone(usine.getIconeByType("un-tiers"));
+			}
+				
+>>>>>>> master
 		}
 		
 		List<ProductionItem> produits = new ArrayList<ProductionItem>();
@@ -365,8 +384,11 @@ public class Network {
 		}
 		return results;
 	}
+<<<<<<< HEAD
 	
 
+=======
+>>>>>>> master
 
 	public List<String> getMetadonneesD() {
 		return metadonneesD;
@@ -393,4 +415,11 @@ public class Network {
 		return productionItems;
 	}
 
+<<<<<<< HEAD
+=======
+	public void changeUsinesImages() {
+		
+	}
+
+>>>>>>> master
 }
