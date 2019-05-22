@@ -57,7 +57,7 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 	public synchronized void paintComponent(Graphics g)
 	{
 		Graphics2D g2d = (Graphics2D) g;
-		super.paintComponent(g2d);
+//		super.paintComponent(g2d);
 		
 		// dessine les chemins
 		if(this.cheminsPoints1 != null)
@@ -76,24 +76,39 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 			{
 				g2d.drawImage(this.usinesImages.get(i), this.usinesPositions.get(i).x, this.usinesPositions.get(i).y, null);
 			}
+			this.reseau.setUsinesAreLoaded(true);
 		}
 		
-		// dessine les produits
-		if(this.movingPoints!=null)
-			for(int i = 0; i < this.movingPoints.size();i++)
-			{
-				this.movingPoints.get(i).translate(this.produitsVitesses.get(i).x, this.produitsVitesses.get(i).y);
-			}
-			
 		if(this.produitsImages!=null)
 			for(int i = 0; i<this.produitsImages.size();i++)
 			{
 				g2d.drawImage(this.produitsImages.get(i), this.movingPoints.get(i).x, this.movingPoints.get(i).y, null);
 			}
+		
+		// dessine les produits
+		if(this.movingPoints!=null)
+			for(int i = 0; i < this.produitsVitesses.size();i++)
+			{
+				try {
+					this.movingPoints.get(i).translate(this.produitsVitesses.get(i).x, this.produitsVitesses.get(i).y);
+				}
+				catch(Exception e) {
+					System.err.println("--moving items--");
+				}
+				
+			}
+			
+		
 	}
 	
 	public void paintProducts()
 	{
+		var usines = this.reseau.getUsines();
+		for(int i = 0; i< usines.size();i++)
+		{
+			if(!usines.get(i).getClass().equals(UsineMatiere.class) || usines.get(i).getCurrentIcone() != usines.get(i).getIconeByType("plein"))
+					continue;
+		}
 		//Dessiner produits si ils existent
 		var produits = this.reseau.getProductionItems();
 		if(produits == null) return;
@@ -127,10 +142,16 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 			for(int i = 0; i< this.produitsPositions.size();i++)
 			{
 				Point pointProduit = new Point(this.produitsPositions.get(i).x,this.produitsPositions.get(i).y);
-				this.getGraphics().drawImage(this.produitsImages.get(i), pointProduit.x, pointProduit.y, null);	
+//				this.getGraphics().drawImage(this.produitsImages.get(i), pointProduit.x, pointProduit.y, null);	
 				produitsPoints.add(pointProduit);
+				if(this.movingPoints==null)
+				{
+					this.movingPoints = new ArrayList<Point>();
+				}
+				this.movingPoints.add(pointProduit);
 			}
-			this.movingPoints = produitsPoints;
+//			this.movingPoints = produitsPoints;
+			this.update(this.getGraphics());
 		}	
 	}
 	
@@ -195,7 +216,6 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 		Network reseau = new Network(xmlInfo.getMetaList(), xmlInfo.getSimList());
 		this.reseau = reseau;
 		var usines = this.reseau.createInstances(this.reseau.getMetadonneesD(), this.reseau.getSimulationD());
-		this.reseau.execute();
 		return usines;
 	}
 
@@ -205,7 +225,7 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 	}
 
 	@Override
-	public synchronized void UpdateObserver() {
+	public void UpdateObserver() {
 		var xmlSourcer = this.menuFenetre.getXmlSourcer();
 		var usines = createNetwork(xmlSourcer);
 		paintChemins(this.getGraphics());
@@ -219,7 +239,7 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		paintProducts();
+		
 	}
 
 }

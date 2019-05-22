@@ -22,39 +22,50 @@ public class Network {
 	private List<Usine> usines;
 	private List<Chemin> chemins;
 	private List<ProductionItem> productionItems;
+	private boolean usinesAreLoaded;
 
 	public Network(List<String> metadonneesD, List<String> simulationD)
 	{
 		this.metadonneesD = metadonneesD;
 		this.simulationD = simulationD;
+		this.productionItems = new ArrayList<ProductionItem>();
+		this.usinesAreLoaded = false;
 	}
 	
-	public synchronized void execute()
+	public void execute()
 	{
-		var usines = new LinkedList<Usine>();
+		if(this.usinesAreLoaded == false) return;
+		// Get the usineMatieres
+		var usinesMatiere = new LinkedList<Usine>();
 		for(int i = 0; i< this.usines.size();i++)
 		{
 			var usine = this.usines.get(i);
 			if(usine.getType().equals("usine-matiere") && usine.getIconeByType("plein") == usine.getCurrentIcone())
 			{
-				usines.add(this.usines.get(i));
+				usinesMatiere.add(this.usines.get(i));
 			}
 			else if (usine.getType().equals("usine-matiere") && usine.getIconeByType("vide") == usine.getCurrentIcone())
 			{
-				usines.add(this.usines.get(i));
+				usinesMatiere.add(this.usines.get(i));
 			}
 				
 		}
 		
-		List<ProductionItem> produits = new ArrayList<ProductionItem>();
-		for(int i = 0; i< usines.size(); i++)
+		// For each UsineMatiere, create new components, give their position and speed 
+		for(int i = 0; i< usinesMatiere.size(); i++)
 		{
-			var produit = ((UsineMatiere)usines.get(i)).faitProduit();
+//			try {
+//				wait(100);
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+			var produit = usinesMatiere.get(i).faitProduit();
 			int[] position2 = null;
 			for(int j = 0; j < this.chemins.size(); j++)
 			{
 				var currentIndex = j;
-				if(this.chemins.get(j).getDe() == usines.get(i).getId())
+				if(this.chemins.get(j).getDe() == usinesMatiere.get(i).getId())
 				{
 					
 					var usine2 = this.usines.stream()
@@ -66,11 +77,11 @@ public class Network {
 			}
 			
 			int xTranslate;
-			if(usines.get(i).getPosition()[0] < position2[0]) 
+			if(usinesMatiere.get(i).getPosition()[0] < position2[0]) 
 			{
 				xTranslate = 2;
 			}
-			else if (usines.get(i).getPosition()[0]>position2[0])
+			else if (usinesMatiere.get(i).getPosition()[0]>position2[0])
 			{
 				xTranslate = -2;
 			}
@@ -80,11 +91,11 @@ public class Network {
 			}
 			
 			int yTranslate;
-			if(usines.get(i).getPosition()[1] < position2[1]) 
+			if(usinesMatiere.get(i).getPosition()[1] < position2[1]) 
 			{
 				yTranslate = 2;
 			}
-			else if (usines.get(i).getPosition()[1]>position2[1])
+			else if (usinesMatiere.get(i).getPosition()[1]>position2[1])
 			{
 				yTranslate = -2;
 			}
@@ -92,12 +103,12 @@ public class Network {
 			{
 				yTranslate = 0;
 			}
-			produit.setPosition(usines.get(i).getPosition());
+			produit.setPosition(usinesMatiere.get(i).getPosition());
 			produit.setVitesse(new Point(xTranslate, yTranslate));
-			produits.add(produit);
+			this.productionItems.add(produit);
 		}
 		
-		this.productionItems = produits;
+		
 		
 	}
 	
@@ -153,6 +164,7 @@ public class Network {
 				
 				Usine usineMatiere = new UsineMatiere(Integer.parseInt(parameters.get(0)), position, parameters.get(1), icones, 
 													  sortieAndInterval[0], Integer.parseInt(sortieAndInterval[1]));
+				usineMatiere.setCurrentIcone(usineMatiere.getIconeByType("vide"));
 				usines.add(usineMatiere);
 			}
 			else if(parameters.get(1).equals("usine-aile"))
@@ -403,4 +415,9 @@ public class Network {
 		
 	}
 
+	public void setUsinesAreLoaded(boolean usinesAreLoaded) {
+		this.usinesAreLoaded = usinesAreLoaded;
+	}
+
+	
 }
