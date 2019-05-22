@@ -54,7 +54,7 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 //	}
 	
 	@Override
-	public void paintComponent(Graphics g)
+	public synchronized void paintComponent(Graphics g)
 	{
 		Graphics2D g2d = (Graphics2D) g;
 		super.paintComponent(g2d);
@@ -205,7 +205,7 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 	}
 
 	@Override
-	public void UpdateObserver() {
+	public synchronized void UpdateObserver() {
 		var xmlSourcer = this.menuFenetre.getXmlSourcer();
 		var usines = createNetwork(xmlSourcer);
 		paintChemins(this.getGraphics());
@@ -220,7 +220,6 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 			e.printStackTrace();
 		}
 		paintProducts();
-
 	}
 
 }

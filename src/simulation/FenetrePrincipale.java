@@ -8,6 +8,7 @@ import java.beans.PropertyChangeListener;
 import javax.swing.JFrame;
 
 import dataForSimulation.Network;
+import dataForSimulation.UsineMatiere;
 import observerPattern.IObserver;
 
 public class FenetrePrincipale extends JFrame implements PropertyChangeListener {
@@ -40,6 +41,8 @@ public class FenetrePrincipale extends JFrame implements PropertyChangeListener 
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
+		
+		
 		if (evt.getPropertyName().equals("change images")) {
 			repaint();
 		}
@@ -50,7 +53,8 @@ public class FenetrePrincipale extends JFrame implements PropertyChangeListener 
 				for(int i = 0; i < this.panneau.getNetwork().getUsines().size(); i ++)
 				{
 					var usine = this.panneau.getNetwork().getUsines().get(i);
-					this.panneau.getNetwork().getProductionItems().add(usine.faitProduit());
+//					if(usine.getClass().equals(UsineMatiere.class))
+//					this.panneau.getNetwork().getProductionItems().add(usine.faitProduit());
 				}
 				repaint();
 			}

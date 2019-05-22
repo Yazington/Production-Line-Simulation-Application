@@ -29,7 +29,7 @@ public class Network {
 		this.simulationD = simulationD;
 	}
 	
-	public void execute()
+	public synchronized void execute()
 	{
 		var usines = new LinkedList<Usine>();
 		for(int i = 0; i< this.usines.size();i++)
@@ -38,12 +38,10 @@ public class Network {
 			if(usine.getType().equals("usine-matiere") && usine.getIconeByType("plein") == usine.getCurrentIcone())
 			{
 				usines.add(this.usines.get(i));
-//				usine.setCurrentIcone(usine.getIconeByType("vide"));
 			}
 			else if (usine.getType().equals("usine-matiere") && usine.getIconeByType("vide") == usine.getCurrentIcone())
 			{
 				usines.add(this.usines.get(i));
-//				usine.setCurrentIcone(usine.getIconeByType("un-tiers"));
 			}
 				
 		}
@@ -51,7 +49,7 @@ public class Network {
 		List<ProductionItem> produits = new ArrayList<ProductionItem>();
 		for(int i = 0; i< usines.size(); i++)
 		{
-			var produit = usines.get(i).faitProduit();
+			var produit = ((UsineMatiere)usines.get(i)).faitProduit();
 			int[] position2 = null;
 			for(int j = 0; j < this.chemins.size(); j++)
 			{
@@ -70,11 +68,11 @@ public class Network {
 			int xTranslate;
 			if(usines.get(i).getPosition()[0] < position2[0]) 
 			{
-				xTranslate = 1;
+				xTranslate = 2;
 			}
 			else if (usines.get(i).getPosition()[0]>position2[0])
 			{
-				xTranslate = -1;
+				xTranslate = -2;
 			}
 			else
 			{
@@ -84,11 +82,11 @@ public class Network {
 			int yTranslate;
 			if(usines.get(i).getPosition()[1] < position2[1]) 
 			{
-				yTranslate = 1;
+				yTranslate = 2;
 			}
 			else if (usines.get(i).getPosition()[1]>position2[1])
 			{
-				yTranslate = -1;
+				yTranslate = -2;
 			}
 			else
 			{
