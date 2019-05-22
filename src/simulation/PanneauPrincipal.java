@@ -77,13 +77,19 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 				g2d.drawImage(this.usinesImages.get(i), this.usinesPositions.get(i).x, this.usinesPositions.get(i).y, null);
 			}
 		}
+		
+		// dessine les produits
 		if(this.movingPoints!=null)
-		this.movingPoints.get(0).translate(this.produitsVitesses.get(0).x, this.produitsVitesses.get(0).y);
+			for(int i = 0; i < this.movingPoints.size();i++)
+			{
+				this.movingPoints.get(i).translate(this.produitsVitesses.get(i).x, this.produitsVitesses.get(i).y);
+			}
+			
 		if(this.produitsImages!=null)
-		g2d.drawImage(this.produitsImages.get(0), this.movingPoints.get(0).x, this.movingPoints.get(0).y, null);	
-
-		position.translate(vitesse.x, vitesse.y);
-		g.fillRect(position.x, position.y, taille, taille);
+			for(int i = 0; i<this.produitsImages.size();i++)
+			{
+				g2d.drawImage(this.produitsImages.get(i), this.movingPoints.get(i).x, this.movingPoints.get(i).y, null);
+			}
 	}
 	
 	public void paintProducts()
@@ -99,10 +105,12 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 			var position = item.getPosition();
 			Point point = new Point(position[0]-16,position[1]-16);
 			produitsPositions.add(point);
-			try {
-				//TODO: change usines icones every production-interval time
+			try 
+			{
 				produitsImages.add(ImageIO.read(new File(item.getImagePath())));
-			} catch (Exception e) {
+			} 
+			catch (Exception e) 
+			{
 				e.printStackTrace();
 			}
 			var vitesse = item.getVitesse();
@@ -116,7 +124,6 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 		List<Point> produitsPoints = new LinkedList<Point>();
 		if(this.produitsPositions != null && this.produitsImages != null)
 		{
-			this.reseau.updateItems();
 			for(int i = 0; i< this.produitsPositions.size();i++)
 			{
 				Point pointProduit = new Point(this.produitsPositions.get(i).x,this.produitsPositions.get(i).y);
@@ -138,9 +145,10 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 			var position = usine.getPosition();
 			Point point = new Point(position[0] - 16,position[1] - 16);
 			usinesPositions.add(point);
+			var currentIcone = usine.getCurrentIcone();
 			try {
 				//TODO: change usines icones every production-interval time
-				usinesImages.add(ImageIO.read(new File(usine.getIcones().get(0).getPath())));
+				usinesImages.add(ImageIO.read(new File(currentIcone.getPath())));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -187,7 +195,7 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 		Network reseau = new Network(xmlInfo.getMetaList(), xmlInfo.getSimList());
 		this.reseau = reseau;
 		var usines = this.reseau.createInstances(this.reseau.getMetadonneesD(), this.reseau.getSimulationD());
-		this.reseau.updateItems();
+		this.reseau.execute();
 		return usines;
 	}
 
@@ -202,9 +210,12 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 		var usines = createNetwork(xmlSourcer);
 		paintChemins(this.getGraphics());
 		paintComponent(this.getGraphics());
-		try {
+		try 
+		{
 			paintUsines(usines);
-		} catch (IOException e) {
+		}
+		catch (IOException e) 
+		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

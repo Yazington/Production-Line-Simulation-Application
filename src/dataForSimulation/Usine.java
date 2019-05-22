@@ -1,6 +1,7 @@
 package dataForSimulation;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -38,5 +39,34 @@ public abstract class Usine{
 	public String getType() {
 		return this.type;
 	}
+
+	public Icone getCurrentIcone() {
+		return currentIcone;
+	}
+
+	public void setCurrentIcone(Icone currentIcone) {
+		this.currentIcone = currentIcone;
+	}
 	
+	public Icone getIconeByType(String type)
+	{
+		if(type.equals("vide"))
+		{
+			return this.icones.get(0);
+		}
+		else if(type.equals("un-tiers"))
+		{
+			return this.icones.get(1);
+		}
+		else if(type.equals("deux-tiers"))
+		{
+			return this.icones.get(2);
+		}
+		else if(type.equals("plein"))
+		{
+			return this.icones.get(3);
+		}
+		return null;
+	}
+
 }

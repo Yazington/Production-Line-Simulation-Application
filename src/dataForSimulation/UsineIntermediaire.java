@@ -19,6 +19,7 @@ public class UsineIntermediaire extends Usine{
 		this.entree = entree;
 		this.sortie = sortie;
 		this.intervalProduction = intervalProduction;
+		this.currentIcone = this.getIconeByType("vide");
 	}
 
 	@Override

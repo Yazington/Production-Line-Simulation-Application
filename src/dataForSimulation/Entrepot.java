@@ -17,6 +17,7 @@ public class Entrepot extends Usine implements IObservable{
 		this.type = type;
 		this.icones = icones;
 		this.entree = entree;
+		this.currentIcone = this.getIconeByType("vide");
 	}
 
 	@Override

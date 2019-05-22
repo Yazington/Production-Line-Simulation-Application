@@ -11,11 +11,13 @@ public class Environnement extends SwingWorker<Object, String>{
 	
 	@Override
 	protected Object doInBackground() throws Exception {
-		while(actif) {
-			Thread.sleep(DELAI);
+		while(actif) 
+		{
+			Thread.sleep(1);
 			/**
 			 * C'est ici que vous aurez a faire la gestion de la notion de tour.
 			 */
+			firePropertyChange("change images", null, "images changed");
 			firePropertyChange("Create products", null, "Products created");
 		}
 		return null;
