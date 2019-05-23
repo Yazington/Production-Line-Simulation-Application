@@ -35,6 +35,7 @@ public class Network {
 	public void execute()
 	{
 		if(this.usinesAreLoaded == false) return;
+		
 		// Get the usineMatieres
 		var usinesMatiere = new LinkedList<Usine>();
 		for(int i = 0; i< this.usines.size();i++)
@@ -44,23 +45,16 @@ public class Network {
 			{
 				usinesMatiere.add(this.usines.get(i));
 			}
-			else if (usine.getType().equals("usine-matiere") && usine.getIconeByType("vide") == usine.getCurrentIcone())
-			{
-				usinesMatiere.add(this.usines.get(i));
-			}
+
 				
 		}
 		
 		// For each UsineMatiere, create new components, give their position and speed 
 		for(int i = 0; i< usinesMatiere.size(); i++)
 		{
-//			try {
-//				wait(100);
-//			} catch (InterruptedException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
+			
 			var produit = usinesMatiere.get(i).faitProduit();
+			
 			int[] position2 = null;
 			for(int j = 0; j < this.chemins.size(); j++)
 			{

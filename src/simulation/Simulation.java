@@ -8,6 +8,7 @@ public class Simulation {
 	public static void main(String[] args) {
 		Environnement environnement = new Environnement();
 		FenetrePrincipale fenetre = new FenetrePrincipale();
+		synchronized(fenetre) {};
 
 		environnement.addPropertyChangeListener(fenetre);
 		environnement.execute();

@@ -41,19 +41,20 @@ public class FenetrePrincipale extends JFrame implements PropertyChangeListener 
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		
-		
+
 		if (evt.getPropertyName().equals("creating products")) {
 			if(this.panneau.getNetwork()!=null)
 			{
 				this.panneau.getNetwork().execute();
+				this.panneau.paintProducts();
 				System.out.println(evt.getNewValue());
-//				this.panneau.paintComponent(this.panneau.getGraphics());
-				repaint();
+				this.panneau.paintComponent(this.panneau.getGraphics());
+//				repaint();
 			}
 				
 		}
-		else if (evt.getPropertyName().equals("painting"))
+		
+		if (evt.getPropertyName().equals("painting"))
 		{
 			if(this.panneau.getNetwork()!= null) 
 			{
