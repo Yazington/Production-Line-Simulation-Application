@@ -448,4 +448,17 @@ public class Network {
 	public void setUsinesAreLoaded(boolean usinesAreLoaded) {
 		this.usinesAreLoaded = usinesAreLoaded;
 	}
+
+	public void changeUsine(Usine usineToChange) {
+		for(int i = 0; i< this.usines.size();i++ )
+		{
+			Usine usine = this.usines.get(i);
+			if(usine.getId() == usineToChange.getId())
+			{
+				this.usines.remove(i);
+				this.usines.add(usineToChange);
+			}
+		}
+		
+	}
 }

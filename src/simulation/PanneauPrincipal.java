@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.Timer;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -38,7 +39,7 @@ public class PanneauPrincipal extends JPanel implements PropertyChangeListener, 
 	private List<Point> produitsVitesses;
 	private List<Point> movingPoints;
 	private int incrementNumber;
-	private boolean initialIsPainted;
+	private Timer timer;
 
 	private boolean usinesAreFull;
 
@@ -46,11 +47,11 @@ public class PanneauPrincipal extends JPanel implements PropertyChangeListener, 
 	public PanneauPrincipal(MenuFenetre menuFenetre) {
 		super();
 		this.menuFenetre = menuFenetre;
-		this.initialIsPainted = false;
 		this.produitsImages = new ArrayList<Image>();
 		this.produitsPositions = new ArrayList<Point>();
 		this.produitsVitesses = new ArrayList<Point>();
 		this.movingPoints = new ArrayList<Point>();
+		this.timer = new Timer(true);
 	}
 
 //	@Override
@@ -81,7 +82,6 @@ public class PanneauPrincipal extends JPanel implements PropertyChangeListener, 
 					Point point2 = this.cheminsPoints2.get(i);
 					g.drawLine(point1.x, point1.y, point2.x, point2.y);
 					this.reseau.setUsinesAreLoaded(true);
-					this.initialIsPainted = true;
 				}
 			}
 //		}
@@ -92,37 +92,33 @@ public class PanneauPrincipal extends JPanel implements PropertyChangeListener, 
 		{
 			for(int i = 0; i< this.usinesPositions.size();i++)
 			{
-				g.drawImage(this.usinesImages.get(i), this.usinesPositions.get(i).x, this.usinesPositions.get(i).y, null);
+				g.drawImage(this.usinesImages.get(i), this.usinesPositions.get(i).x-16, this.usinesPositions.get(i).y-16, null);
 			}
 			
 		}
 		
-//		if(this.movingPoints!=null)
-//			for(int i = 0; i < this.movingPoints.size();i++)
-//			{
-//				try {
-//					this.movingPoints.get(i).translate(this.produitsVitesses.get(i).x, this.produitsVitesses.get(i).y);
-//				}
-//				catch(Exception e) {
-//					System.err.println("--moving items--");
-//				}
-//				
-//			}
+		if(this.movingPoints!=null)
+			for(int i = 0; i < this.movingPoints.size();i++)
+			{
+				try {
+					this.movingPoints.get(i).translate(this.produitsVitesses.get(i).x, this.produitsVitesses.get(i).y);
+				}
+				catch(Exception e) {
+					System.err.println("--moving items--");
+				}
+				
+			}
 		
-//		// dessine les produits
-//		if(this.produitsImages!=null && this.usinesAreFull)
-//		{
-//			for(int i = 0; i<this.movingPoints.size();i++)
-//			{
-//				g.drawImage(this.produitsImages.get(i), this.movingPoints.get(i).x, this.movingPoints.get(i).y, null);
-//				
-//			}
-//		}
-			
-		
-		
-		
-		
+		// dessine les produits
+		if(this.produitsImages!=null && this.usinesAreFull)
+		{
+			for(int i = 0; i<this.movingPoints.size();i++)
+			{
+				g.drawImage(this.produitsImages.get(i), this.movingPoints.get(i).x, this.movingPoints.get(i).y, null);
+				
+			}
+		}
+
 	}
 
 	
@@ -130,11 +126,12 @@ public class PanneauPrincipal extends JPanel implements PropertyChangeListener, 
 	{
 		//Dessiner produits si ils existent
 		List<ProductionItem> produits = this.reseau.getProductionItems();
+		this.loopIterator++;
 		if(produits == null) return;
 		
 		changeIcones(produits);
 		
-		if(this.usinesAreFull && this.incrementNumber == 2)
+		if(this.loopIterator == 100)
 		{
 			this.reseau.execute();
 			this.usinesAreFull = false;
@@ -150,10 +147,37 @@ public class PanneauPrincipal extends JPanel implements PropertyChangeListener, 
 		for(int i = 0 ; i<this.reseau.getUsines().size(); i++)
 		{
 			Usine usine = this.reseau.getUsines().get(i);
-			if(usine.getType().equals("usine-matiere")) uIC.changeImageByProductionUsine(usine);
+			if(usine.getType().equals("usine-matiere")) uIC.changeImageByProductionUsine(usine, this.loopIterator);
+			try 
+			{
+				paintUsines(this.reseau.getUsines());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
+//		int additionalItems = 0;
+//		for(ProductionItem item: this.reseau.getProductionItems())
+//		{
+//			int[] position = item.getPosition();
+//			Point point = new Point(position[0]-16,position[1]-16);
+//			this.produitsPositions.add(point);
+//			try 
+//			{
+//				this.produitsImages.add(ImageIO.read(new File(item.getImagePath())));
+//			} 
+//			catch (Exception e) 
+//			{
+//				e.printStackTrace();
+//			}
+//			Point vitesse = item.getVitesse();
+//			this.produitsVitesses.add(vitesse);
+//			additionalItems++;
+//		}
 		
-		
+		if(this.loopIterator == 100)
+		{
+			this.loopIterator = 0;
+		}
 	}
 	
 	

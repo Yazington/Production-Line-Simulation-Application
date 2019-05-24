@@ -56,15 +56,15 @@ public abstract class Usine{
 		}
 		else if(type.equals("un-tiers"))
 		{
-			return this.images.get(0);
+			return this.images.get(1);
 		}
 		else if(type.equals("deux-tiers"))
 		{
-			return this.images.get(0);
+			return this.images.get(2);
 		}
 		else if(type.equals("plein"))
 		{
-			return this.images.get(0);
+			return this.images.get(3);
 		}
 		return null;
 	}
