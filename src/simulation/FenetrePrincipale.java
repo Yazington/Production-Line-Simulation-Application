@@ -45,26 +45,22 @@ public class FenetrePrincipale extends JFrame implements PropertyChangeListener 
 		if (evt.getPropertyName().equals("creating products")) {
 			if(this.panneau.getNetwork()!=null)
 			{
-				this.panneau.getNetwork().execute();
+//				this.panneau.getNetwork().execute();
 				this.panneau.paintProducts();
 				System.out.println(evt.getNewValue());
-				this.panneau.paintComponent(this.panneau.getGraphics());
+//				this.panneau.paintComponent(this.panneau.getGraphics());
 //				repaint();
 			}
 				
 		}
-		
-		if (evt.getPropertyName().equals("painting"))
-		{
-			if(this.panneau.getNetwork()!= null) 
-			{
-				this.panneau.paintProducts();
-				System.out.println(evt.getNewValue());
-//				this.panneau.paintComponent(this.panneau.getGraphics());
-				
-			}
-				
-		}
+//		if(evt.getPropertyName().equals("move"))
+//		{
+//			this.panneau.moveObjects();
+//		}
+	}
+
+	public PanneauPrincipal getPanneau() {
+		return panneau;
 	}
 	
 }

@@ -30,7 +30,7 @@ public class UsineMatiere extends Usine implements IObserver{
 	}
 	
 	@Override
-	public synchronized ProductionItem faitProduit() {
+	public ProductionItem faitProduit() {
 		this.setCurrentIcone(this.getIconeByType("vide"));
 		return new Metal(this.sortie);
 	}

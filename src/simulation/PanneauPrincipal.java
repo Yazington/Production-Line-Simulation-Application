@@ -18,7 +18,7 @@ import dataForSimulation.*;
 import xmlUtility.*;
 import observerPattern.IObserver;
 
-public class PanneauPrincipal extends JPanel implements IObserver {
+public class PanneauPrincipal extends JPanel implements PropertyChangeListener, IObserver {
 
 	private static final long serialVersionUID = 1L;
 
@@ -38,11 +38,19 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 	private List<Point> produitsVitesses;
 	private List<Point> movingPoints;
 	private int incrementNumber;
+	private boolean initialIsPainted;
+
+	private boolean usinesAreFull;
 
 
 	public PanneauPrincipal(MenuFenetre menuFenetre) {
 		super();
 		this.menuFenetre = menuFenetre;
+		this.initialIsPainted = false;
+		this.produitsImages = new ArrayList<Image>();
+		this.produitsPositions = new ArrayList<Point>();
+		this.produitsVitesses = new ArrayList<Point>();
+		this.movingPoints = new ArrayList<Point>();
 	}
 
 //	@Override
@@ -55,41 +63,42 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 //	}
 	
 	@Override
-	public synchronized void paintComponent(Graphics g)
+	public void paintComponent(Graphics g)
 	{
-		this.setDoubleBuffered(true);
-		Graphics2D g2d = (Graphics2D) g;
+//		this.setDoubleBuffered(true);
+//		this.getGraphics().dispose();
+//		Graphics2D g2d = (Graphics2D) g;
 //		super.paintComponent(g2d);
 		
-		// dessine les chemins
-		if(this.cheminsPoints1 != null)
+		if(!this.initialIsPainted)
 		{
-			for(int i = 0; i< this.cheminsPoints1.size();i++)
+			// dessine les chemins
+			if(this.cheminsPoints1 != null)
 			{
-				var point1 = this.cheminsPoints1.get(i);
-				var point2 = this.cheminsPoints2.get(i);
-				g2d.drawLine(point1.x, point1.y, point2.x, point2.y);
+				for(int i = 0; i< this.cheminsPoints1.size();i++)
+				{
+					var point1 = this.cheminsPoints1.get(i);
+					var point2 = this.cheminsPoints2.get(i);
+					g.drawLine(point1.x, point1.y, point2.x, point2.y);
+					this.reseau.setUsinesAreLoaded(true);
+					this.initialIsPainted = true;
+				}
 			}
 		}
+		
+
 		// dessine les usines
 		if(this.usinesPositions != null && this.usinesImages != null)
 		{
 			for(int i = 0; i< this.usinesPositions.size();i++)
 			{
-				g2d.drawImage(this.usinesImages.get(i), this.usinesPositions.get(i).x, this.usinesPositions.get(i).y, null);
+				g.drawImage(this.usinesImages.get(i), this.usinesPositions.get(i).x, this.usinesPositions.get(i).y, null);
 			}
-			this.reseau.setUsinesAreLoaded(true);
+			
 		}
 		
-		if(this.produitsImages!=null)
-			for(int i = 0; i<this.produitsImages.size();i++)
-			{
-				g2d.drawImage(this.produitsImages.get(i), this.movingPoints.get(i).x, this.movingPoints.get(i).y, null);
-			}
-		
-		// dessine les produits
 		if(this.movingPoints!=null)
-			for(int i = 0; i < this.produitsVitesses.size();i++)
+			for(int i = 0; i < this.movingPoints.size();i++)
 			{
 				try {
 					this.movingPoints.get(i).translate(this.produitsVitesses.get(i).x, this.produitsVitesses.get(i).y);
@@ -99,13 +108,23 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 				}
 				
 			}
+		
+		// dessine les produits
+		if(this.produitsImages!=null && this.usinesAreFull)
+		{
+			for(int i = 0; i<this.movingPoints.size();i++)
+			{
+				g.drawImage(this.produitsImages.get(i), this.movingPoints.get(i).x, this.movingPoints.get(i).y, null);
+				
+			}
+		}
+			
+		
+		
+		
+		
 	}
-	
-	@Override
-	public void update(Graphics g)
-	{
-		paintComponent(g);
-	}
+
 	
 	public void paintProducts()
 	{
@@ -113,150 +132,200 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 		var produits = this.reseau.getProductionItems();
 		if(produits == null) return;
 		
-		// get usines matieres
-		var usinesMatiere = this.reseau.getUsines()
-										.stream()
-										.filter(u -> u.getType().equals("usine-matiere"))
-										.collect(Collectors.toList());
+		changeIcones(produits);
 		
-		//Pour les usines matieres en meme temps
-		for(int i = 0; i < usinesMatiere.size();i++)
+		if(this.usinesAreFull && this.incrementNumber == 2)
 		{
-			var usineMatiere = (UsineMatiere) usinesMatiere.get(i);
-			var increment = usineMatiere.getIntervalProduction()/3;
-			
-			if(this.incrementNumber == 0)
-			{
-				synchronized(this) 
-				{
-					try 
-					{
-						wait(increment);
-						usineMatiere.setCurrentIcone(usineMatiere.getIconeByType("un-tiers"));
-						var image = ImageIO.read(new File(usineMatiere.getCurrentIcone().getPath()));
-						for(int j = 0; j< this.reseau.getUsines().size();j++)
-						{
-							if(this.reseau.getUsines().get(j).getType().equals("usine-matiere"))
-								this.usinesImages.set(j, image);
-								
-						}
-						this.incrementNumber = 1;
-					}
-					catch(InterruptedException e)
-					{
-						e.printStackTrace();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-				return;
-			}
-			
-			if(this.incrementNumber == 1)
-			{
-				synchronized(this) 
-				{
-					try 
-					{
-						wait(increment);
-						usineMatiere.setCurrentIcone(usineMatiere.getIconeByType("deux-tiers"));
-						var image = ImageIO.read(new File(usineMatiere.getCurrentIcone().getPath()));
-						for(int j = 0; j< this.reseau.getUsines().size();j++)
-						{
-							if(this.reseau.getUsines().get(j).getType().equals("usine-matiere"))
-								this.usinesImages.set(j, image);
-								
-						}
-						this.incrementNumber = 2;
-					}
-					catch(InterruptedException e)
-					{
-						e.printStackTrace();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-				return;
-			}
-			
-			if(this.incrementNumber == 2)
-			{
-				synchronized(this) 
-				{
-					try 
-					{
-						wait(increment);
-						usineMatiere.setCurrentIcone(usineMatiere.getIconeByType("plein"));
-						var image = ImageIO.read(new File(usineMatiere.getCurrentIcone().getPath()));
-						for(int j = 0; j< this.reseau.getUsines().size();j++)
-						{
-							if(this.reseau.getUsines().get(j).getType().equals("usine-matiere"))
-								this.usinesImages.set(j, image);
-								
-						}
-						wait(increment);
-					}
-					catch(InterruptedException e)
-					{
-						e.printStackTrace();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-			}
-			
-		}
-		
-		if(this.incrementNumber == 2)
-		{
-			List<Point> produitsPositions = new ArrayList<Point>();
-			List<Image> produitsImages = new ArrayList<Image>();
-			List<Point> produitsVitesses = new ArrayList<Point>();
-			for(var item: produits)
-			{
-				var position = item.getPosition();
-				Point point = new Point(position[0]-16,position[1]-16);
-				produitsPositions.add(point);
-				try 
-				{
-					produitsImages.add(ImageIO.read(new File(item.getImagePath())));
-				} 
-				catch (Exception e) 
-				{
-					e.printStackTrace();
-				}
-				var vitesse = item.getVitesse();
-				produitsVitesses.add(vitesse);
-			}
-			this.produitsPositions = produitsPositions;
-			this.produitsImages = produitsImages;
-			this.produitsVitesses = produitsVitesses;
-			
-			
-			List<Point> produitsPoints = new LinkedList<Point>();
-			if(this.produitsPositions != null && this.produitsImages != null)
-			{
-				for(int i = 0; i< this.produitsPositions.size();i++)
-				{
-					Point pointProduit = new Point(this.produitsPositions.get(i).x,this.produitsPositions.get(i).y);
-//					this.getGraphics().drawImage(this.produitsImages.get(i), pointProduit.x, pointProduit.y, null);	
-					produitsPoints.add(pointProduit);
-					if(this.movingPoints==null)
-					{
-						this.movingPoints = new ArrayList<Point>();
-					}
-					this.movingPoints.add(pointProduit);
-				}
-				this.incrementNumber = 0;
-				
-			}	
+			this.reseau.execute();
+			this.usinesAreFull = false;
+			this.incrementNumber = 3;
 		}
 		
 	}
 	
+	private void changeIcones(List<ProductionItem> produits) {
+		// get usines matieres
+				var usinesMatiere = this.reseau.getUsines()
+												.stream()
+												.filter(u -> u.getType().equals("usine-matiere"))
+												.collect(Collectors.toList());
+				
+				//Pour les usines matieres en meme temps
+				for(int i = 0; i < usinesMatiere.size();i++)
+				{
+					var usineMatiere = (UsineMatiere) usinesMatiere.get(i);
+					var increment = usineMatiere.getIntervalProduction()/3;
+					
+					if(this.incrementNumber == 0)
+					{
+						synchronized(this) 
+						{
+							try 
+							{
+								wait(increment);
+								usineMatiere.setCurrentIcone(usineMatiere.getIconeByType("un-tiers"));
+								var image = ImageIO.read(new File(usineMatiere.getCurrentIcone().getPath()));
+								for(int j = 0; j< this.reseau.getUsines().size();j++)
+								{
+									if(this.reseau.getUsines().get(j).getType().equals("usine-matiere"))
+										this.usinesImages.set(j, image);
+										
+								}
+								this.usinesAreFull = false;
+								this.incrementNumber = 1;
+							}
+							catch(InterruptedException e)
+							{
+								e.printStackTrace();
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+						paintComponent(this.getGraphics());
+						return;
+					}
+					
+					if(this.incrementNumber == 1)
+					{
+						synchronized(this) 
+						{
+							try 
+							{
+								wait(increment);
+								usineMatiere.setCurrentIcone(usineMatiere.getIconeByType("deux-tiers"));
+								var image = ImageIO.read(new File(usineMatiere.getCurrentIcone().getPath()));
+								for(int j = 0; j< this.reseau.getUsines().size();j++)
+								{
+									if(this.reseau.getUsines().get(j).getType().equals("usine-matiere"))
+										this.usinesImages.set(j, image);
+										
+								}
+								this.usinesAreFull = false;
+								this.incrementNumber = 2;
+							}
+							catch(InterruptedException e)
+							{
+								e.printStackTrace();
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+						paintComponent(this.getGraphics());
+						return;
+					}
+					
+					
+					if(this.incrementNumber == 3)
+					{
+						synchronized(this) 
+						{
+							try 
+							{
+								wait(increment);
+								usineMatiere.setCurrentIcone(usineMatiere.getIconeByType("vide"));
+								var image = ImageIO.read(new File(usineMatiere.getCurrentIcone().getPath()));
+								for(int j = 0; j< this.reseau.getUsines().size();j++)
+								{
+									if(this.reseau.getUsines().get(j).getType().equals("usine-matiere"))
+										this.usinesImages.set(j, image);
+										
+								}
+								this.usinesAreFull = false;
+							}
+							catch(InterruptedException e)
+							{
+								e.printStackTrace();
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+						
+					}
+					
+					if(this.incrementNumber == 2)
+					{
+						synchronized(this) 
+						{
+							try 
+							{
+								wait(increment);
+								usineMatiere.setCurrentIcone(usineMatiere.getIconeByType("plein"));
+								var image = ImageIO.read(new File(usineMatiere.getCurrentIcone().getPath()));
+								for(int j = 0; j< this.reseau.getUsines().size();j++)
+								{
+									if(this.reseau.getUsines().get(j).getType().equals("usine-matiere"))
+										this.usinesImages.set(j, image);
+										
+								}
+								this.usinesAreFull = true;
+								
+							}
+							catch(InterruptedException e)
+							{
+								e.printStackTrace();
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+						paintComponent(this.getGraphics());
+						
+					}
+					
+					
+				}
+				
+				if(this.incrementNumber == 3)
+				{
+
+					int additionalItems = 0;
+					for(var item: this.reseau.getProductionItems())
+					{
+						var position = item.getPosition();
+						Point point = new Point(position[0]-16,position[1]-16);
+						this.produitsPositions.add(point);
+						try 
+						{
+							this.produitsImages.add(ImageIO.read(new File(item.getImagePath())));
+						} 
+						catch (Exception e) 
+						{
+							e.printStackTrace();
+						}
+						var vitesse = item.getVitesse();
+						this.produitsVitesses.add(vitesse);
+						additionalItems++;
+					}
+					
+					
+					
+					
+					List<Point> produitsPoints = new LinkedList<Point>();
+					if(this.produitsPositions != null && this.produitsImages != null && this.produitsPositions.size() != this.movingPoints.size())
+					{
+						for(int i = 0; i< additionalItems;i++)
+						{
+							Point pointProduit = new Point(this.produitsPositions.get(i).x,this.produitsPositions.get(i).y);
+//							this.getGraphics().drawImage(this.produitsImages.get(i), pointProduit.x, pointProduit.y, null);	
+							produitsPoints.add(pointProduit);
+							if(this.movingPoints==null)
+							{
+								this.movingPoints = new ArrayList<Point>();
+							}
+							this.movingPoints.add(pointProduit);
+						}
+						this.usinesAreFull = true;
+						paintComponent(this.getGraphics());
+						this.incrementNumber = 0;
+						
+					}	
+				}
+		
+	}
+
 	private void paintUsines(List<Usine> usines) throws IOException
 	{
 		//Dessiner usines si elles existent
@@ -340,6 +409,30 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		
+	}
+
+	public void moveObjects() {
+		if(this.movingPoints!=null)
+			for(int i = 0; i < this.produitsVitesses.size();i++)
+			{
+				try {
+					this.movingPoints.get(i).translate(this.produitsVitesses.get(i).x, this.produitsVitesses.get(i).y);
+				}
+				catch(Exception e) {
+					System.err.println("--moving items--");
+				}
+				
+			}
+		
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		if(evt.getPropertyName().equals("move"))
+		{
+			paintComponent(this.getGraphics());
 		}
 		
 	}

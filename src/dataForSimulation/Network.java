@@ -32,7 +32,7 @@ public class Network {
 		this.usinesAreLoaded = false;
 	}
 	
-	public void execute()
+	public void execute() 
 	{
 		if(this.usinesAreLoaded == false) return;
 		
@@ -73,25 +73,25 @@ public class Network {
 			int xTranslate;
 			if(usinesMatiere.get(i).getPosition()[0] < position2[0]) 
 			{
-				xTranslate = 2;
+				xTranslate = 1;
 			}
 			else if (usinesMatiere.get(i).getPosition()[0]>position2[0])
 			{
-				xTranslate = -2;
+				xTranslate = -1;
 			}
 			else
 			{
-				xTranslate = 0;
+				xTranslate = 1;
 			}
 			
 			int yTranslate;
 			if(usinesMatiere.get(i).getPosition()[1] < position2[1]) 
 			{
-				yTranslate = 2;
+				yTranslate = 1;
 			}
 			else if (usinesMatiere.get(i).getPosition()[1]>position2[1])
 			{
-				yTranslate = -2;
+				yTranslate = -1;
 			}
 			else
 			{
@@ -100,10 +100,8 @@ public class Network {
 			produit.setPosition(usinesMatiere.get(i).getPosition());
 			produit.setVitesse(new Point(xTranslate, yTranslate));
 			this.productionItems.add(produit);
+			
 		}
-		
-		
-		
 	}
 	
 	public List<Usine> createInstances(List<String> metadonneesD, List<String> simulationD) {
@@ -412,6 +410,4 @@ public class Network {
 	public void setUsinesAreLoaded(boolean usinesAreLoaded) {
 		this.usinesAreLoaded = usinesAreLoaded;
 	}
-
-	
 }

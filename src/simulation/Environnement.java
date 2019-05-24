@@ -15,6 +15,7 @@ public class Environnement extends SwingWorker<Object, String>{
 			 * C'est ici que vous aurez a faire la gestion de la notion de tour.
 			 */
 			firePropertyChange("creating products", null, "products created");
+			firePropertyChange("move",null, "moving products");
 			
 		}
 		return null;

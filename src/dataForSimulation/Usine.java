@@ -8,7 +8,7 @@ import javax.swing.JLabel;
 
 import observerPattern.IObserver;
 
-public abstract class Usine{
+public abstract class Usine extends JLabel{
 
 	/**
 	 * 
