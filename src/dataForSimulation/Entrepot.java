@@ -1,5 +1,6 @@
 package dataForSimulation;
 
+import java.awt.Image;
 import java.util.List;
 
 import observerPattern.IObservable;
@@ -9,15 +10,15 @@ public class Entrepot extends Usine implements IObservable{
 	
 	private List<ProductionItem> entree;
 	
-	public Entrepot(int id,int[] position , String type, List<Icone> icones, List<ProductionItem> entree)
+	public Entrepot(int id,int[] position , String type, List<Image> images, List<ProductionItem> entree)
 	{
 
 		this.id = id;
 		this.position = position;
 		this.type = type;
-		this.icones = icones;
+		this.images = images;
 		this.entree = entree;
-		this.currentIcone = this.getIconeByType("vide");
+		this.currentImage = this.getImageByType("vide");
 	}
 
 	@Override

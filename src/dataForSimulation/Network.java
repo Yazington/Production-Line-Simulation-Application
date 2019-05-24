@@ -1,13 +1,18 @@
 package dataForSimulation;
 
+import java.awt.Image;
 import java.awt.Point;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+
+import javax.imageio.ImageIO;
 
 import dataForSimulation.UsineIntermediaires.UsineAile;
 import dataForSimulation.UsineIntermediaires.UsineAssemblage;
@@ -37,11 +42,11 @@ public class Network {
 		if(this.usinesAreLoaded == false) return;
 		
 		// Get the usineMatieres
-		var usinesMatiere = new LinkedList<Usine>();
+		List<Usine> usinesMatiere = new LinkedList<Usine>();
 		for(int i = 0; i< this.usines.size();i++)
 		{
-			var usine = this.usines.get(i);
-			if(usine.getType().equals("usine-matiere") && usine.getIconeByType("plein") == usine.getCurrentIcone())
+			Usine usine = this.usines.get(i);
+			if(usine.getType().equals("usine-matiere") && usine.getImageByType("plein") == usine.getCurrentImage())
 			{
 				usinesMatiere.add(this.usines.get(i));
 			}
@@ -53,16 +58,16 @@ public class Network {
 		for(int i = 0; i< usinesMatiere.size(); i++)
 		{
 			
-			var produit = usinesMatiere.get(i).faitProduit();
+			ProductionItem produit = usinesMatiere.get(i).faitProduit();
 			
 			int[] position2 = null;
 			for(int j = 0; j < this.chemins.size(); j++)
 			{
-				var currentIndex = j;
+				int currentIndex = j;
 				if(this.chemins.get(j).getDe() == usinesMatiere.get(i).getId())
 				{
 					
-					var usine2 = this.usines.stream()
+					Usine usine2 = this.usines.stream()
 											.filter(u -> u.getId() == this.chemins.get(currentIndex).getVers())
 											.findFirst().get();
 
@@ -149,72 +154,72 @@ public class Network {
 			
 			if (parameters.get(1).equals("usine-matiere"))
 			{
-				var extremeValues = getExtremeIndexesValues(metadonneesD.indexOf("type:" + parameters.get(1)), indexesMeta);
+				int[] extremeValues = getExtremeIndexesValues(metadonneesD.indexOf("type:" + parameters.get(1)), indexesMeta);
 				int[] position = { Integer.parseInt(parameters.get(2)), Integer.parseInt(parameters.get(3)) };
-				List<Icone> icones = getUsinesIcones(metadonneesD, parameters.get(1));
-				var sortieAndInterval = getSortieIntervalEntree(metadonneesD, extremeValues[0], extremeValues[1]);
+				List<Image> images = getUsinesImages(metadonneesD, parameters.get(1));
+				String[] sortieAndInterval = getSortieIntervalEntree(metadonneesD, extremeValues[0], extremeValues[1]);
 				
-				Usine usineMatiere = new UsineMatiere(Integer.parseInt(parameters.get(0)), position, parameters.get(1), icones, 
+				Usine usineMatiere = new UsineMatiere(Integer.parseInt(parameters.get(0)), position, parameters.get(1), images, 
 													  sortieAndInterval[0], Integer.parseInt(sortieAndInterval[1]));
-				usineMatiere.setCurrentIcone(usineMatiere.getIconeByType("vide"));
+				usineMatiere.setCurrentImage(usineMatiere.getImageByType("vide"));
 				usines.add(usineMatiere);
 			}
 			else if(parameters.get(1).equals("usine-aile"))
 			{
 
-				var extremeValues = getExtremeIndexesValues(metadonneesD.indexOf("type:" + parameters.get(1)), indexesMeta);
+				int[] extremeValues = getExtremeIndexesValues(metadonneesD.indexOf("type:" + parameters.get(1)), indexesMeta);
 				int[] position = { Integer.parseInt(parameters.get(2)), Integer.parseInt(parameters.get(3)) };
-				List<Icone> icones = getUsinesIcones(metadonneesD, parameters.get(1));
-				var sortieIntervalEntree = getSortieIntervalEntree(metadonneesD, extremeValues[0], extremeValues[1]);
+				List<Image> images = getUsinesImages(metadonneesD, parameters.get(1));
+				String[] sortieIntervalEntree = getSortieIntervalEntree(metadonneesD, extremeValues[0], extremeValues[1]);
 				ProductionItem entree = new ProductionItem(sortieIntervalEntree[3], Integer.parseInt(sortieIntervalEntree[2]));
 				List<ProductionItem> entrees = new LinkedList<ProductionItem>();
 				entrees.add(entree);
 				
-				Usine usineAile = new UsineAile(Integer.parseInt(parameters.get(0)), position, parameters.get(1), icones,
+				Usine usineAile = new UsineAile(Integer.parseInt(parameters.get(0)), position, parameters.get(1), images,
 												sortieIntervalEntree[0], entrees, Integer.parseInt(sortieIntervalEntree[2]));
 				usines.add(usineAile);
 			}
 			else if(parameters.get(1).equals("usine-assemblage"))
 			{
-				var extremeValues = getExtremeIndexesValues(metadonneesD.indexOf("type:" + parameters.get(1)), indexesMeta);
+				int[]  extremeValues = getExtremeIndexesValues(metadonneesD.indexOf("type:" + parameters.get(1)), indexesMeta);
 				int[] position = { Integer.parseInt(parameters.get(2)), Integer.parseInt(parameters.get(3)) };
-				List<Icone> icones = getUsinesIcones(metadonneesD, parameters.get(1));
-				var sortieIntervalEntree = getSortieIntervalEntree(metadonneesD, extremeValues[0], extremeValues[1]);
+				List<Image> images = getUsinesImages(metadonneesD, parameters.get(1));
+				String[] sortieIntervalEntree = getSortieIntervalEntree(metadonneesD, extremeValues[0], extremeValues[1]);
 				ProductionItem entree = new ProductionItem(sortieIntervalEntree[3], Integer.parseInt(sortieIntervalEntree[2]));
 				ProductionItem entree2 = new ProductionItem(sortieIntervalEntree[5], Integer.parseInt(sortieIntervalEntree[4]));
 				List<ProductionItem> entrees = new LinkedList<ProductionItem>();
 				entrees.add(entree);
 				entrees.add(entree2);
 				
-				Usine usineAssemblage = new UsineAssemblage(Integer.parseInt(parameters.get(0)), position, parameters.get(1), icones,
+				Usine usineAssemblage = new UsineAssemblage(Integer.parseInt(parameters.get(0)), position, parameters.get(1), images,
 															sortieIntervalEntree[0], entrees, Integer.parseInt(sortieIntervalEntree[2]));
 				usines.add(usineAssemblage);
 			}
 			else if(parameters.get(1).equals("usine-moteur"))
 			{
-				var extremeValues = getExtremeIndexesValues(metadonneesD.indexOf("type:" + parameters.get(1)), indexesMeta);
+				int[] extremeValues = getExtremeIndexesValues(metadonneesD.indexOf("type:" + parameters.get(1)), indexesMeta);
 				int[] position = { Integer.parseInt(parameters.get(2)), Integer.parseInt(parameters.get(3)) };
-				List<Icone> icones = getUsinesIcones(metadonneesD, parameters.get(1));
-				var sortieIntervalEntree = getSortieIntervalEntree(metadonneesD, extremeValues[0], extremeValues[1]);
+				List<Image> images = getUsinesImages(metadonneesD, parameters.get(1));
+				String[] sortieIntervalEntree = getSortieIntervalEntree(metadonneesD, extremeValues[0], extremeValues[1]);
 				ProductionItem entree = new ProductionItem(sortieIntervalEntree[3], Integer.parseInt(sortieIntervalEntree[2]));
 				List<ProductionItem> entrees = new LinkedList<ProductionItem>();
 				entrees.add(entree);
 				
-				Usine usineMoteur = new UsineMoteur(Integer.parseInt(parameters.get(0)), position, parameters.get(1), icones,
+				Usine usineMoteur = new UsineMoteur(Integer.parseInt(parameters.get(0)), position, parameters.get(1), images,
 													sortieIntervalEntree[0], entrees, Integer.parseInt(sortieIntervalEntree[2]));
 				usines.add(usineMoteur);
 			}
 			else if(parameters.get(1).equals("entrepot"))
 			{
-				var extremeValues = getExtremeIndexesValues(metadonneesD.indexOf("type:" + parameters.get(1)), indexesMeta);
+				int[] extremeValues = getExtremeIndexesValues(metadonneesD.indexOf("type:" + parameters.get(1)), indexesMeta);
 				int[] position = { Integer.parseInt(parameters.get(2)), Integer.parseInt(parameters.get(3)) };
-				List<Icone> icones = getUsinesIcones(metadonneesD, parameters.get(1));
-				var sortieIntervalEntree = getSortieIntervalEntree(metadonneesD, extremeValues[0], extremeValues[1]);
+				List<Image> images = getUsinesImages(metadonneesD, parameters.get(1));
+				String[] sortieIntervalEntree = getSortieIntervalEntree(metadonneesD, extremeValues[0], extremeValues[1]);
 				ProductionItem entree = new ProductionItem(sortieIntervalEntree[3], Integer.parseInt(sortieIntervalEntree[2]));
 				List<ProductionItem> entrees = new LinkedList<ProductionItem>();
 				entrees.add(entree);
 				
-				Usine entrepot = new Entrepot(Integer.parseInt(parameters.get(0)), position, parameters.get(1), icones, entrees);
+				Usine entrepot = new Entrepot(Integer.parseInt(parameters.get(0)), position, parameters.get(1), images, entrees);
 				usines.add(entrepot);
 				
 			}
@@ -299,14 +304,14 @@ public class Network {
 	 * @param type
 	 * @return
 	 */
-	private List<Icone> getUsinesIcones(List<String> metadonneesD, String type)
+	private List<Image> getUsinesImages(List<String> metadonneesD, String type)
 	{
-		List<Icone> icones = new LinkedList<Icone>();
+		List<Image> images = new LinkedList<Image>();
 		
 		// chercher les indexes des usines dans le tableau
 		for(int k = 0; k< metadonneesD.size(); k++)
 		{
-			var metaType = metadonneesD.get(k).replace("type:", "");
+			String metaType = metadonneesD.get(k).replace("type:", "");
 			if(metaType.equals(type))
 			{
 				for(int i = k+1; i< k + 11 ; i++ )
@@ -326,15 +331,48 @@ public class Network {
 								path = metadonneesD.get(j).replace("path:","");
 							}
 						}
-						Icone icone = new Icone(iconeType, path);
-						icones.add(icone);
+
+						Image image = null;
+						try 
+						{
+							image = ImageIO.read(new File(path));
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						images.add(image);
 					}
 					
 				}
 			}
 		}
-		return icones;
+		return images;
 	}
+	
+	public List<Image> getCurrentImages()
+	{
+		List<Image> usinesImages = new ArrayList<Image>();
+		for(int i = 0; i < this.usines.size(); i++)
+		{
+			Usine usine = this.usines.get(i);
+			Image img = usine.getCurrentImage();
+			usinesImages.add(img);
+		}
+		return usinesImages;	
+	}
+	
+	public List<Point> getCurrentPositions()
+	{
+		List<Point> positions = new ArrayList<Point>();
+		for(int i = 0; i < this.usines.size(); i++)
+		{
+			Usine usine = this.usines.get(i);
+			Point position = new Point(usine.getPosition()[0], usine.getPosition()[1]);
+			positions.add(position);
+		}
+		return positions;	
+	}
+	
 	
 	/**
 	 * prend les parametre sortie, interval et entrees des metadonnees

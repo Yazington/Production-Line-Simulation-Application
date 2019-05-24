@@ -1,5 +1,6 @@
 package dataForSimulation;
 
+import java.awt.Image;
 import java.util.List;
 
 public class UsineIntermediaire extends Usine{
@@ -10,16 +11,16 @@ public class UsineIntermediaire extends Usine{
 	protected ProductionItem produitFinal;
 	
 	
-	public UsineIntermediaire(int id, int[] position, String type, List<Icone> icones, String sortie, List<ProductionItem> entree, int intervalProduction)
+	public UsineIntermediaire(int id, int[] position, String type, List<Image> images, String sortie, List<ProductionItem> entree, int intervalProduction)
 	{
 		this.id = id;
 		this.position = position;
 		this.type = type;
-		this.icones = icones;
+		this.images = images;
 		this.entree = entree;
 		this.sortie = sortie;
 		this.intervalProduction = intervalProduction;
-		this.currentIcone = this.getIconeByType("vide");
+		this.currentImage = this.getImageByType("vide");
 	}
 
 	@Override

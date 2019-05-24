@@ -55,11 +55,11 @@ public class XMLSourcer {
 		element.normalize();
 		
 		//Récupération d'un ensemble d'éléments ayant le même nom
-		var firstChildren = element.getChildNodes();
+		NodeList firstChildren = element.getChildNodes();
 		List<String> simList = new LinkedList<String>();
 		List<String> metaList = new LinkedList<String>();
 				
-		for(var child: asList(firstChildren))
+		for(Node child: asList(firstChildren))
 		{
 			if(child.getNodeType() == Node.ELEMENT_NODE && child.getNodeName() == "simulation")
 			{
@@ -70,6 +70,8 @@ public class XMLSourcer {
 				parse(doc, metaList, (Element) child);
 			}
 		}
+		System.out.println(simList);
+		System.out.println(metaList);
 		this.simList = simList;
 		this.metaList = metaList;
 		
@@ -89,7 +91,7 @@ public class XMLSourcer {
                 	list.add(n.getNodeName());
                 	for(int j=0; j < n.getAttributes().getLength(); j++ )
                 	{
-                		var nodeName = n.getAttributes().item(j).getNodeName();
+                		String nodeName = n.getAttributes().item(j).getNodeName();
                 		list.add(nodeName + ":"+ n.getAttributes().item(j).getTextContent());
                 	}
                 	
@@ -104,7 +106,7 @@ public class XMLSourcer {
             }
             
         }
-        System.out.println(list);
+        
 	}
 
 	public List<String> getSimList() {

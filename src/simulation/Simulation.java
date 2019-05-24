@@ -9,10 +9,10 @@ public class Simulation {
 		Environnement environnement = new Environnement();
 		FenetrePrincipale fenetre = new FenetrePrincipale();
 		synchronized(fenetre) {};
-		synchronized(fenetre.getPanneau()) {};
+//		synchronized(fenetre.getPanneau()) {};
 
 		environnement.addPropertyChangeListener(fenetre);
-		environnement.addPropertyChangeListener(fenetre.getPanneau());
+//		environnement.addPropertyChangeListener(fenetre.getPanneau());
 		environnement.execute();
 		
 	}

@@ -49,7 +49,7 @@ public class FenetrePrincipale extends JFrame implements PropertyChangeListener 
 				this.panneau.paintProducts();
 				System.out.println(evt.getNewValue());
 //				this.panneau.paintComponent(this.panneau.getGraphics());
-//				repaint();
+				repaint();
 			}
 				
 		}

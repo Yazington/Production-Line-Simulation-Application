@@ -10,7 +10,7 @@ public class Environnement extends SwingWorker<Object, String>{
 	protected Object doInBackground() throws Exception {
 		while(actif) 
 		{
-			Thread.sleep(DELAI);
+			Thread.sleep(1);
 			/**
 			 * C'est ici que vous aurez a faire la gestion de la notion de tour.
 			 */
