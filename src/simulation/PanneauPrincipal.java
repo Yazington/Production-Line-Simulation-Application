@@ -6,12 +6,7 @@ import java.awt.Image;
 import java.awt.Point;
 import java.io.IOException;
 import java.util.*;
-
-import java.util.Timer;
-
-
 import javax.swing.JPanel;
-
 import dataForSimulation.*;
 import xmlUtility.*;
 import observerPattern.IObserver;
@@ -34,8 +29,9 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 	private List<Image> produitsImages;
 	private List<Point> produitsVitesses;
 	private List<Point> movingPoints;
-	private long startTime;
-	private long difference = System.currentTimeMillis() - startTime;
+	private long currentTime;
+
+	private boolean usinesAreFull;
 	
 
 
@@ -45,6 +41,7 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 		this.produitsImages = new ArrayList<Image>();
 		this.produitsVitesses = new ArrayList<Point>();
 		this.movingPoints = new ArrayList<Point>();
+		this.usinesAreFull = false;
 		
 	}
 
@@ -60,7 +57,7 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 	@Override
 	public void paintComponent(Graphics g)
 	{
-		this.getGraphics().dispose();
+//		this.getGraphics().dispose();
 		Graphics2D g2d = (Graphics2D) g;
 		super.paintComponent(g2d);
 		
@@ -85,7 +82,7 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 			
 		}
 		
-		if(this.movingPoints!=null && this.difference>=100)
+		if(this.movingPoints!=null)
 		{
 			for(int i = 0; i < this.movingPoints.size();i++)
 			{
@@ -101,13 +98,14 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 			
 		
 		// dessine les produits
-		if(this.produitsImages!=null && this.difference>=100)
+		if(this.produitsImages!=null )
 		{
 			for(int i = 0; i<this.movingPoints.size();i++)
 			{
 				g.drawImage(this.produitsImages.get(i), this.movingPoints.get(i).x, this.movingPoints.get(i).y, null);
 				
 			}
+			this.usinesAreFull = false;
 		}
 
 	}
@@ -202,42 +200,31 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 			}
 	}
 	
-	public void changeImages(long startTime) {
-		this.startTime = startTime;
-		updateUsinesMatiereImages(startTime);
+	public void changeImages(long current) {
+		this.currentTime = current;
+		updateUsinesMatiereImages();
 		updateOtherUsinesImages();
 		
 	}
-	
-
-
-//	private void updateUsinesMatiereImages() {
-//		for(int i = 0; i< this.reseau.getUsines().size(); i++)
-//		{
-//			if(this.reseau.getUsines().get(i).getType().equals("usine-matiere"))
-//				this.reseau.getUsines().get(i).updateCurrentImage();
-//		}
-//		this.usinesImages = this.reseau.getCurrentImages();
-//		
-//		
-//	}
 	
 	/**
 	 * Change les images des usines matieres
 	 * @param startTime
 	 */
-	private void updateUsinesMatiereImages(long startTime) 
+	private void updateUsinesMatiereImages() 
 	{
 		for (int i = 0; i < this.reseau.getUsines().size(); i++)
 		{
 			Usine usine = this.reseau.getUsines().get(i);
 			if(usine.getType().equals("usine-matiere"))
 			{
-					usine.updateCurrentImage(startTime);
-					
+					usine.updateCurrentImage(this.currentTime);
+					if(usine.getCurrentImage().equals(usine.getImageByType("plein")))
+					{
+						this.usinesAreFull = true;
+					}
 			}
 		}
-//		repaint();
 	}
 
 	/**
@@ -267,7 +254,7 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 			Usine usine = this.reseau.getUsines().get(i);
 			if(usine.getType().equals("usine-matiere"))
 			{
-				if(usine.getCurrentImage().equals(usine.getImageByType("plein")))
+				if(this.currentTime == 100 && this.usinesAreFull == true)
 				{
 					ProductionItem produit = usine.faitProduit();
 					int[] position2 = null;
@@ -288,25 +275,25 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 					int xTranslate;
 					if(usine.getPosition()[0] < position2[0]) 
 					{
-						xTranslate = 5;
+						xTranslate = 10;
 					}
 					else if (usine.getPosition()[0]>position2[0])
 					{
-						xTranslate = -5;
+						xTranslate = -10;
 					}
 					else
 					{
-						xTranslate = 5;
+						xTranslate = 10;
 					}
 					
 					int yTranslate;
 					if(usine.getPosition()[1] < position2[1]) 
 					{
-						yTranslate = 5;
+						yTranslate = 10;
 					}
 					else if (usine.getPosition()[1]>position2[1])
 					{
-						yTranslate = -5;
+						yTranslate = -10;
 					}
 					else
 					{

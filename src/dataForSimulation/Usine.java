@@ -71,20 +71,21 @@ public abstract class Usine{
 		return null;
 	}
 
-	public void updateCurrentImage(long startTime) {
-		if(System.currentTimeMillis() - startTime >=0 && System.currentTimeMillis() - startTime <33)
+	public void updateCurrentImage(long currentTime) {
+		
+		if( currentTime  >=0 && currentTime  < 33)
 		{
 			this.setCurrentImage(this.getImageByType("un-tiers"));
 		}
-		else if (System.currentTimeMillis() - startTime >=33 && System.currentTimeMillis() - startTime <66)
+		else if (currentTime  >=33 && currentTime  <66)
 		{
 			this.setCurrentImage(this.getImageByType("deux-tiers"));
 		}
-		else if (System.currentTimeMillis() - startTime >=66 && System.currentTimeMillis() - startTime <100)
+		else if (currentTime  >=66 && currentTime  <100)
 		{
 			this.setCurrentImage(this.getImageByType("plein"));
 		}
-		else if (System.currentTimeMillis() - startTime == 100)
+		else if ( currentTime  == 100)
 		{
 			this.setCurrentImage(this.getImageByType("vide"));
 		}
