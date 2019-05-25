@@ -6,6 +6,7 @@ import dataForSimulation.*;
 
 public class UsineMoteur extends UsineIntermediaire {
 
+	private int currentMetalQty;
 	
 	public UsineMoteur(int id, int[] position, String type, List<Image> images, String sortie, List<ProductionItem> entree, int intervalProduction)
 	{
@@ -13,8 +14,16 @@ public class UsineMoteur extends UsineIntermediaire {
 	}
 	
 	@Override
-	public ProductionItem faitProduit() {
-		return new ProductionItem(this.sortie);
+	public ProductionItem faitProduit()
+	{
+		for(int i = 0; i< this.entree.size(); i++)
+		{
+			if(this.currentMetalQty == this.entree.get(i).getNeededQuantity())
+			{
+				return new ProductionItem(this.sortie);
+			}
+		}
+		return null;
 	}
 	
 	

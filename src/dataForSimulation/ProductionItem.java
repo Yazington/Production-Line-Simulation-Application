@@ -7,12 +7,8 @@ import javax.swing.JLabel;
 
 public class ProductionItem{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	protected String type;
-	protected int quantite;
+	protected int neededQuantity;
 	protected Point vitesse;
 	protected int[] position;
 	protected String imagePath;
@@ -22,10 +18,10 @@ public class ProductionItem{
 		this.type = type;
 	}
 	
-	public ProductionItem(String type, int quantite)
+	public ProductionItem(String type, int neededQuantity)
 	{
 		this.type = type;
-		this.quantite = quantite;
+		this.neededQuantity = neededQuantity;
 	}
 
 	public void setVitesse(Point vitesse) {
@@ -46,6 +42,23 @@ public class ProductionItem{
 
 	public String getImagePath() {
 		return imagePath;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public int getNeededQuantity() {
+		return neededQuantity;
+	}
+
+	public void setNeededQuantity(int neededQuantity) {
+		this.neededQuantity = neededQuantity;
 	}	
+	
 	
 }

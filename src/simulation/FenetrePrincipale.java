@@ -42,21 +42,46 @@ public class FenetrePrincipale extends JFrame implements PropertyChangeListener 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 
-		if (evt.getPropertyName().equals("creating products")) {
+		if (evt.getPropertyName().equals("change images")) {
 			if(this.panneau.getNetwork()!=null)
 			{
-//				this.panneau.getNetwork().execute();
-				this.panneau.paintProducts();
+				this.panneau.changeImages();
 				System.out.println(evt.getNewValue());
-//				this.panneau.paintComponent(this.panneau.getGraphics());
 				repaint();
-			}
-				
+			}	
 		}
-//		if(evt.getPropertyName().equals("move"))
-//		{
-//			this.panneau.moveObjects();
-//		}
+		else if (evt.getPropertyName().equals("create products")) {
+			if(this.panneau.getNetwork()!=null)
+			{
+				this.panneau.createProducts();
+				System.out.println(evt.getNewValue());
+				repaint();
+			}		
+		}
+		else if (evt.getPropertyName().equals("move objects")) {
+			if(this.panneau.getNetwork()!=null)
+			{
+				this.panneau.moveObjects();
+				System.out.println(evt.getNewValue());
+				repaint();
+			}		
+		}
+		else if (evt.getPropertyName().equals("handle collisions")) {
+			if(this.panneau.getNetwork()!=null)
+			{
+				this.panneau.updateAfterCollisions();
+				System.out.println(evt.getNewValue());
+				repaint();
+			}		
+		}
+		else if (evt.getPropertyName().equals("paint everything")) {
+			if(this.panneau.getNetwork()!=null)
+			{
+				
+				System.out.println(evt.getNewValue());
+				repaint();
+			}		
+		}
 	}
 
 	public PanneauPrincipal getPanneau() {

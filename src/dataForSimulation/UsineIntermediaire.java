@@ -31,6 +31,7 @@ public class UsineIntermediaire extends Usine{
 	public ProductionItem getProduitFinal() {
 		return produitFinal;
 	}
+
 	
 	
 }

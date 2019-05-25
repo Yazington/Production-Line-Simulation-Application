@@ -3,11 +3,11 @@ package dataForSimulation;
 public class Entree {
 
 	private String type;
-	private int quantite;
+	private int neededQuantity;
 	
-	public Entree(String type, int quantite)
+	public Entree(String type, int neededQuantity)
 	{
 		this.type = type;
-		this.quantite = quantite;
+		this.neededQuantity = neededQuantity;
 	}
 }

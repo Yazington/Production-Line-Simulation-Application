@@ -19,7 +19,7 @@ import dataForSimulation.*;
 import xmlUtility.*;
 import observerPattern.IObserver;
 
-public class PanneauPrincipal extends JPanel implements PropertyChangeListener, IObserver {
+public class PanneauPrincipal extends JPanel implements IObserver {
 
 	private static final long serialVersionUID = 1L;
 
@@ -40,6 +40,8 @@ public class PanneauPrincipal extends JPanel implements PropertyChangeListener, 
 	private List<Point> movingPoints;
 	private int incrementNumber;
 	private Timer timer;
+	private TimerTask task;
+	private long startTime;
 
 	private boolean usinesAreFull;
 
@@ -51,7 +53,8 @@ public class PanneauPrincipal extends JPanel implements PropertyChangeListener, 
 		this.produitsPositions = new ArrayList<Point>();
 		this.produitsVitesses = new ArrayList<Point>();
 		this.movingPoints = new ArrayList<Point>();
-		this.timer = new Timer(true);
+		this.timer = new Timer();
+		
 	}
 
 //	@Override
@@ -67,7 +70,7 @@ public class PanneauPrincipal extends JPanel implements PropertyChangeListener, 
 	public void paintComponent(Graphics g)
 	{
 //		this.setDoubleBuffered(true);
-//		this.getGraphics().dispose();
+		this.getGraphics().dispose();
 		Graphics2D g2d = (Graphics2D) g;
 		super.paintComponent(g2d);
 		
@@ -126,35 +129,22 @@ public class PanneauPrincipal extends JPanel implements PropertyChangeListener, 
 	{
 		//Dessiner produits si ils existent
 		List<ProductionItem> produits = this.reseau.getProductionItems();
-		this.loopIterator++;
 		if(produits == null) return;
 		
 		changeIcones(produits);
 		
-		if(this.loopIterator == 100)
-		{
+//		if()
+//		{
 			this.reseau.execute();
 			this.usinesAreFull = false;
 			this.incrementNumber = 3;
-		}
+//		}
 		
 	}
 	
 	private void changeIcones(List<ProductionItem> producionItem)
 	{
-		UsineImageChanger uIC = new UsineImageChanger();
 		
-		for(int i = 0 ; i<this.reseau.getUsines().size(); i++)
-		{
-			Usine usine = this.reseau.getUsines().get(i);
-			if(usine.getType().equals("usine-matiere")) uIC.changeImageByProductionUsine(usine, this.loopIterator);
-			try 
-			{
-				paintUsines(this.reseau.getUsines());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
 //		int additionalItems = 0;
 //		for(ProductionItem item: this.reseau.getProductionItems())
 //		{
@@ -173,196 +163,9 @@ public class PanneauPrincipal extends JPanel implements PropertyChangeListener, 
 //			this.produitsVitesses.add(vitesse);
 //			additionalItems++;
 //		}
-		
-		if(this.loopIterator == 100)
-		{
-			this.loopIterator = 0;
-		}
+
 	}
 	
-	
-//	private void changeIcones(List<ProductionItem> produits) {
-//		// get usines matieres
-//				List<Usine> usinesMatiere = this.reseau.getUsines()
-//												.stream()
-//												.filter(u -> u.getType().equals("usine-matiere"))
-//												.collect(Collectors.toList());
-//				
-//				//Pour les usines matieres en meme temps
-//				for(int i = 0; i < usinesMatiere.size();i++)
-//				{
-//					UsineMatiere usineMatiere = (UsineMatiere) usinesMatiere.get(i);
-//					int increment = usineMatiere.getIntervalProduction()/3;
-//					
-//					if(this.incrementNumber == 0)
-//					{
-//						synchronized(this) 
-//						{
-//							try 
-//							{
-//								wait(increment);
-//								usineMatiere.setCurrentIcone(usineMatiere.getIconeByType("un-tiers"));
-//								Image image = ImageIO.read(new File(usineMatiere.getCurrentIcone().getPath()));
-//								for(int j = 0; j< this.reseau.getUsines().size();j++)
-//								{
-//									if(this.reseau.getUsines().get(j).getType().equals("usine-matiere"))
-//										this.usinesImages.set(j, image);
-//										
-//								}
-//								this.usinesAreFull = false;
-//								this.incrementNumber = 1;
-//							}
-//							catch(InterruptedException e)
-//							{
-//								e.printStackTrace();
-//							} catch (IOException e) {
-//								// TODO Auto-generated catch block
-//								e.printStackTrace();
-//							}
-//						}
-////						paintComponent(this.getGraphics());
-//						return;
-//					}
-//					
-//					if(this.incrementNumber == 1)
-//					{
-//						synchronized(this) 
-//						{
-//							try 
-//							{
-//								wait(increment);
-//								usineMatiere.setCurrentIcone(usineMatiere.getIconeByType("deux-tiers"));
-//								Image image = ImageIO.read(new File(usineMatiere.getCurrentIcone().getPath()));
-//								for(int j = 0; j< this.reseau.getUsines().size();j++)
-//								{
-//									if(this.reseau.getUsines().get(j).getType().equals("usine-matiere"))
-//										this.usinesImages.set(j, image);
-//										
-//								}
-//								this.usinesAreFull = false;
-//								this.incrementNumber = 2;
-//							}
-//							catch(InterruptedException e)
-//							{
-//								e.printStackTrace();
-//							} catch (IOException e) {
-//								// TODO Auto-generated catch block
-//								e.printStackTrace();
-//							}
-//						}
-////						paintComponent(this.getGraphics());
-//						return;
-//					}
-//					
-//					
-//					if(this.incrementNumber == 3)
-//					{
-//						synchronized(this) 
-//						{
-//							try 
-//							{
-//								wait(increment);
-//								usineMatiere.setCurrentIcone(usineMatiere.getIconeByType("vide"));
-//								Image image = ImageIO.read(new File(usineMatiere.getCurrentIcone().getPath()));
-//								for(int j = 0; j< this.reseau.getUsines().size();j++)
-//								{
-//									if(this.reseau.getUsines().get(j).getType().equals("usine-matiere"))
-//										this.usinesImages.set(j, image);
-//										
-//								}
-//								this.usinesAreFull = false;
-//							}
-//							catch(InterruptedException e)
-//							{
-//								e.printStackTrace();
-//							} catch (IOException e) {
-//								// TODO Auto-generated catch block
-//								e.printStackTrace();
-//							}
-//						}
-//						
-//					}
-//					
-//					if(this.incrementNumber == 2)
-//					{
-//						synchronized(this) 
-//						{
-//							try 
-//							{
-//								wait(increment);
-//								usineMatiere.setCurrentIcone(usineMatiere.getIconeByType("plein"));
-//								Image image = ImageIO.read(new File(usineMatiere.getCurrentIcone().getPath()));
-//								for(int j = 0; j< this.reseau.getUsines().size();j++)
-//								{
-//									if(this.reseau.getUsines().get(j).getType().equals("usine-matiere"))
-//										this.usinesImages.set(j, image);
-//										
-//								}
-//								this.usinesAreFull = true;
-//								
-//							}
-//							catch(InterruptedException e)
-//							{
-//								e.printStackTrace();
-//							} catch (IOException e) {
-//								// TODO Auto-generated catch block
-//								e.printStackTrace();
-//							}
-//						}
-////						paintComponent(this.getGraphics());
-//						
-//					}
-//					
-//					
-//				}
-//				
-//				if(this.incrementNumber == 3)
-//				{
-//
-//					int additionalItems = 0;
-//					for(ProductionItem item: this.reseau.getProductionItems())
-//					{
-//						int[] position = item.getPosition();
-//						Point point = new Point(position[0]-16,position[1]-16);
-//						this.produitsPositions.add(point);
-//						try 
-//						{
-//							this.produitsImages.add(ImageIO.read(new File(item.getImagePath())));
-//						} 
-//						catch (Exception e) 
-//						{
-//							e.printStackTrace();
-//						}
-//						Point vitesse = item.getVitesse();
-//						this.produitsVitesses.add(vitesse);
-//						additionalItems++;
-//					}
-//					
-//					
-//					
-//					
-//					List<Point> produitsPoints = new LinkedList<Point>();
-//					if(this.produitsPositions != null && this.produitsImages != null && this.produitsPositions.size() != this.movingPoints.size())
-//					{
-//						for(int i = 0; i< additionalItems;i++)
-//						{
-//							Point pointProduit = new Point(this.produitsPositions.get(i).x,this.produitsPositions.get(i).y);
-////							this.getGraphics().drawImage(this.produitsImages.get(i), pointProduit.x, pointProduit.y, null);	
-//							produitsPoints.add(pointProduit);
-//							if(this.movingPoints==null)
-//							{
-//								this.movingPoints = new ArrayList<Point>();
-//							}
-//							this.movingPoints.add(pointProduit);
-//						}
-//						this.usinesAreFull = true;
-////						paintComponent(this.getGraphics());
-//						this.incrementNumber = 0;
-//						
-//					}	
-//				}
-//		
-//	}
 
 	private void paintUsines(List<Usine> usines) throws IOException
 	{
@@ -450,16 +253,51 @@ public class PanneauPrincipal extends JPanel implements PropertyChangeListener, 
 				}
 				
 			}
+	}
+	
+	public void changeImages() {
+		updateUsinesMatiereImages();
+		updateOtherUsinesImages();
+		
+	}
+	
+
+
+	private void updateUsinesMatiereImages() {
+		for(int i = 0; i< this.reseau.getUsines().size(); i++)
+		{
+			if(this.reseau.getUsines().get(i).getType().equals("usine-matiere"))
+				this.reseau.getUsines().get(i).updateCurrentImage();
+		}
+		this.usinesImages = this.reseau.getCurrentImages();
+		
 		
 	}
 
-	@Override
-	public void propertyChange(PropertyChangeEvent evt) {
-		if(evt.getPropertyName().equals("move"))
+	private void updateOtherUsinesImages() {
+		
+		for(int i = 0; i< this.reseau.getUsines().size(); i++)
 		{
-//			paintComponent(this.getGraphics());
+			if(!this.reseau.getUsines().get(i).getType().equals("usine-matiere"))
+			{
+				
+			}
+				
 		}
+		this.usinesImages = this.reseau.getCurrentImages();
 		
 	}
+	
+	public void createProducts()
+	{	
+		
+	}
+
+	public void updateAfterCollisions() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 
 }

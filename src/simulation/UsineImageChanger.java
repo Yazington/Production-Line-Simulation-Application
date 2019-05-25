@@ -8,7 +8,7 @@ import dataForSimulation.UsineMatiere;
 
 public class UsineImageChanger {
 
-	public UsineMatiere changeImageByProductionUsine(Usine usine, int loopIterator) {
+	public UsineMatiere changeImageByProductionUsine(Usine usine, long loopIterator) {
 		
 		UsineMatiere usineMatiere =(UsineMatiere) usine;
 		long increment = usineMatiere.getIntervalProduction()/3;
@@ -23,22 +23,24 @@ public class UsineImageChanger {
 //			e.printStackTrace();
 //		}
 		
-		if(loopIterator >= 0 && loopIterator < 33)
+		if(System.currentTimeMillis() - loopIterator >= 0  && System.currentTimeMillis() - loopIterator < 33)
 		{
 			usineMatiere.setCurrentImage(usineMatiere.getImageByType("vide"));
 		}
-		else if(loopIterator >= 33 && loopIterator < 66)
+		else if(System.currentTimeMillis() - loopIterator >= 33  && System.currentTimeMillis() - loopIterator < 66)
 		{
 			usineMatiere.setCurrentImage(usineMatiere.getImageByType("un-tiers"));
+			System.out.println("Bam");
 		}
-		else if(loopIterator >= 66 && loopIterator < 100)
+		else if(System.currentTimeMillis() - loopIterator >= 66  && System.currentTimeMillis() - loopIterator < 100)
 		{
 			usineMatiere.setCurrentImage(usineMatiere.getImageByType("deux-tiers"));
+			System.out.println("Bam");
 		}
 		else if(loopIterator == 100)
 		{
 			usineMatiere.setCurrentImage(usineMatiere.getImageByType("plein"));
-			
+			System.out.println("PAK");
 		}
 
 		return usineMatiere;

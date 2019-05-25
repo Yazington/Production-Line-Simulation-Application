@@ -4,6 +4,7 @@ import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 import javax.imageio.ImageIO;
@@ -11,6 +12,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 import observerPattern.IObserver;
+import simulation.Environnement;
 
 public abstract class Usine{
 
@@ -67,6 +69,25 @@ public abstract class Usine{
 			return this.images.get(3);
 		}
 		return null;
+	}
+
+	public void updateCurrentImage() {
+		if(this.currentImage.equals(this.getImageByType("vide")))
+		{
+			this.setCurrentImage(this.getImageByType("un-tiers"));
+		}
+		else if (this.currentImage.equals(this.getImageByType("un-tiers")))
+		{
+			this.setCurrentImage(this.getImageByType("deux-tiers"));
+		}
+		else if (this.currentImage.equals(this.getImageByType("deux-tiers")))
+		{
+			this.setCurrentImage(this.getImageByType("plein"));
+		}
+		else if (this.currentImage.equals(this.getImageByType("plein")))
+		{
+			this.setCurrentImage(this.getImageByType("vide"));
+		}
 	}
 
 	
