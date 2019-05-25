@@ -1,8 +1,11 @@
 package dataForSimulation;
 
+import java.awt.Image;
 import java.awt.Point;
+import java.io.File;
+import java.io.IOException;
 
-
+import javax.imageio.ImageIO;
 import javax.swing.JLabel;
 
 public class ProductionItem{
@@ -44,6 +47,16 @@ public class ProductionItem{
 		return imagePath;
 	}
 
+	public Image getImage() {
+		try {
+			return ImageIO.read(new File(this.imagePath));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	public String getType() {
 		return type;
 	}

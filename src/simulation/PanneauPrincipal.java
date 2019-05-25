@@ -4,15 +4,12 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.io.File;
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
+
 import java.util.Timer;
 
-import javax.imageio.ImageIO;
+
 import javax.swing.JPanel;
 
 import dataForSimulation.*;
@@ -24,9 +21,9 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 	private static final long serialVersionUID = 1L;
 
 	// Variables temporaires de la demonstration:
-	private Point position = new Point(0,0);
-	private Point vitesse = new Point(1,1);
-	private int taille = 32;
+//	private Point position = new Point(0,0);
+//	private Point vitesse = new Point(1,1);
+//	private int taille = 32;
 	private MenuFenetre menuFenetre;
 	private Network reseau; 
 	List<Point> cheminsPoints1;
@@ -34,26 +31,20 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 
 	private List<Point> usinesPositions;
 	private List<Image> usinesImages;
-	private List<Point> produitsPositions;
 	private List<Image> produitsImages;
 	private List<Point> produitsVitesses;
 	private List<Point> movingPoints;
-	private int incrementNumber;
-	private Timer timer;
-	private TimerTask task;
 	private long startTime;
-
-	private boolean usinesAreFull;
+	private long difference = System.currentTimeMillis() - startTime;
+	
 
 
 	public PanneauPrincipal(MenuFenetre menuFenetre) {
 		super();
 		this.menuFenetre = menuFenetre;
 		this.produitsImages = new ArrayList<Image>();
-		this.produitsPositions = new ArrayList<Point>();
 		this.produitsVitesses = new ArrayList<Point>();
 		this.movingPoints = new ArrayList<Point>();
-		this.timer = new Timer();
 		
 	}
 
@@ -69,26 +60,20 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 	@Override
 	public void paintComponent(Graphics g)
 	{
-//		this.setDoubleBuffered(true);
 		this.getGraphics().dispose();
 		Graphics2D g2d = (Graphics2D) g;
 		super.paintComponent(g2d);
 		
-//		if(!this.initialIsPainted)
-//		{
-			// dessine les chemins
-			if(this.cheminsPoints1 != null)
+		if(this.cheminsPoints1 != null)
+		{
+			for(int i = 0; i< this.cheminsPoints1.size();i++)
 			{
-				for(int i = 0; i< this.cheminsPoints1.size();i++)
-				{
-					Point point1 = this.cheminsPoints1.get(i);
-					Point point2 = this.cheminsPoints2.get(i);
-					g.drawLine(point1.x, point1.y, point2.x, point2.y);
-					this.reseau.setUsinesAreLoaded(true);
-				}
+				Point point1 = this.cheminsPoints1.get(i);
+				Point point2 = this.cheminsPoints2.get(i);
+				g.drawLine(point1.x, point1.y, point2.x, point2.y);
+				this.reseau.setUsinesAreLoaded(true);
 			}
-//		}
-		
+		}
 
 		// dessine les usines
 		if(this.usinesPositions != null && this.usinesImages != null)
@@ -100,7 +85,8 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 			
 		}
 		
-		if(this.movingPoints!=null)
+		if(this.movingPoints!=null && this.difference>=100)
+		{
 			for(int i = 0; i < this.movingPoints.size();i++)
 			{
 				try {
@@ -111,9 +97,11 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 				}
 				
 			}
+		}
+			
 		
 		// dessine les produits
-		if(this.produitsImages!=null && this.usinesAreFull)
+		if(this.produitsImages!=null && this.difference>=100)
 		{
 			for(int i = 0; i<this.movingPoints.size();i++)
 			{
@@ -121,48 +109,6 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 				
 			}
 		}
-
-	}
-
-	
-	public void paintProducts()
-	{
-		//Dessiner produits si ils existent
-		List<ProductionItem> produits = this.reseau.getProductionItems();
-		if(produits == null) return;
-		
-		changeIcones(produits);
-		
-//		if()
-//		{
-			this.reseau.execute();
-			this.usinesAreFull = false;
-			this.incrementNumber = 3;
-//		}
-		
-	}
-	
-	private void changeIcones(List<ProductionItem> producionItem)
-	{
-		
-//		int additionalItems = 0;
-//		for(ProductionItem item: this.reseau.getProductionItems())
-//		{
-//			int[] position = item.getPosition();
-//			Point point = new Point(position[0]-16,position[1]-16);
-//			this.produitsPositions.add(point);
-//			try 
-//			{
-//				this.produitsImages.add(ImageIO.read(new File(item.getImagePath())));
-//			} 
-//			catch (Exception e) 
-//			{
-//				e.printStackTrace();
-//			}
-//			Point vitesse = item.getVitesse();
-//			this.produitsVitesses.add(vitesse);
-//			additionalItems++;
-//		}
 
 	}
 	
@@ -177,6 +123,7 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 		this.usinesPositions = usinesPositions;
 		this.usinesImages = usinesImages;
 	}
+	
 	
 	private void paintChemins(Graphics g)
 	{
@@ -208,6 +155,7 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 		}
 	}
 	
+	
 	public List<Usine> createNetwork(XMLSourcer xmlInfo)
 	{
 		if(this.menuFenetre == null) throw new NullPointerException("pas de source xml");
@@ -223,19 +171,18 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 		return reseau;
 	}
 
+	
 	@Override
 	public void UpdateObserver() {
 		XMLSourcer xmlSourcer = this.menuFenetre.getXmlSourcer();
 		List<Usine> usines = createNetwork(xmlSourcer);
 		paintChemins(this.getGraphics());
-		paintComponent(this.getGraphics());
 		try 
 		{
 			paintUsines(usines);
 		}
 		catch (IOException e) 
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -255,25 +202,47 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 			}
 	}
 	
-	public void changeImages() {
-		updateUsinesMatiereImages();
+	public void changeImages(long startTime) {
+		this.startTime = startTime;
+		updateUsinesMatiereImages(startTime);
 		updateOtherUsinesImages();
 		
 	}
 	
 
 
-	private void updateUsinesMatiereImages() {
-		for(int i = 0; i< this.reseau.getUsines().size(); i++)
+//	private void updateUsinesMatiereImages() {
+//		for(int i = 0; i< this.reseau.getUsines().size(); i++)
+//		{
+//			if(this.reseau.getUsines().get(i).getType().equals("usine-matiere"))
+//				this.reseau.getUsines().get(i).updateCurrentImage();
+//		}
+//		this.usinesImages = this.reseau.getCurrentImages();
+//		
+//		
+//	}
+	
+	/**
+	 * Change les images des usines matieres
+	 * @param startTime
+	 */
+	private void updateUsinesMatiereImages(long startTime) 
+	{
+		for (int i = 0; i < this.reseau.getUsines().size(); i++)
 		{
-			if(this.reseau.getUsines().get(i).getType().equals("usine-matiere"))
-				this.reseau.getUsines().get(i).updateCurrentImage();
+			Usine usine = this.reseau.getUsines().get(i);
+			if(usine.getType().equals("usine-matiere"))
+			{
+					usine.updateCurrentImage(startTime);
+					
+			}
 		}
-		this.usinesImages = this.reseau.getCurrentImages();
-		
-		
+//		repaint();
 	}
 
+	/**
+	 * Changes les images des autres usines que les usines matieres
+	 */
 	private void updateOtherUsinesImages() {
 		
 		for(int i = 0; i< this.reseau.getUsines().size(); i++)
@@ -288,9 +257,80 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 		
 	}
 	
+	/**
+	 * creer les produits dependamment des entrees si on en a besoin
+	 */
 	public void createProducts()
 	{	
-		
+		for(int i = 0; i < this.reseau.getUsines().size();i ++)
+		{
+			Usine usine = this.reseau.getUsines().get(i);
+			if(usine.getType().equals("usine-matiere"))
+			{
+				if(usine.getCurrentImage().equals(usine.getImageByType("plein")))
+				{
+					ProductionItem produit = usine.faitProduit();
+					int[] position2 = null;
+					for(int j = 0; j < this.reseau.getChemins().size(); j++)
+					{
+						int currentIndex = j;
+						if(this.reseau.getChemins().get(j).getDe() == usine.getId())
+						{
+							
+							Usine usine2 = this.reseau.getUsines().stream()
+													.filter(u -> u.getId() == this.reseau.getChemins().get(currentIndex).getVers())
+													.findFirst().get();
+
+							position2 = usine2.getPosition();
+						}
+					}
+					
+					int xTranslate;
+					if(usine.getPosition()[0] < position2[0]) 
+					{
+						xTranslate = 5;
+					}
+					else if (usine.getPosition()[0]>position2[0])
+					{
+						xTranslate = -5;
+					}
+					else
+					{
+						xTranslate = 5;
+					}
+					
+					int yTranslate;
+					if(usine.getPosition()[1] < position2[1]) 
+					{
+						yTranslate = 5;
+					}
+					else if (usine.getPosition()[1]>position2[1])
+					{
+						yTranslate = -5;
+					}
+					else
+					{
+						yTranslate = 0;
+					}
+					produit.setPosition(usine.getPosition());
+					produit.setVitesse(new Point(xTranslate, yTranslate));
+					
+					this.produitsImages.add(produit.getImage());
+					if(produit.getImage() == null)
+						System.err.println("no product image");
+					
+					// Add initial point
+					this.movingPoints.add(new Point(usine.getPosition()[0] - 16,usine.getPosition()[1] - 16));
+
+					// Give them speed
+					this.produitsVitesses.add(produit.getVitesse());
+
+				}
+				
+			}
+			
+			
+		}
 	}
 
 	public void updateAfterCollisions() {
