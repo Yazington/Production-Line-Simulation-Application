@@ -72,10 +72,16 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 		{
 			for(int i = 0; i< this.cheminsPoints1.size();i++)
 			{
+				try {
 				Point point1 = this.cheminsPoints1.get(i);
 				Point point2 = this.cheminsPoints2.get(i);
 				g.drawLine(point1.x + 16, point1.y + 16, point2.x + 16 , point2.y + 16);
 				this.reseau.setUsinesAreLoaded(true);
+				}
+				catch(Exception e)
+				{
+					System.err.println("---------------------------CHEMINS ERROR---------------------------");
+				}
 			}
 		}
 
@@ -85,7 +91,13 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 		{
 			for(int i = 0; i< this.usinesPositions.size();i++)
 			{
+				try {
 				g.drawImage(this.usinesImages.get(i), this.usinesPositions.get(i).x, this.usinesPositions.get(i).y, null);
+				}
+				catch(Exception e)
+				{
+					System.err.println("-----------------usinesPositions and usines images-------------------------------");
+				}
 			}
 			
 		}
@@ -96,7 +108,13 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 		{
 			for(int i = 0; i<this.movingPoints.size();i++)
 			{
-				g.drawImage(this.produitsImages.get(i), this.movingPoints.get(i).x, this.movingPoints.get(i).y, null);
+				try {
+					g.drawImage(this.produitsImages.get(i), this.movingPoints.get(i).x, this.movingPoints.get(i).y, null);
+				}
+				catch(Exception e)
+				{
+					System.err.println("----------------- MOVING POINTS ERROR-------------------");
+				}
 				
 				
 			}
@@ -197,8 +215,14 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 	
 	public void changeImages(long current) {
 		this.currentTime = current;
-		updateUsinesMatiereImages();
-		updateOtherUsinesImages();
+		try {
+			updateUsinesMatiereImages();
+			updateOtherUsinesImages();
+		}
+		catch (Exception e)
+		{
+			System.err.println("-------CHANGING USINES IMAGES ERROR++++++++++++++++++++++++");
+		}
 		
 	}
 	
@@ -213,7 +237,13 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 			Usine usine = this.reseau.getUsines().get(i);
 			if(usine.getType().equals("usine-matiere"))
 			{
+				try {
 					usine.updateCurrentImage(this.currentTime);
+				}
+				catch(Exception e)
+				{
+					System.err.println("oooooooooooooooo UPDATING CURRENT IMAGE ERROR ooooooooooooooo");
+				}
 					if(usine.getCurrentImage().equals(usine.getImageByType("plein")))
 					{
 //						this.usinesAreFull = true;
@@ -235,7 +265,13 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 			{
 				if(!this.reseau.getUsines().get(i).getType().equals("usine-matiere"))
 				{
-					usine.updateCurrentImage(this.currentTime);
+					try {
+						usine.updateCurrentImage(this.currentTime);
+					}
+					catch(Exception e)
+					{
+						System.err.println("oooooooo   UPDATE other usines images  ooooooo");
+					}
 //					if(usine.getCurrentImage().equals(usine.getImageByType("plein")))
 //					{
 ////						this.usinesAreFull = true;
@@ -306,11 +342,15 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 						System.err.println("-no speed1-");
 						yTranslate = 0;
 					}
-					produit.setPosition(new Point(usine.getPosition().x, usine.getPosition().y));
-					produit.setVitesse(new Point(xTranslate, yTranslate));
-					
-					
-					this.reseau.addProductionItem((Metal)produit);
+					try {
+						produit.setPosition(new Point(usine.getPosition().x, usine.getPosition().y));
+						produit.setVitesse(new Point(xTranslate, yTranslate));
+						this.reseau.addProductionItem((Metal)produit);
+					}
+					catch (Exception e)
+					{
+						System.err.println("Error setting composant speed iiiiiiiiiiiiiiiiiiiiiiiii");
+					}
 				}
 				
 			}
@@ -336,7 +376,7 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 						}
 					}
 					
-					int xTranslate = 0;
+					int xTranslate;
 					if(usine.getPosition().x < position2.x) 
 					{
 						xTranslate = 10;
@@ -347,10 +387,11 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 					}
 					else
 					{
+						xTranslate = 0;
 						System.err.println("-no speed2-");
 					}
 					
-					int yTranslate = 0;
+					int yTranslate;
 					if(usine.getPosition().y < position2.y) 
 					{
 						yTranslate = 10;
@@ -361,13 +402,19 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 					}
 					else
 					{
+						yTranslate = 0;
 						System.err.println("-no speed2-");
 					}
-					produit.setPosition(new Point(usine.getPosition().x, usine.getPosition().y));
-					produit.setVitesse(new Point(xTranslate, yTranslate));
 					
-
-					this.reseau.addProductionItem((Aile)produit);
+					try {
+						produit.setPosition(new Point(usine.getPosition().x, usine.getPosition().y));
+						produit.setVitesse(new Point(xTranslate, yTranslate));
+						this.reseau.addProductionItem((Aile)produit);
+					}
+					catch (Exception e)
+					{
+						System.err.println("error setting componsant infos");
+					}
 				}
 			}
 			
@@ -412,13 +459,20 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 			{
 				Usine entrepot = entrepots.get(j);
 				// if metals collide with usines other than usines matieres
-				if(((Entrepot)entrepot).getPosition().distanceSq(movingPoint) <= 20 )
+				if(((Entrepot)entrepot).getPosition().distanceSq(movingPoint) <= 100 )
 				{
-					this.reseau.getProductionItems().remove(i);
-					this.produitsImages.remove(i);
-					this.produitsVitesses.remove(i);
-					this.reseau.removeProductionItem(i);
-					((Entrepot) entrepot).addOneEntree();
+					try {
+						this.produitsImages.remove(i);
+						this.produitsVitesses.remove(i);
+						this.reseau.removeProductionItem(i);
+						this.movingPoints.remove(i);
+						((Entrepot) entrepot).addOneEntree();
+					}
+					catch (Exception e)
+					{
+						System.err.println("Erro with entrepot components");
+					}
+					
 				}
 			}
 		}
@@ -443,14 +497,20 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 
 						Usine usineAssemblage = usinesAssemblage.get(j);
 						// if aile collides with usines other than usines usinesMatiere, usines Aile. usines moteur and entrepots
-						if(usineAssemblage.getPosition().distanceSq(movingPoint)<=10 && 
+						if(usineAssemblage.getPosition().distanceSq(movingPoint)<=100 && 
 						  usineAssemblage!= null)
 						{
-							this.reseau.getProductionItems().remove(i);
-							this.produitsImages.remove(i);
-							this.produitsVitesses.remove(i);
-							this.reseau.removeProductionItem(i);
-							((UsineAssemblage) usineAssemblage).addOneAile();
+							try {
+								this.produitsImages.remove(i);
+								this.produitsVitesses.remove(i);
+								this.reseau.removeProductionItem(i);
+								this.movingPoints.remove(i);
+								((UsineAssemblage) usineAssemblage).addOneAile();
+							}
+							catch (Exception e)
+							{
+								System.err.println("erro with usine assemblage");
+							}
 						}
 				}
 			}
@@ -463,11 +523,17 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 					if(usineAssemblage.getPosition().distanceSq(movingPoint)<=10 && 
 					  usineAssemblage!= null)
 					{
-						this.reseau.getProductionItems().remove(i);
-						this.produitsImages.remove(i);
-						this.produitsVitesses.remove(i);
-						this.reseau.removeProductionItem(i);
-						((UsineAssemblage) usineAssemblage).addOneMoteur();
+						try {
+							this.produitsImages.remove(i);
+							this.produitsVitesses.remove(i);
+							this.reseau.removeProductionItem(i);
+							this.movingPoints.remove(i);
+							((UsineAssemblage) usineAssemblage).addOneMoteur();
+						}
+						catch (Exception e)
+						{
+							System.err.println("error with usine assemblage");
+						}
 					}
 				}
 			}
@@ -491,13 +557,26 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 			{
 				Usine usineAM = usinesAM.get(j);
 				// if metals collide with usines other than usines matieres
-				if(usineAM.getPosition().distanceSq(movingPoint)<=200 && !movingItemType.equals("aile") && !movingItemType.equals("moteur") && movingPoint!= null)
+				if(usineAM.getPosition().distanceSq(movingPoint)<=100 && 
+				   !movingItemType.equals("aile") && 
+				   !movingItemType.equals("moteur") && 
+				   movingPoint!= null &&
+				   this.movingPoints!= null &&
+				   this.produitsImages!= null &&
+				   this.produitsVitesses!= null &&
+				   this.reseau.getProductionItems()!= null)
 				{
-					this.reseau.getProductionItems().remove(i);
-					this.produitsImages.remove(i);
-					this.produitsVitesses.remove(i);
-					this.reseau.removeProductionItem(i);
-					System.err.println("----------------------------------------------------------------");
+					try {
+						this.produitsImages.remove(i);
+						this.produitsVitesses.remove(i);
+						this.reseau.removeProductionItem(i);
+						this.movingPoints.remove(i);
+					}
+					catch(Exception e)
+					{
+						System.err.println("------------------------COLLISION ERROR AAMMM--------------------------");
+					}
+					
 					if(usineAM.getType().equals("usine-aile"))
 					{
 						((UsineAile) usineAM).addOneEntree();
@@ -512,21 +591,31 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 	}
 
 	public void fillPanelInformation() {
-		if(this.reseau.getProductionItems()!= null && this.movingPoints.size()< this.reseau.getProductionItems().size())
+		if(this.reseau.getProductionItems()!= null && 
+		   this.movingPoints.size()< this.reseau.getProductionItems().size())
 		{
 			List<Point> vitesses = new ArrayList<Point>();
 			List<Point> positions = new ArrayList<Point>();
 			List<Image> images = new ArrayList<Image>();
 			for(int i = 0; i < this.reseau.getProductionItems().size();i++)
 			{
-				ProductionItem productionItem = this.reseau.getProductionItems().get(i);
-				positions.add(productionItem.getPosition());
-				vitesses.add(productionItem.getVitesse());
-				images.add(productionItem.getImage());
+				try
+				{
+					ProductionItem productionItem = this.reseau.getProductionItems().get(i);
+					positions.add(productionItem.getPosition());
+					vitesses.add(productionItem.getVitesse());
+					images.add(productionItem.getImage());
+				}
+				catch (Exception e)
+				{
+					System.err.println("--------------------------ERROR----------------------------");
+				}
 			}
 			this.movingPoints = positions;
 			this.produitsVitesses = vitesses;
 			this.produitsImages = images;
+			if(this.movingPoints.size() != this.reseau.getProductionItems().size()) 
+				System.err.println("Size of moving points is different than production items size");
 		}
 		
 		
