@@ -37,77 +37,77 @@ public class Network {
 		this.usinesAreLoaded = false;
 	}
 	
-	public void execute() 
-	{
-		if(this.usinesAreLoaded == false) return;
-		
-		// Get the usineMatieres
-		List<Usine> usinesMatiere = new LinkedList<Usine>();
-		for(int i = 0; i< this.usines.size();i++)
-		{
-			Usine usine = this.usines.get(i);
-			if(usine.getType().equals("usine-matiere") && usine.getImageByType("plein") == usine.getCurrentImage())
-			{
-				usinesMatiere.add(this.usines.get(i));
-			}
-
-				
-		}
-		
-		// For each UsineMatiere, create new components, give their position and speed 
-		for(int i = 0; i< usinesMatiere.size(); i++)
-		{
-			
-			ProductionItem produit = usinesMatiere.get(i).faitProduit();
-			
-			int[] position2 = null;
-			for(int j = 0; j < this.chemins.size(); j++)
-			{
-				int currentIndex = j;
-				if(this.chemins.get(j).getDe() == usinesMatiere.get(i).getId())
-				{
-					
-					Usine usine2 = this.usines.stream()
-											.filter(u -> u.getId() == this.chemins.get(currentIndex).getVers())
-											.findFirst().get();
-
-					position2 = usine2.getPosition();
-				}
-			}
-			
-			int xTranslate;
-			if(usinesMatiere.get(i).getPosition()[0] < position2[0]) 
-			{
-				xTranslate = 1;
-			}
-			else if (usinesMatiere.get(i).getPosition()[0]>position2[0])
-			{
-				xTranslate = -1;
-			}
-			else
-			{
-				xTranslate = 1;
-			}
-			
-			int yTranslate;
-			if(usinesMatiere.get(i).getPosition()[1] < position2[1]) 
-			{
-				yTranslate = 1;
-			}
-			else if (usinesMatiere.get(i).getPosition()[1]>position2[1])
-			{
-				yTranslate = -1;
-			}
-			else
-			{
-				yTranslate = 0;
-			}
-			produit.setPosition(usinesMatiere.get(i).getPosition());
-			produit.setVitesse(new Point(xTranslate, yTranslate));
-			this.productionItems.add(produit);
-			
-		}
-	}
+//	public void execute() 
+//	{
+//		if(this.usinesAreLoaded == false) return;
+//		
+//		// Get the usineMatieres
+//		List<Usine> usinesMatiere = new LinkedList<Usine>();
+//		for(int i = 0; i< this.usines.size();i++)
+//		{
+//			Usine usine = this.usines.get(i);
+//			if(usine.getType().equals("usine-matiere") && usine.getImageByType("plein") == usine.getCurrentImage())
+//			{
+//				usinesMatiere.add(this.usines.get(i));
+//			}
+//
+//				
+//		}
+//		
+//		// For each UsineMatiere, create new components, give their position and speed 
+//		for(int i = 0; i< usinesMatiere.size(); i++)
+//		{
+//			
+//			ProductionItem produit = usinesMatiere.get(i).faitProduit();
+//			
+//			int[] position2 = null;
+//			for(int j = 0; j < this.chemins.size(); j++)
+//			{
+//				int currentIndex = j;
+//				if(this.chemins.get(j).getDe() == usinesMatiere.get(i).getId())
+//				{
+//					
+//					Usine usine2 = this.usines.stream()
+//											.filter(u -> u.getId() == this.chemins.get(currentIndex).getVers())
+//											.findFirst().get();
+//
+//					position2 = usine2.getPosition();
+//				}
+//			}
+//			
+//			int xTranslate;
+//			if(usinesMatiere.get(i).getPosition()[0] < position2[0]) 
+//			{
+//				xTranslate = 1;
+//			}
+//			else if (usinesMatiere.get(i).getPosition()[0]>position2[0])
+//			{
+//				xTranslate = -1;
+//			}
+//			else
+//			{
+//				xTranslate = 1;
+//			}
+//			
+//			int yTranslate;
+//			if(usinesMatiere.get(i).getPosition()[1] < position2[1]) 
+//			{
+//				yTranslate = 1;
+//			}
+//			else if (usinesMatiere.get(i).getPosition()[1]>position2[1])
+//			{
+//				yTranslate = -1;
+//			}
+//			else
+//			{
+//				yTranslate = 0;
+//			}
+//			produit.setPosition(usinesMatiere.get(i).getPosition());
+//			produit.setVitesse(new Point(xTranslate, yTranslate));
+//			this.productionItems.add(produit);
+//			
+//		}
+//	}
 	
 	public List<Usine> createInstances(List<String> metadonneesD, List<String> simulationD) {
 		// chercher les indexes des usines dans le tableau(sim)
@@ -155,7 +155,7 @@ public class Network {
 			if (parameters.get(1).equals("usine-matiere"))
 			{
 				int[] extremeValues = getExtremeIndexesValues(metadonneesD.indexOf("type:" + parameters.get(1)), indexesMeta);
-				int[] position = { Integer.parseInt(parameters.get(2)), Integer.parseInt(parameters.get(3)) };
+				Point position = new Point( Integer.parseInt(parameters.get(2)), Integer.parseInt(parameters.get(3)) );
 				List<Image> images = getUsinesImages(metadonneesD, parameters.get(1));
 				String[] sortieAndInterval = getSortieIntervalEntree(metadonneesD, extremeValues[0], extremeValues[1]);
 				
@@ -168,7 +168,7 @@ public class Network {
 			{
 
 				int[] extremeValues = getExtremeIndexesValues(metadonneesD.indexOf("type:" + parameters.get(1)), indexesMeta);
-				int[] position = { Integer.parseInt(parameters.get(2)), Integer.parseInt(parameters.get(3)) };
+				Point position = new Point( Integer.parseInt(parameters.get(2)), Integer.parseInt(parameters.get(3)) );
 				List<Image> images = getUsinesImages(metadonneesD, parameters.get(1));
 				String[] sortieIntervalEntree = getSortieIntervalEntree(metadonneesD, extremeValues[0], extremeValues[1]);
 				ProductionItem entree = new ProductionItem(sortieIntervalEntree[3], Integer.parseInt(sortieIntervalEntree[2]));
@@ -182,7 +182,7 @@ public class Network {
 			else if(parameters.get(1).equals("usine-assemblage"))
 			{
 				int[]  extremeValues = getExtremeIndexesValues(metadonneesD.indexOf("type:" + parameters.get(1)), indexesMeta);
-				int[] position = { Integer.parseInt(parameters.get(2)), Integer.parseInt(parameters.get(3)) };
+				Point position = new Point( Integer.parseInt(parameters.get(2)), Integer.parseInt(parameters.get(3)) );
 				List<Image> images = getUsinesImages(metadonneesD, parameters.get(1));
 				String[] sortieIntervalEntree = getSortieIntervalEntree(metadonneesD, extremeValues[0], extremeValues[1]);
 				ProductionItem entree = new ProductionItem(sortieIntervalEntree[3], Integer.parseInt(sortieIntervalEntree[2]));
@@ -198,7 +198,7 @@ public class Network {
 			else if(parameters.get(1).equals("usine-moteur"))
 			{
 				int[] extremeValues = getExtremeIndexesValues(metadonneesD.indexOf("type:" + parameters.get(1)), indexesMeta);
-				int[] position = { Integer.parseInt(parameters.get(2)), Integer.parseInt(parameters.get(3)) };
+				Point position = new Point( Integer.parseInt(parameters.get(2)), Integer.parseInt(parameters.get(3)) );
 				List<Image> images = getUsinesImages(metadonneesD, parameters.get(1));
 				String[] sortieIntervalEntree = getSortieIntervalEntree(metadonneesD, extremeValues[0], extremeValues[1]);
 				ProductionItem entree = new ProductionItem(sortieIntervalEntree[3], Integer.parseInt(sortieIntervalEntree[2]));
@@ -212,7 +212,7 @@ public class Network {
 			else if(parameters.get(1).equals("entrepot"))
 			{
 				int[] extremeValues = getExtremeIndexesValues(metadonneesD.indexOf("type:" + parameters.get(1)), indexesMeta);
-				int[] position = { Integer.parseInt(parameters.get(2)), Integer.parseInt(parameters.get(3)) };
+				Point position = new Point( Integer.parseInt(parameters.get(2)), Integer.parseInt(parameters.get(3)) );
 				List<Image> images = getUsinesImages(metadonneesD, parameters.get(1));
 				String[] sortieIntervalEntree = getSortieIntervalEntree(metadonneesD, extremeValues[0], extremeValues[1]);
 				ProductionItem entree = new ProductionItem(sortieIntervalEntree[3], Integer.parseInt(sortieIntervalEntree[2]));
@@ -367,7 +367,7 @@ public class Network {
 		for(int i = 0; i < this.usines.size(); i++)
 		{
 			Usine usine = this.usines.get(i);
-			Point position = new Point(usine.getPosition()[0], usine.getPosition()[1]);
+			Point position = usine.getPosition();
 			positions.add(position);
 		}
 		return positions;	
@@ -415,6 +415,17 @@ public class Network {
 		}
 		return results;
 	}
+	
+	public void addProductionItem(ProductionItem item)
+	{
+		this.productionItems.add(item);
+	}
+	
+	public void removeProductionItem(int index)
+	{
+		this.productionItems.remove(index);
+	}
+	
 
 	public List<String> getMetadonneesD() {
 		return metadonneesD;

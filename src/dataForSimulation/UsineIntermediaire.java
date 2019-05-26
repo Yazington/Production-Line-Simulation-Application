@@ -1,6 +1,7 @@
 package dataForSimulation;
 
 import java.awt.Image;
+import java.awt.Point;
 import java.util.List;
 
 public class UsineIntermediaire extends Usine{
@@ -11,7 +12,7 @@ public class UsineIntermediaire extends Usine{
 	protected ProductionItem produitFinal;
 	
 	
-	public UsineIntermediaire(int id, int[] position, String type, List<Image> images, String sortie, List<ProductionItem> entree, int intervalProduction)
+	public UsineIntermediaire(int id, Point position, String type, List<Image> images, String sortie, List<ProductionItem> entree, int intervalProduction)
 	{
 		this.id = id;
 		this.position = position;
@@ -32,6 +33,11 @@ public class UsineIntermediaire extends Usine{
 		return produitFinal;
 	}
 
+	public int getIntervalProduction() {
+		return intervalProduction;
+	}
+
+	
 	
 	
 }

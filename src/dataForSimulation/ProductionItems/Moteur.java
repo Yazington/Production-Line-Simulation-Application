@@ -1,8 +1,7 @@
 package dataForSimulation.ProductionItems;
 
 import javax.swing.ImageIcon;
-
-import dataForSimulation.ProductionItem;
+import dataForSimulation.*;
 
 public class Moteur extends ProductionItem{
 

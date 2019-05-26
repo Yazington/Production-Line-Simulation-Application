@@ -1,6 +1,7 @@
 package dataForSimulation;
 
 import java.awt.Image;
+import java.awt.Point;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -18,7 +19,7 @@ public class UsineMatiere extends Usine implements IObserver{
 	private boolean entrepotIsFull;
 	private ProductionItem produitFinal;
 	
-	public UsineMatiere(int id, int[] position, String type, List<Image> images, String sortie, int intervalProduction)
+	public UsineMatiere(int id, Point position, String type, List<Image> images, String sortie, int intervalProduction)
 	{
 		this.id = id;
 		this.position = position;

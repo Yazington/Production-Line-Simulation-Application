@@ -58,14 +58,6 @@ public class FenetrePrincipale extends JFrame implements PropertyChangeListener 
 //				repaint();
 			}		
 		}
-		else if (evt.getPropertyName().equals("move objects")) {
-			if(this.panneau.getNetwork()!=null)
-			{
-				this.panneau.moveObjects();
-//				System.out.println(evt.getNewValue());
-//				repaint();
-			}		
-		}
 		else if (evt.getPropertyName().equals("handle collisions")) {
 			if(this.panneau.getNetwork()!=null)
 			{
@@ -77,9 +69,10 @@ public class FenetrePrincipale extends JFrame implements PropertyChangeListener 
 		else if (evt.getPropertyName().equals("paint everything")) {
 			if(this.panneau.getNetwork()!=null)
 			{
-				
-//				System.out.println(evt.getNewValue());
+				this.panneau.fillPanelInformation();
 				repaint();
+//				System.out.println(evt.getNewValue());
+				
 			}		
 		}
 	}

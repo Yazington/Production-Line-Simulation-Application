@@ -6,14 +6,13 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.swing.JLabel;
 
 public class ProductionItem{
 
 	protected String type;
 	protected int neededQuantity;
 	protected Point vitesse;
-	protected int[] position;
+	protected Point position;
 	protected String imagePath;
 	
 	public ProductionItem(String type)
@@ -31,7 +30,7 @@ public class ProductionItem{
 		this.vitesse = vitesse;
 	}
 
-	public void setPosition(int[] position) {
+	public void setPosition(Point position) {
 		this.position = position;
 	}
 
@@ -39,7 +38,7 @@ public class ProductionItem{
 		return vitesse;
 	}
 
-	public int[] getPosition() {
+	public Point getPosition() {
 		return position;
 	}
 

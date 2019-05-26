@@ -1,6 +1,7 @@
 package dataForSimulation;
 
 import java.awt.Image;
+import java.awt.Point;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -18,14 +19,14 @@ public abstract class Usine{
 
 	protected int id;
 	protected String type;
-	protected int[] position;
+	protected Point position;
 	protected List<Image> images;
 	protected Image currentImage;
 	
 	
 	public abstract ProductionItem faitProduit();
 
-	public int[] getPosition() {
+	public Point getPosition() {
 		return position;
 	}
 
@@ -91,5 +92,9 @@ public abstract class Usine{
 		}
 	}
 
+	public Point getPositionPoint()
+	{
+		return this.position;
+	}
 	
 }
