@@ -11,7 +11,9 @@ import java.util.stream.Collectors;
 import javax.swing.JPanel;
 import dataForSimulation.*;
 import dataForSimulation.ProductionItems.Aile;
+import dataForSimulation.ProductionItems.Avion;
 import dataForSimulation.ProductionItems.Metal;
+import dataForSimulation.ProductionItems.Moteur;
 import dataForSimulation.UsineIntermediaires.UsineAile;
 import dataForSimulation.UsineIntermediaires.UsineAssemblage;
 import dataForSimulation.UsineIntermediaires.UsineMoteur;
@@ -36,7 +38,7 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 	private List<Image> produitsImages;
 	private List<Point> produitsVitesses;
 	private List<Point> movingPoints;
-	private long currentTime;
+	private int currentTime;
 
 //	private boolean usinesAreFull;
 	
@@ -213,7 +215,7 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 	}
 
 	
-	public void changeImages(long current) {
+	public void changeImages(int current) {
 		this.currentTime = current;
 		try {
 			updateUsinesMatiereImages();
@@ -221,7 +223,7 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 		}
 		catch (Exception e)
 		{
-			System.err.println("-------CHANGING USINES IMAGES ERROR++++++++++++++++++++++++");
+			System.err.println("-------CHANGING USINES IMAGES ERROR--------");
 		}
 		
 	}
@@ -239,15 +241,12 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 			{
 				try {
 					usine.updateCurrentImage(this.currentTime);
+					createProducts();
 				}
 				catch(Exception e)
 				{
 					System.err.println("oooooooooooooooo UPDATING CURRENT IMAGE ERROR ooooooooooooooo");
 				}
-					if(usine.getCurrentImage().equals(usine.getImageByType("plein")))
-					{
-//						this.usinesAreFull = true;
-					}
 			}
 		}
 		this.usinesImages = this.reseau.getCurrentImages();
@@ -260,30 +259,86 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 		
 		for(int i = 0; i< this.reseau.getUsines().size(); i++)
 		{
+			
 			Usine usine = this.reseau.getUsines().get(i);
 			if(usine.getType().equals("usine-aile"))
 			{
-				if(!this.reseau.getUsines().get(i).getType().equals("usine-matiere"))
+				UsineAile usineAile = (UsineAile) usine;
+				if(usineAile.getCurrentMetalQty() == usineAile.getNeededMetalQty())
 				{
-					try {
-						usine.updateCurrentImage(this.currentTime);
+					try 
+					{
+						usineAile.updateCurrentImage(this.currentTime);
+						createProducts();
 					}
 					catch(Exception e)
 					{
-						System.err.println("oooooooo   UPDATE other usines images  ooooooo");
+						System.err.println("oooooooo  UPDATE other usines images  ooooooo");
 					}
-//					if(usine.getCurrentImage().equals(usine.getImageByType("plein")))
-//					{
-////						this.usinesAreFull = true;
-//					}
+				}
+
+			}
+			else if (usine.getType().equals("usine-assemblage"))
+			{
+				UsineAssemblage usineAssemblage = (UsineAssemblage) usine;
+				if(usineAssemblage.getCurrentAileQty() >= usineAssemblage.getNeededAileQty() && 
+				   usineAssemblage.getCurrentMoteurQty() >= usineAssemblage.getNeededMoteurQty())
+				{
+					try 
+					{
+						usineAssemblage.updateCurrentImage(this.currentTime);
+						createProducts();
+						
+					}
+					catch(Exception e)
+					{
+						System.err.println("oooooooo  UPDATE other usines images  ooooooo");
+					}
 				}
 			}
-			
+			else if (usine.getType().equals("usine-moteur"))
+			{
+				UsineMoteur usineMoteur = (UsineMoteur) usine;
+				if(usineMoteur.getCurrentMetalQty() >= usineMoteur.getNeededMetalQty())
+				{
+					try 
+					{
+						usineMoteur.updateCurrentImage(this.currentTime);
+						createProducts();
+					}
+					catch(Exception e)
+					{
+						System.err.println("oooooooo  UPDATE other usines images  ooooooo");
+					}
+				}
+			}
+			else if (usine.getType().equals("entrepot"))
+			{
+				Entrepot entrepot = (Entrepot) usine;
+				if(entrepot.getCurrentAvionQTY() != entrepot.getMaxAvionQTY())
+				{
+					try 
+					{
+						entrepot.updateCurrentImage(this.currentTime);
+						stopProduction();
+						
+					}
+					catch(Exception e)
+					{
+						System.err.println("oooooooo  UPDATE other usines images  ooooooo");
+					}
+				}				
+			}
 		}
 		this.usinesImages = this.reseau.getCurrentImages();
 		
 	}
 	
+	private void stopProduction() {
+		// TODO Auto-generated method stub
+		
+	}
+
 	/**
 	 * creer les produits dependamment des entrees si on en a besoin
 	 */
@@ -349,18 +404,17 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 					}
 					catch (Exception e)
 					{
-						System.err.println("Error setting composant speed iiiiiiiiiiiiiiiiiiiiiiiii");
+						System.err.println("Error setting composant speed");
 					}
 				}
 				
 			}
 			else if (usine.getType().equals("usine-aile"))
 			{
-				if(this.currentTime == ((UsineAile) usine).getIntervalProduction() && 
-				  ((UsineAile) usine).getCurrentMetalQty() >= ((UsineAile) usine).getNeededMetalQty())
+				ProductionItem produit = usine.faitProduit();
+				if(produit!= null)
 				{
-					ProductionItem produit = usine.faitProduit();
-					if (produit == null) continue;
+					System.err.println("new aile");
 					Point position2 = null;
 					for(int j = 0; j < this.reseau.getChemins().size(); j++)
 					{
@@ -406,7 +460,8 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 						System.err.println("-no speed2-");
 					}
 					
-					try {
+					try 
+					{
 						produit.setPosition(new Point(usine.getPosition().x, usine.getPosition().y));
 						produit.setVitesse(new Point(xTranslate, yTranslate));
 						this.reseau.addProductionItem((Aile)produit);
@@ -415,6 +470,136 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 					{
 						System.err.println("error setting componsant infos");
 					}
+					((UsineAile)usine).setIsFull(false);
+					((UsineAile)usine).setCurrentMetalQty(0);
+				}
+			}
+			else if (usine.getType().equals("usine-moteur"))
+			{
+				ProductionItem produit = usine.faitProduit();
+				if(produit!= null)
+				{
+					System.err.println("new moteur");
+					Point position2 = null;
+					for(int j = 0; j < this.reseau.getChemins().size(); j++)
+					{
+						int currentIndex = j;
+						if(this.reseau.getChemins().get(j).getDe() == usine.getId())
+						{
+							
+							Usine usine2 = this.reseau.getUsines().stream()
+													.filter(u -> u.getId() == this.reseau.getChemins().get(currentIndex).getVers())
+													.findFirst().get();
+
+							position2 = usine2.getPosition();
+						}
+					}
+					
+					int xTranslate;
+					if(usine.getPosition().x < position2.x) 
+					{
+						xTranslate = 10;
+					}
+					else if (usine.getPosition().x>position2.x)
+					{
+						xTranslate = -10;
+					}
+					else
+					{
+						xTranslate = 0;
+						System.err.println("-no speed2-");
+					}
+					
+					int yTranslate;
+					if(usine.getPosition().y < position2.y) 
+					{
+						yTranslate = 10;
+					}
+					else if (usine.getPosition().y>position2.y)
+					{
+						yTranslate = -10;
+					}
+					else
+					{
+						yTranslate = 0;
+						System.err.println("-no speed2-");
+					}
+					
+					try 
+					{
+						produit.setPosition(new Point(usine.getPosition().x, usine.getPosition().y));
+						produit.setVitesse(new Point(xTranslate, yTranslate));
+						this.reseau.addProductionItem((Moteur)produit);
+					}
+					catch (Exception e)
+					{
+						System.err.println("error setting componsant infos");
+					}
+					((UsineMoteur)usine).setIsFull(false);
+				}
+			}
+			else if (usine.getType().equals("usine-assemblage"))
+			{
+				ProductionItem produit = usine.faitProduit();
+				if(produit!= null)
+				{
+					System.err.println("new avion");
+					Point position2 = null;
+					for(int j = 0; j < this.reseau.getChemins().size(); j++)
+					{
+						int currentIndex = j;
+						if(this.reseau.getChemins().get(j).getDe() == usine.getId())
+						{
+							
+							Usine usine2 = this.reseau.getUsines().stream()
+													.filter(u -> u.getId() == this.reseau.getChemins().get(currentIndex).getVers())
+													.findFirst().get();
+
+							position2 = usine2.getPosition();
+						}
+					}
+					
+					int xTranslate;
+					if(usine.getPosition().x < position2.x) 
+					{
+						xTranslate = 10;
+					}
+					else if (usine.getPosition().x>position2.x)
+					{
+						xTranslate = -10;
+					}
+					else
+					{
+						xTranslate = 0;
+						System.err.println("-no speed2-");
+					}
+					
+					int yTranslate;
+					if(usine.getPosition().y < position2.y) 
+					{
+						yTranslate = 10;
+					}
+					else if (usine.getPosition().y>position2.y)
+					{
+						yTranslate = -10;
+					}
+					else
+					{
+						yTranslate = 0;
+						System.err.println("-no speed2-");
+					}
+					
+					try 
+					{
+						produit.setPosition(new Point(usine.getPosition().x, usine.getPosition().y));
+						produit.setVitesse(new Point(xTranslate, yTranslate));
+						this.reseau.addProductionItem((Avion)produit);
+					}
+					catch (Exception e)
+					{
+						System.err.println("error setting componsant infos");
+					}
+					((UsineAssemblage)usine).setIsFull(false);
 				}
 			}
 			
@@ -423,6 +608,9 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 	}
 
 	public void updateAfterCollisions() {
+		
+		// Create products
+//		createProducts();
 		
 		// Handle from usines matiere to other usines (usine aile, moteur)
 
@@ -438,7 +626,6 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 		
 		// Create new materials if needed and update images
 		
-		createProducts();
 		updateOtherUsinesImages();
 		
 	}
@@ -495,7 +682,7 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 				for(int j = 0 ; j< usinesAssemblage.size();j++)
 				{
 
-						Usine usineAssemblage = usinesAssemblage.get(j);
+						UsineAssemblage usineAssemblage = (UsineAssemblage) usinesAssemblage.get(j);
 						// if aile collides with usines other than usines usinesMatiere, usines Aile. usines moteur and entrepots
 						if(usineAssemblage.getPosition().distanceSq(movingPoint)<=100 && 
 						  usineAssemblage!= null)
@@ -505,11 +692,15 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 								this.produitsVitesses.remove(i);
 								this.reseau.removeProductionItem(i);
 								this.movingPoints.remove(i);
+								if(usineAssemblage.getCurrentMoteurQty()> usineAssemblage.getNeededMoteurQty())
+								{
+									usineAssemblage.setCurrentMoteurQty(0);
+								}
 								((UsineAssemblage) usineAssemblage).addOneAile();
 							}
 							catch (Exception e)
 							{
-								System.err.println("erro with usine assemblage");
+								System.err.println("error with usine assemblage");
 							}
 						}
 				}
@@ -518,7 +709,7 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 			{
 				for(int j = 0 ; j< usinesAssemblage.size();j++)
 				{
-					Usine usineAssemblage = usinesAssemblage.get(j);
+					UsineAssemblage usineAssemblage = (UsineAssemblage)usinesAssemblage.get(j);
 					// if moteur collides with usines other than usines usinesMatiere, usines Aile, usines moteur and entrepots
 					if(usineAssemblage.getPosition().distanceSq(movingPoint)<=10 && 
 					  usineAssemblage!= null)
@@ -528,7 +719,11 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 							this.produitsVitesses.remove(i);
 							this.reseau.removeProductionItem(i);
 							this.movingPoints.remove(i);
-							((UsineAssemblage) usineAssemblage).addOneMoteur();
+							if(usineAssemblage.getCurrentMoteurQty()> usineAssemblage.getNeededMoteurQty())
+							{
+								usineAssemblage.setCurrentMoteurQty(0);
+							}
+							usineAssemblage.addOneMoteur();
 						}
 						catch (Exception e)
 						{
@@ -579,10 +774,18 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 					
 					if(usineAM.getType().equals("usine-aile"))
 					{
+						if(((UsineAile) usineAM).getCurrentMetalQty() > ((UsineAile) usineAM).getNeededMetalQty())
+						{
+							((UsineAile) usineAM).setCurrentMetalQty(0);
+						}
 						((UsineAile) usineAM).addOneEntree();
 					}
 					else if (usineAM.getType().equals("usine-moteur"))
 					{
+						if(((UsineMoteur) usineAM).getCurrentMetalQty() > ((UsineMoteur) usineAM).getNeededMetalQty())
+						{
+							((UsineMoteur) usineAM).setCurrentMetalQty(0);
+						}
 						((UsineMoteur) usineAM).addOneEntree();
 					}
 				}

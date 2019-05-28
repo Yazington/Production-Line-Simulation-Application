@@ -10,7 +10,7 @@ import dataForSimulation.Usine;
 public class Environnement extends SwingWorker<Object, String>{
 	private boolean actif = true;
 	private static final long DELAI = 100;
-	private long currentTime = 0;
+	private int currentTime = 0;
 
 	@Override
 	protected Object doInBackground() throws Exception {
@@ -22,17 +22,17 @@ public class Environnement extends SwingWorker<Object, String>{
 //				this.start = System.currentTimeMillis();
 //			}
 			
-			if(this.currentTime >= DELAI)
+			if(this.currentTime >= (int) DELAI)
 			{
 				this.currentTime = 0;
 			}
-			Thread.sleep(3);
+			Thread.sleep(15);
 			/**
 			 * C'est ici que vous aurez a faire la gestion de la notion de tour.
 			 */
 			this.currentTime = this.currentTime + 1;
 			firePropertyChange("change images", null, currentTime);
-			if(this.currentTime == DELAI) 
+			if(this.currentTime == (int)DELAI) 
 				firePropertyChange("create products", null, currentTime);
 			firePropertyChange("handle collisions", null, null);
 			firePropertyChange("paint everything", null, null);

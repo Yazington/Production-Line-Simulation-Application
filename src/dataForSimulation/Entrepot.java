@@ -10,6 +10,7 @@ import observerPattern.IObserver;
 public class Entrepot extends Usine implements IObservable{
 	
 	private int currentAvionQTY;
+	private int maxAvionQTY;
 	
 	public Entrepot(int id,Point position , String type, List<Image> images, List<ProductionItem> entree)
 	{
@@ -20,6 +21,8 @@ public class Entrepot extends Usine implements IObservable{
 		this.images = images;
 		this.currentAvionQTY = 0;
 		this.currentImage = this.getImageByType("vide");
+		this.maxAvionQTY = entree.get(0).getNeededQuantity();
+		this.intervalProduction = 0;
 	}
 
 	@Override
@@ -49,6 +52,18 @@ public class Entrepot extends Usine implements IObservable{
 	public void addOneEntree() {
 		this.currentAvionQTY++;
 		
+	}
+
+	public int getCurrentAvionQTY() {
+		return currentAvionQTY;
+	}
+
+	public void setCurrentAvionQTY(int currentAvionQTY) {
+		this.currentAvionQTY = currentAvionQTY;
+	}
+
+	public int getMaxAvionQTY() {
+		return maxAvionQTY;
 	}
 
 	

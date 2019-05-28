@@ -8,7 +8,6 @@ public class UsineIntermediaire extends Usine{
 	
 	protected List<ProductionItem> entree;
 	protected String sortie;
-	protected int intervalProduction;
 	protected ProductionItem produitFinal;
 	
 	

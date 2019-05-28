@@ -176,7 +176,7 @@ public class Network {
 				entrees.add(entree);
 				
 				Usine usineAile = new UsineAile(Integer.parseInt(parameters.get(0)), position, parameters.get(1), images,
-												sortieIntervalEntree[0], entrees, Integer.parseInt(sortieIntervalEntree[2]));
+												sortieIntervalEntree[0], entrees, Integer.parseInt(sortieIntervalEntree[1]));
 				usines.add(usineAile);
 			}
 			else if(parameters.get(1).equals("usine-assemblage"))
@@ -192,7 +192,7 @@ public class Network {
 				entrees.add(entree2);
 				
 				Usine usineAssemblage = new UsineAssemblage(Integer.parseInt(parameters.get(0)), position, parameters.get(1), images,
-															sortieIntervalEntree[0], entrees, Integer.parseInt(sortieIntervalEntree[2]));
+															sortieIntervalEntree[0], entrees, Integer.parseInt(sortieIntervalEntree[1]));
 				usines.add(usineAssemblage);
 			}
 			else if(parameters.get(1).equals("usine-moteur"))
@@ -206,7 +206,7 @@ public class Network {
 				entrees.add(entree);
 				
 				Usine usineMoteur = new UsineMoteur(Integer.parseInt(parameters.get(0)), position, parameters.get(1), images,
-													sortieIntervalEntree[0], entrees, Integer.parseInt(sortieIntervalEntree[2]));
+													sortieIntervalEntree[0], entrees, Integer.parseInt(sortieIntervalEntree[1]));
 				usines.add(usineMoteur);
 			}
 			else if(parameters.get(1).equals("entrepot"))

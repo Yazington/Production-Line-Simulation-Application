@@ -15,7 +15,6 @@ public class UsineMatiere extends Usine implements IObserver{
 	 */
 	private static final long serialVersionUID = 1L;
 	private String sortie;
-	private int intervalProduction;
 	private boolean entrepotIsFull;
 	private ProductionItem produitFinal;
 	

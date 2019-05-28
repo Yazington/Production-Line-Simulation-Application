@@ -6,6 +6,7 @@ import java.util.List;
 import dataForSimulation.*;
 import dataForSimulation.ProductionItems.Aile;
 import dataForSimulation.ProductionItems.Avion;
+import dataForSimulation.ProductionItems.Moteur;
 
 public class UsineAssemblage extends UsineIntermediaire {
 	
@@ -13,6 +14,7 @@ public class UsineAssemblage extends UsineIntermediaire {
 	private int currentMoteurQty;
 	private int neededAileQty;
 	private int neededMoteurQty;
+	private boolean isFull;
 	
 	public UsineAssemblage(int id, Point position, String type, List<Image> images, String sortie, List<ProductionItem> entree, int intervalProduction)
 	{
@@ -31,41 +33,45 @@ public class UsineAssemblage extends UsineIntermediaire {
 			}
 		}
 	}
-	
-//	@Override
-//	public ProductionItem faitProduit() {
-//		return new ProductionItem(this.sortie);
-//	}
+
+	@Override
+	public void updateCurrentImage(int currentTime) {
+		if(this.intervalProduction != 0)
+		{
+			if( currentTime  >=0 && currentTime  < this.intervalProduction/3)
+			{
+				this.setCurrentImage(this.getImageByType("un-tiers"));
+			}
+			else if (currentTime  >=this.intervalProduction/3 && currentTime  < this.intervalProduction *2/3)
+			{
+				this.setCurrentImage(this.getImageByType("deux-tiers"));
+			}
+			else if (currentTime  >= this.intervalProduction *2/3 && currentTime  < this.intervalProduction)
+			{
+				this.setCurrentImage(this.getImageByType("plein"));
+				if(Math.abs(this.intervalProduction - currentTime) <= 10)
+				{
+					this.isFull = true;
+				}
+				
+			}
+			else if ( currentTime == 100)
+			{
+				this.setCurrentImage(this.getImageByType("vide"));
+				
+			}
+		}
+		else
+		{
+			
+		}
+	}
 	
 	@Override
 	public ProductionItem faitProduit()
 	{
-		boolean aileQTYIsMet = false;
-		boolean moteurQTYIsMet = false;
-		for(int i = 0; i< this.entree.size(); i++)
-		{
-			if(this.entree.get(i).getType() == "aile")
-			{
-				if(this.currentAileQty == this.entree.get(i).getNeededQuantity())
-				{
-					aileQTYIsMet = true;
-				}
-			}
-			else if(this.entree.get(i).getType() == "moteur")
-			{
-				if(this.currentMoteurQty == this.entree.get(i).getNeededQuantity())
-				{
-					moteurQTYIsMet = true;
-				}
-			}
-			
-		}
-		if(aileQTYIsMet && moteurQTYIsMet) 
-		{
-			this.setCurrentImage(this.getImageByType("vide"));
-			return new Avion(this.sortie);
-		}
-		return null;
+		if(!this.isFull) return null;	
+				return new Avion(this.sortie);
 	}
 
 	public void addOneAile() {
@@ -93,5 +99,17 @@ public class UsineAssemblage extends UsineIntermediaire {
 		return neededMoteurQty;
 	}
 	
+	public void setCurrentAileQty(int currentAileQty) {
+		this.currentAileQty = currentAileQty;
+	}
+
+	public void setCurrentMoteurQty(int currentMoteurQty) {
+		this.currentMoteurQty = currentMoteurQty;
+	}
+
+	public void setIsFull(boolean b) {
+		this.isFull = b;
+		
+	}
 	
 }

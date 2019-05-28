@@ -22,6 +22,7 @@ public abstract class Usine{
 	protected Point position;
 	protected List<Image> images;
 	protected Image currentImage;
+	protected int intervalProduction;
 	
 	
 	public abstract ProductionItem faitProduit();
@@ -72,23 +73,30 @@ public abstract class Usine{
 		return null;
 	}
 
-	public void updateCurrentImage(long currentTime) {
-		
-		if( currentTime  >=0 && currentTime  < 33)
+
+	public void updateCurrentImage(int currentTime) {
+		if(this.intervalProduction != 0)
 		{
-			this.setCurrentImage(this.getImageByType("un-tiers"));
+			if( currentTime  >=0 && currentTime  < this.intervalProduction/3)
+			{
+				this.setCurrentImage(this.getImageByType("un-tiers"));
+			}
+			else if (currentTime  >=this.intervalProduction/3 && currentTime  < this.intervalProduction *2/3)
+			{
+				this.setCurrentImage(this.getImageByType("deux-tiers"));
+			}
+			else if (currentTime  >= this.intervalProduction *2/3 && currentTime  < this.intervalProduction)
+			{
+				this.setCurrentImage(this.getImageByType("plein"));
+			}
+			else if ( currentTime  == this.intervalProduction)
+			{
+				this.setCurrentImage(this.getImageByType("vide"));
+			}
 		}
-		else if (currentTime  >=33 && currentTime  <66)
+		else
 		{
-			this.setCurrentImage(this.getImageByType("deux-tiers"));
-		}
-		else if (currentTime  >=66 && currentTime  <100)
-		{
-			this.setCurrentImage(this.getImageByType("plein"));
-		}
-		else if ( currentTime  == 100)
-		{
-			this.setCurrentImage(this.getImageByType("vide"));
+			
 		}
 	}
 
