@@ -9,7 +9,7 @@ import dataForSimulation.Usine;
 
 public class Environnement extends SwingWorker<Object, String>{
 	private boolean actif = true;
-	private static final long DELAI = 100;
+	private static final long DELAI = 150;
 	private int currentTime = 0;
 
 	@Override
@@ -26,7 +26,7 @@ public class Environnement extends SwingWorker<Object, String>{
 			{
 				this.currentTime = 0;
 			}
-			Thread.sleep(15);
+			Thread.sleep(5);
 			/**
 			 * C'est ici que vous aurez a faire la gestion de la notion de tour.
 			 */

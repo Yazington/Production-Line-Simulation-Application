@@ -43,13 +43,13 @@ public class UsineMoteur extends UsineIntermediaire {
 			else if (currentTime  >= this.intervalProduction *2/3 && currentTime  < this.intervalProduction)
 			{
 				this.setCurrentImage(this.getImageByType("plein"));
-				if(Math.abs(this.intervalProduction - currentTime) == 1)
+				if(Math.abs(this.intervalProduction - currentTime) == 25)
 				{
 					this.isFull = true;
 				}
 				
 			}
-			else if ( currentTime == this.intervalProduction)
+			else if ( currentTime == 0 || currentTime >= this.intervalProduction)
 			{
 				this.setCurrentImage(this.getImageByType("vide"));
 				

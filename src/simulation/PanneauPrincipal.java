@@ -39,6 +39,8 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 	private List<Point> produitsVitesses;
 	private List<Point> movingPoints;
 	private int currentTime;
+	
+	private static final int CURRENT_COMPONENTS_SPEED = 7;
 
 //	private boolean usinesAreFull;
 	
@@ -264,7 +266,7 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 			if(usine.getType().equals("usine-aile"))
 			{
 				UsineAile usineAile = (UsineAile) usine;
-				if(usineAile.getCurrentMetalQty() == usineAile.getNeededMetalQty())
+				if(usineAile.getCurrentMetalQty() >= usineAile.getNeededMetalQty())
 				{
 					try 
 					{
@@ -299,7 +301,7 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 			else if (usine.getType().equals("usine-moteur"))
 			{
 				UsineMoteur usineMoteur = (UsineMoteur) usine;
-				if(usineMoteur.getCurrentMetalQty() >= usineMoteur.getNeededMetalQty())
+				if(usineMoteur.getCurrentMetalQty() == usineMoteur.getNeededMetalQty())
 				{
 					try 
 					{
@@ -320,7 +322,11 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 					try 
 					{
 						entrepot.updateCurrentImage(this.currentTime);
-						stopProduction();
+						if(entrepot.isFull()) 
+						{
+							stopProduction();
+						}
+						
 						
 					}
 					catch(Exception e)
@@ -335,7 +341,12 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 	}
 	
 	private void stopProduction() {
-		// TODO Auto-generated method stub
+		
+		for(int i = 0; i< this.movingPoints.size(); i++)
+		{
+			this.produitsVitesses.get(i).x = 0;
+			this.produitsVitesses.get(i).y = 0;
+		}
 		
 	}
 
@@ -371,11 +382,11 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 					int xTranslate;
 					if(usine.getPosition().x < position2.x) 
 					{
-						xTranslate = 10;
+						xTranslate = CURRENT_COMPONENTS_SPEED;
 					}
 					else if (usine.getPosition().x>position2.x)
 					{
-						xTranslate = -10;
+						xTranslate = -CURRENT_COMPONENTS_SPEED;
 					}
 					else
 					{
@@ -386,11 +397,11 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 					int yTranslate;
 					if(usine.getPosition().y < position2.y) 
 					{
-						yTranslate = 10;
+						yTranslate = CURRENT_COMPONENTS_SPEED;
 					}
 					else if (usine.getPosition().y>position2.y)
 					{
-						yTranslate = -10;
+						yTranslate = -CURRENT_COMPONENTS_SPEED;
 					}
 					else
 					{
@@ -433,11 +444,11 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 					int xTranslate;
 					if(usine.getPosition().x < position2.x) 
 					{
-						xTranslate = 10;
+						xTranslate = CURRENT_COMPONENTS_SPEED;
 					}
 					else if (usine.getPosition().x>position2.x)
 					{
-						xTranslate = -10;
+						xTranslate = -CURRENT_COMPONENTS_SPEED;
 					}
 					else
 					{
@@ -448,11 +459,11 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 					int yTranslate;
 					if(usine.getPosition().y < position2.y) 
 					{
-						yTranslate = 10;
+						yTranslate = CURRENT_COMPONENTS_SPEED;
 					}
 					else if (usine.getPosition().y>position2.y)
 					{
-						yTranslate = -10;
+						yTranslate = -CURRENT_COMPONENTS_SPEED;
 					}
 					else
 					{
@@ -498,11 +509,11 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 					int xTranslate;
 					if(usine.getPosition().x < position2.x) 
 					{
-						xTranslate = 10;
+						xTranslate = CURRENT_COMPONENTS_SPEED;
 					}
 					else if (usine.getPosition().x>position2.x)
 					{
-						xTranslate = -10;
+						xTranslate = -CURRENT_COMPONENTS_SPEED;
 					}
 					else
 					{
@@ -513,11 +524,11 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 					int yTranslate;
 					if(usine.getPosition().y < position2.y) 
 					{
-						yTranslate = 10;
+						yTranslate = CURRENT_COMPONENTS_SPEED;
 					}
 					else if (usine.getPosition().y>position2.y)
 					{
-						yTranslate = -10;
+						yTranslate = -CURRENT_COMPONENTS_SPEED;
 					}
 					else
 					{
@@ -536,6 +547,7 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 						System.err.println("error setting componsant infos");
 					}
 					((UsineMoteur)usine).setIsFull(false);
+					((UsineMoteur)usine).setCurrentMetalQty(0);
 				}
 			}
 			else if (usine.getType().equals("usine-assemblage"))
@@ -562,11 +574,11 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 					int xTranslate;
 					if(usine.getPosition().x < position2.x) 
 					{
-						xTranslate = 10;
+						xTranslate = CURRENT_COMPONENTS_SPEED;
 					}
 					else if (usine.getPosition().x>position2.x)
 					{
-						xTranslate = -10;
+						xTranslate = -CURRENT_COMPONENTS_SPEED;
 					}
 					else
 					{
@@ -577,11 +589,11 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 					int yTranslate;
 					if(usine.getPosition().y < position2.y) 
 					{
-						yTranslate = 10;
+						yTranslate = CURRENT_COMPONENTS_SPEED;
 					}
 					else if (usine.getPosition().y>position2.y)
 					{
-						yTranslate = -10;
+						yTranslate = -CURRENT_COMPONENTS_SPEED;
 					}
 					else
 					{
@@ -600,10 +612,10 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 						System.err.println("error setting componsant infos");
 					}
 					((UsineAssemblage)usine).setIsFull(false);
+					((UsineAssemblage)usine).setCurrentAileQty(0);
+					((UsineAssemblage)usine).setCurrentMoteurQty(0);
 				}
 			}
-			
-			
 		}
 	}
 
@@ -711,7 +723,7 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 				{
 					UsineAssemblage usineAssemblage = (UsineAssemblage)usinesAssemblage.get(j);
 					// if moteur collides with usines other than usines usinesMatiere, usines Aile, usines moteur and entrepots
-					if(usineAssemblage.getPosition().distanceSq(movingPoint)<=10 && 
+					if(usineAssemblage.getPosition().distanceSq(movingPoint)<=100 && 
 					  usineAssemblage!= null)
 					{
 						try {
@@ -774,7 +786,7 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 					
 					if(usineAM.getType().equals("usine-aile"))
 					{
-						if(((UsineAile) usineAM).getCurrentMetalQty() > ((UsineAile) usineAM).getNeededMetalQty())
+						if(((UsineAile) usineAM).getCurrentMetalQty() >= ((UsineAile) usineAM).getNeededMetalQty())
 						{
 							((UsineAile) usineAM).setCurrentMetalQty(0);
 						}
@@ -782,7 +794,7 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 					}
 					else if (usineAM.getType().equals("usine-moteur"))
 					{
-						if(((UsineMoteur) usineAM).getCurrentMetalQty() > ((UsineMoteur) usineAM).getNeededMetalQty())
+						if(((UsineMoteur) usineAM).getCurrentMetalQty() >= ((UsineMoteur) usineAM).getNeededMetalQty())
 						{
 							((UsineMoteur) usineAM).setCurrentMetalQty(0);
 						}

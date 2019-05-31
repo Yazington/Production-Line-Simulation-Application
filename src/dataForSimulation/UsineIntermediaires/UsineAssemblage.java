@@ -38,7 +38,7 @@ public class UsineAssemblage extends UsineIntermediaire {
 	public void updateCurrentImage(int currentTime) {
 		if(this.intervalProduction != 0)
 		{
-			if( currentTime  >=0 && currentTime  < this.intervalProduction/3)
+			if( currentTime  > 0 && currentTime  < this.intervalProduction/3)
 			{
 				this.setCurrentImage(this.getImageByType("un-tiers"));
 			}
@@ -49,21 +49,17 @@ public class UsineAssemblage extends UsineIntermediaire {
 			else if (currentTime  >= this.intervalProduction *2/3 && currentTime  < this.intervalProduction)
 			{
 				this.setCurrentImage(this.getImageByType("plein"));
-				if(Math.abs(this.intervalProduction - currentTime) <= 10)
+				if(Math.abs(this.intervalProduction - currentTime) <= 25)
 				{
 					this.isFull = true;
 				}
 				
 			}
-			else if ( currentTime == 100)
+			else if ( currentTime == 0 || currentTime >= this.intervalProduction)
 			{
 				this.setCurrentImage(this.getImageByType("vide"));
 				
 			}
-		}
-		else
-		{
-			
 		}
 	}
 	

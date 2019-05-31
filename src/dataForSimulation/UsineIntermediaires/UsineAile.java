@@ -37,7 +37,7 @@ public class UsineAile extends UsineIntermediaire {
 	public void updateCurrentImage(int currentTime) {
 		if(this.intervalProduction != 0)
 		{
-			if( currentTime  >=0 && currentTime  < this.intervalProduction/3)
+			if( currentTime  >= 0 && currentTime  < this.intervalProduction/3)
 			{
 				this.setCurrentImage(this.getImageByType("un-tiers"));
 			}
@@ -48,13 +48,13 @@ public class UsineAile extends UsineIntermediaire {
 			else if (currentTime  >= this.intervalProduction *2/3 && currentTime  < this.intervalProduction)
 			{
 				this.setCurrentImage(this.getImageByType("plein"));
-				if(Math.abs(this.intervalProduction - currentTime) == 1)
+				if(Math.abs(this.intervalProduction - currentTime) ==1)
 				{
 					this.IsFull = true;
 				}
 				
 			}
-			else if ( currentTime == this.intervalProduction)
+			else if ( currentTime == 0 || currentTime >= this.intervalProduction)
 			{
 				this.setCurrentImage(this.getImageByType("vide"));
 			}
