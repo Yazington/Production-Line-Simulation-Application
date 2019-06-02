@@ -26,7 +26,7 @@ public class Environnement extends SwingWorker<Object, String>{
 			{
 				this.currentTime = 0;
 			}
-			Thread.sleep(5);
+			Thread.sleep(15);
 			/**
 			 * C'est ici que vous aurez a faire la gestion de la notion de tour.
 			 */

@@ -49,7 +49,7 @@ public class UsineAssemblage extends UsineIntermediaire {
 			else if (currentTime  >= this.intervalProduction *2/3 && currentTime  < this.intervalProduction)
 			{
 				this.setCurrentImage(this.getImageByType("plein"));
-				if(Math.abs(this.intervalProduction - currentTime) <= 25)
+				if(Math.abs(this.intervalProduction - currentTime) == 25)
 				{
 					this.isFull = true;
 				}

@@ -48,15 +48,16 @@ public class UsineAile extends UsineIntermediaire {
 			else if (currentTime  >= this.intervalProduction *2/3 && currentTime  < this.intervalProduction)
 			{
 				this.setCurrentImage(this.getImageByType("plein"));
-				if(Math.abs(this.intervalProduction - currentTime) ==1)
-				{
-					this.IsFull = true;
-				}
+
 				
 			}
 			else if ( currentTime == 0 || currentTime >= this.intervalProduction)
 			{
 				this.setCurrentImage(this.getImageByType("vide"));
+				if(Math.abs(this.intervalProduction - currentTime) ==1)
+				{
+					this.IsFull = true;
+				}
 			}
 		}
 		else

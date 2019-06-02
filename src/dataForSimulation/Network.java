@@ -37,77 +37,6 @@ public class Network {
 		this.usinesAreLoaded = false;
 	}
 	
-//	public void execute() 
-//	{
-//		if(this.usinesAreLoaded == false) return;
-//		
-//		// Get the usineMatieres
-//		List<Usine> usinesMatiere = new LinkedList<Usine>();
-//		for(int i = 0; i< this.usines.size();i++)
-//		{
-//			Usine usine = this.usines.get(i);
-//			if(usine.getType().equals("usine-matiere") && usine.getImageByType("plein") == usine.getCurrentImage())
-//			{
-//				usinesMatiere.add(this.usines.get(i));
-//			}
-//
-//				
-//		}
-//		
-//		// For each UsineMatiere, create new components, give their position and speed 
-//		for(int i = 0; i< usinesMatiere.size(); i++)
-//		{
-//			
-//			ProductionItem produit = usinesMatiere.get(i).faitProduit();
-//			
-//			int[] position2 = null;
-//			for(int j = 0; j < this.chemins.size(); j++)
-//			{
-//				int currentIndex = j;
-//				if(this.chemins.get(j).getDe() == usinesMatiere.get(i).getId())
-//				{
-//					
-//					Usine usine2 = this.usines.stream()
-//											.filter(u -> u.getId() == this.chemins.get(currentIndex).getVers())
-//											.findFirst().get();
-//
-//					position2 = usine2.getPosition();
-//				}
-//			}
-//			
-//			int xTranslate;
-//			if(usinesMatiere.get(i).getPosition()[0] < position2[0]) 
-//			{
-//				xTranslate = 1;
-//			}
-//			else if (usinesMatiere.get(i).getPosition()[0]>position2[0])
-//			{
-//				xTranslate = -1;
-//			}
-//			else
-//			{
-//				xTranslate = 1;
-//			}
-//			
-//			int yTranslate;
-//			if(usinesMatiere.get(i).getPosition()[1] < position2[1]) 
-//			{
-//				yTranslate = 1;
-//			}
-//			else if (usinesMatiere.get(i).getPosition()[1]>position2[1])
-//			{
-//				yTranslate = -1;
-//			}
-//			else
-//			{
-//				yTranslate = 0;
-//			}
-//			produit.setPosition(usinesMatiere.get(i).getPosition());
-//			produit.setVitesse(new Point(xTranslate, yTranslate));
-//			this.productionItems.add(produit);
-//			
-//		}
-//	}
 	
 	public List<Usine> createInstances(List<String> metadonneesD, List<String> simulationD) {
 		// chercher les indexes des usines dans le tableau(sim)
@@ -470,6 +399,12 @@ public class Network {
 				this.usines.add(usineToChange);
 			}
 		}
+		
+	}
+
+
+	public void refresh() {
+		// TODO Auto-generated method stub
 		
 	}
 }
