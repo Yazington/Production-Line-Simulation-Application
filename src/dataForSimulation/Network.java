@@ -17,6 +17,7 @@ import javax.imageio.ImageIO;
 import dataForSimulation.UsineIntermediaires.UsineAile;
 import dataForSimulation.UsineIntermediaires.UsineAssemblage;
 import dataForSimulation.UsineIntermediaires.UsineMoteur;
+import simulation.RefreshManager;
 
 public class Network {
 
@@ -27,14 +28,24 @@ public class Network {
 	private List<Usine> usines;
 	private List<Chemin> chemins;
 	private List<ProductionItem> productionItems;
-	private boolean usinesAreLoaded;
+	private List<Point> usinesPositions;
+	private List<Image> usinesImages;
+	private List<Image> produitsImages;
+	private List<Point> produitsVitesses;
+	private List<Point> produitsPositions;
+	private RefreshManager _refreshManager;
 
 	public Network(List<String> metadonneesD, List<String> simulationD)
 	{
 		this.metadonneesD = metadonneesD;
 		this.simulationD = simulationD;
 		this.productionItems = new ArrayList<ProductionItem>();
-		this.usinesAreLoaded = false;
+		this.usinesPositions = new ArrayList<Point>();
+		this.usinesImages = new ArrayList<Image>();
+		this.produitsImages = new ArrayList<Image>();
+		this.produitsVitesses = new ArrayList<Point>();
+		this.produitsPositions = new ArrayList<Point>();
+		
 	}
 	
 	
@@ -345,16 +356,6 @@ public class Network {
 		return results;
 	}
 	
-	public void addProductionItem(ProductionItem item)
-	{
-		this.productionItems.add(item);
-	}
-	
-	public void removeProductionItem(int index)
-	{
-		this.productionItems.remove(index);
-	}
-	
 
 	public List<String> getMetadonneesD() {
 		return metadonneesD;
@@ -377,34 +378,59 @@ public class Network {
 	}
 
 
-	public List<ProductionItem> getProductionItems() {
-		return productionItems;
-	}
 
-	public void changeUsinesImages() {
+	public void refresh(int currentTime) 
+	{
+		if(this.usines == null || this._refreshManager == null) return;
 		
-	}
-
-	public void setUsinesAreLoaded(boolean usinesAreLoaded) {
-		this.usinesAreLoaded = usinesAreLoaded;
-	}
-
-	public void changeUsine(Usine usineToChange) {
-		for(int i = 0; i< this.usines.size();i++ )
+		for(int i = 0; i < this.usines.size(); i++)
 		{
-			Usine usine = this.usines.get(i);
-			if(usine.getId() == usineToChange.getId())
+			this._refreshManager.changeImages(currentTime, this.usines.get(i));
+			this.usinesImages = this.getCurrentImages();
+			this._refreshManager.handleCollisions();
+			ProductionItem produit = this._refreshManager.createProduct(currentTime, this.usines.get(i), this.getChemins());
+			if(produit == null) continue;
+			
+			this.productionItems.add(produit);
+			try 
 			{
-				this.usines.remove(i);
-				this.usines.add(usineToChange);
+				this.produitsImages.add(ImageIO.read(new File(produit.getImagePath())));
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
+			
+			this.produitsPositions.add(produit.getPosition());
+			this.produitsVitesses.add(produit.getVitesse());
+			
 		}
-		
+
 	}
 
 
-	public void refresh() {
-		// TODO Auto-generated method stub
+	public List<Image> getUsinesImages() {
+		return usinesImages;
+	}
+
+
+	public List<Image> getProduitsImages() {
+		return produitsImages;
+	}
+
+
+	public List<Point> getProduitsVitesses() {
+		return produitsVitesses;
+	}
+
+
+	public List<Point> getProduitsPositions() {
+		return produitsPositions;
+	}
+
+
+	public void createRefreshManager() {
+		this._refreshManager = new RefreshManager(this.getUsines(), this.productionItems, this.produitsImages, this.produitsPositions, this.produitsVitesses);
 		
 	}
+	
+	
 }

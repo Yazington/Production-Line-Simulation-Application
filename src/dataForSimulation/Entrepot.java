@@ -30,7 +30,6 @@ public class Entrepot extends Usine implements IObservable{
 	@Override
 	public ProductionItem faitProduit() {
 		return null;
-
 	}
 
 	@Override

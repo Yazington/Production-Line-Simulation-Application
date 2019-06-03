@@ -24,42 +24,42 @@ public class UsineMoteur extends UsineIntermediaire {
 	@Override
 	public ProductionItem faitProduit()
 	{
-		if(!this.isFull) return null;	
-				return new Moteur(this.sortie);
+		if(this.currentMetalQty != this.neededMetalQty) return null;	
+		return new Moteur(this.sortie);
 	}
 	
-	@Override
-	public void updateCurrentImage(int currentTime) {
-		if(this.intervalProduction != 0)
-		{
-			if( currentTime  >=0 && currentTime  < this.intervalProduction/3)
-			{
-				this.setCurrentImage(this.getImageByType("un-tiers"));
-			}
-			else if (currentTime  >=this.intervalProduction/3 && currentTime  < this.intervalProduction *2/3)
-			{
-				this.setCurrentImage(this.getImageByType("deux-tiers"));
-			}
-			else if (currentTime  >= this.intervalProduction *2/3 && currentTime  < this.intervalProduction)
-			{
-				this.setCurrentImage(this.getImageByType("plein"));
-				if(Math.abs(this.intervalProduction - currentTime) == 25)
-				{
-					this.isFull = true;
-				}
-				
-			}
-			else if ( currentTime == 0 || currentTime >= this.intervalProduction)
-			{
-				this.setCurrentImage(this.getImageByType("vide"));
-				
-			}
-		}
-		else
-		{
-			
-		}
-	}
+//	@Override
+//	public void updateCurrentImage(int currentTime) {
+//		if(this.intervalProduction != 0)
+//		{
+//			if( currentTime  >=0 && currentTime  < this.intervalProduction/3)
+//			{
+//				this.setCurrentImage(this.getImageByType("un-tiers"));
+//			}
+//			else if (currentTime  >=this.intervalProduction/3 && currentTime  < this.intervalProduction *2/3)
+//			{
+//				this.setCurrentImage(this.getImageByType("deux-tiers"));
+//			}
+//			else if (currentTime  >= this.intervalProduction *2/3 && currentTime  < this.intervalProduction)
+//			{
+//				this.setCurrentImage(this.getImageByType("plein"));
+//				if(Math.abs(this.intervalProduction - currentTime) == 25)
+//				{
+//					this.isFull = true;
+//				}
+//				
+//			}
+//			else if ( currentTime == 0 || currentTime >= this.intervalProduction)
+//			{
+//				this.setCurrentImage(this.getImageByType("vide"));
+//				
+//			}
+//		}
+//		else
+//		{
+//			
+//		}
+//	}
 	
 	
 	public void addOneEntree()

@@ -34,40 +34,40 @@ public class UsineAssemblage extends UsineIntermediaire {
 		}
 	}
 
-	@Override
-	public void updateCurrentImage(int currentTime) {
-		if(this.intervalProduction != 0)
-		{
-			if( currentTime  > 0 && currentTime  < this.intervalProduction/3)
-			{
-				this.setCurrentImage(this.getImageByType("un-tiers"));
-			}
-			else if (currentTime  >=this.intervalProduction/3 && currentTime  < this.intervalProduction *2/3)
-			{
-				this.setCurrentImage(this.getImageByType("deux-tiers"));
-			}
-			else if (currentTime  >= this.intervalProduction *2/3 && currentTime  < this.intervalProduction)
-			{
-				this.setCurrentImage(this.getImageByType("plein"));
-				if(Math.abs(this.intervalProduction - currentTime) == 25)
-				{
-					this.isFull = true;
-				}
-				
-			}
-			else if ( currentTime == 0 || currentTime >= this.intervalProduction)
-			{
-				this.setCurrentImage(this.getImageByType("vide"));
-				
-			}
-		}
-	}
+//	@Override
+//	public void updateCurrentImage(int currentTime) {
+//		if(this.intervalProduction != 0)
+//		{
+//			if( currentTime  > 0 && currentTime  < this.intervalProduction/3)
+//			{
+//				this.setCurrentImage(this.getImageByType("un-tiers"));
+//			}
+//			else if (currentTime  >=this.intervalProduction/3 && currentTime  < this.intervalProduction *2/3)
+//			{
+//				this.setCurrentImage(this.getImageByType("deux-tiers"));
+//			}
+//			else if (currentTime  >= this.intervalProduction *2/3 && currentTime  < this.intervalProduction)
+//			{
+//				this.setCurrentImage(this.getImageByType("plein"));
+//				if(Math.abs(this.intervalProduction - currentTime) == 25)
+//				{
+//					this.isFull = true;
+//				}
+//				
+//			}
+//			else if ( currentTime == 0 || currentTime >= this.intervalProduction)
+//			{
+//				this.setCurrentImage(this.getImageByType("vide"));
+//				
+//			}
+//		}
+//	}
 	
 	@Override
 	public ProductionItem faitProduit()
 	{
-		if(!this.isFull) return null;	
-				return new Avion(this.sortie);
+		if(this.currentAileQty < this.neededAileQty && this.currentMoteurQty < this.neededMoteurQty) return null;
+		return new Avion(this.sortie);
 	}
 
 	public void addOneAile() {

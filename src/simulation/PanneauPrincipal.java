@@ -37,17 +37,15 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 	private List<Image> usinesImages;
 	private List<Image> produitsImages;
 	private List<Point> produitsVitesses;
-	private List<Point> movingPoints;
-	private int currentTime;
+	private List<Point> produitsPositions;
 	
-	private static final int CURRENT_COMPONENTS_SPEED = 7;
 
 	public PanneauPrincipal(MenuFenetre menuFenetre) {
 		super();
 		this.menuFenetre = menuFenetre;
 		this.produitsImages = new ArrayList<Image>();
 		this.produitsVitesses = new ArrayList<Point>();
-		this.movingPoints = new ArrayList<Point>();
+		this.produitsPositions = new ArrayList<Point>();
 	}
 	
 	@Override
@@ -75,53 +73,54 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 		}
 
 		
-//		// dessine les usines
-//		if(this.usinesPositions != null && this.usinesImages != null)
-//		{
-//			for(int i = 0; i< this.usinesPositions.size();i++)
-//			{
-//				try {
-//				g.drawImage(this.usinesImages.get(i), this.usinesPositions.get(i).x, this.usinesPositions.get(i).y, null);
-//				}
-//				catch(Exception e)
-//				{
-//					System.err.println("-----------------usinesPositions and usines images-------------------------------");
-//				}
-//			}
-//			
-//		}
-//		
-//		// dessine les produits et avec leurs translations
-//		if(this.movingPoints!=null && this.produitsImages != null )
-//		{
-//			for(int i = 0; i<this.movingPoints.size();i++)
-//			{
-//				try {
-//					g.drawImage(this.produitsImages.get(i), this.movingPoints.get(i).x, this.movingPoints.get(i).y, null);
-//				}
-//				catch(Exception e)
-//				{
-//					System.err.println("----------------- MOVING POINTS ERROR-------------------");
-//				}
-//				
-//				
-//			}
-//
-//		}
-//		
-//		if(this.movingPoints!=null)
-//		{
-//			for(int i = 0; i < this.movingPoints.size();i++)
-//			{
-//				try {
-//					this.movingPoints.get(i).translate(this.produitsVitesses.get(i).x, this.produitsVitesses.get(i).y);
-//				}
-//				catch(Exception e) {
-//					System.err.println("--moving items--");
-//				}
-//				
-//			}
-//		}
+		// dessine les usines
+		if(this.usinesPositions != null && this.usinesImages != null)
+		{
+			for(int i = 0; i< this.usinesPositions.size();i++)
+			{
+				try 
+				{
+				g.drawImage(this.usinesImages.get(i), this.usinesPositions.get(i).x, this.usinesPositions.get(i).y, null);
+				}
+				catch(Exception e)
+				{
+					System.err.println("-----------------usinesPositions and usines images-------------------------------");
+				}
+			}
+			
+		}
+		
+		// dessine les produits et avec leurs translations
+		if(this.produitsPositions!=null && this.produitsImages != null )
+		{
+			for(int i = 0; i<this.produitsPositions.size();i++)
+			{
+				try {
+					g.drawImage(this.produitsImages.get(i), this.produitsPositions.get(i).x, this.produitsPositions.get(i).y, null);
+				}
+				catch(Exception e)
+				{
+					System.err.println("----------------- MOVING POINTS ERROR-------------------");
+				}
+				
+				
+			}
+
+		}
+		
+		if(this.produitsPositions!=null)
+		{
+			for(int i = 0; i < this.produitsPositions.size();i++)
+			{
+				try {
+					this.produitsPositions.get(i).translate(this.produitsVitesses.get(i).x, this.produitsVitesses.get(i).y);
+				}
+				catch(Exception e) {
+					System.err.println("--moving items--");
+				}
+				
+			}
+		}
 	}
 	
 	
@@ -166,8 +165,13 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 		return usines;
 	}
 
-	public void refreshNetwork(int newValue) {
-		this.reseau.refresh();
+	public void refreshNetwork(int currentTime) {
+		if(this.reseau == null) return;
+		this.reseau.refresh(currentTime);
+		this.usinesImages = this.reseau.getUsinesImages();
+		this.produitsImages = this.reseau.getProduitsImages();
+		this.produitsPositions = this.reseau.getProduitsPositions();
+		this.produitsVitesses = this.reseau.getProduitsVitesses();
 		repaint();
 		
 	}
@@ -180,7 +184,9 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 	@Override
 	public void UpdateObserver() {
 		XMLSourcer xmlSourcer = this.menuFenetre.getXmlSourcer();
-		List<Usine> usines = createNetwork(xmlSourcer);
+		createNetwork(xmlSourcer);
+		this.reseau.createRefreshManager();
+		this.usinesPositions = this.reseau.getCurrentPositions();
 		paintChemins(this.getGraphics());
 		
 	}

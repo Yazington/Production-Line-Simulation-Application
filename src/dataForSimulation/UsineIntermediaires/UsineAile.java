@@ -29,42 +29,42 @@ public class UsineAile extends UsineIntermediaire {
 	@Override
 	public ProductionItem faitProduit()
 	{
-		if(!this.IsFull) return null;	
+		if(this.currentMetalQty != this.neededMetalQty) return null;
 		return new Aile(this.sortie);
 	}
 	
-	@Override
-	public void updateCurrentImage(int currentTime) {
-		if(this.intervalProduction != 0)
-		{
-			if( currentTime  >= 0 && currentTime  < this.intervalProduction/3)
-			{
-				this.setCurrentImage(this.getImageByType("un-tiers"));
-			}
-			else if (currentTime  >=this.intervalProduction/3 && currentTime  < this.intervalProduction *2/3)
-			{
-				this.setCurrentImage(this.getImageByType("deux-tiers"));
-			}
-			else if (currentTime  >= this.intervalProduction *2/3 && currentTime  < this.intervalProduction)
-			{
-				this.setCurrentImage(this.getImageByType("plein"));
-
-				
-			}
-			else if ( currentTime == 0 || currentTime >= this.intervalProduction)
-			{
-				this.setCurrentImage(this.getImageByType("vide"));
-				if(Math.abs(this.intervalProduction - currentTime) ==1)
-				{
-					this.IsFull = true;
-				}
-			}
-		}
-		else
-		{
-			
-		}
-	}
+//	@Override
+//	public void updateCurrentImage(int currentTime) {
+//		if(this.intervalProduction != 0)
+//		{
+//			if( currentTime  >= 0 && currentTime  < this.intervalProduction/3)
+//			{
+//				this.setCurrentImage(this.getImageByType("un-tiers"));
+//			}
+//			else if (currentTime  >=this.intervalProduction/3 && currentTime  < this.intervalProduction *2/3)
+//			{
+//				this.setCurrentImage(this.getImageByType("deux-tiers"));
+//			}
+//			else if (currentTime  >= this.intervalProduction *2/3 && currentTime  < this.intervalProduction)
+//			{
+//				this.setCurrentImage(this.getImageByType("plein"));
+//
+//				
+//			}
+//			else if ( currentTime == 0 || currentTime >= this.intervalProduction)
+//			{
+//				this.setCurrentImage(this.getImageByType("vide"));
+//				if(Math.abs(this.intervalProduction - currentTime) ==1)
+//				{
+//					this.IsFull = true;
+//				}
+//			}
+//		}
+//		else
+//		{
+//			
+//		}
+//	}
 	
 	public void addOneEntree()
 	{
