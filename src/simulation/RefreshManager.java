@@ -29,7 +29,6 @@ public class RefreshManager {
 	private int usineAileTimer;
 	private int usineMoteurTimer;
 	private int usineAssemblageTimer;
-	private int entrepotTimer;
 	
 	public RefreshManager(List<Usine> usines, List<ProductionItem> productionItems, List<Image> produitsImages, 
 						  List<Point> produitsPositions, List<Point> produitsVitesses) 
@@ -42,7 +41,6 @@ public class RefreshManager {
 		this.usineAileTimer = 0;
 		this.usineMoteurTimer = 0;
 		this.usineAssemblageTimer = 0;
-		this.entrepotTimer = 0;
 	}
 
 	/**
@@ -443,6 +441,10 @@ public class RefreshManager {
 				((UsineAssemblage)usine).setCurrentMoteurQty(0);
 				return (Avion)produit;
 			}
+		}
+		else if (usine.getType().equals("entrepot"))
+		{
+			((Entrepot) usine).stopIfFull();
 		}
 		return null;
 		

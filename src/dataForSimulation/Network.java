@@ -34,6 +34,7 @@ public class Network {
 	private List<Point> produitsVitesses;
 	private List<Point> produitsPositions;
 	private RefreshManager _refreshManager;
+	private Entrepot IObservableEntrepot;
 
 	public Network(List<String> metadonneesD, List<String> simulationD)
 	{
@@ -45,6 +46,7 @@ public class Network {
 		this.produitsImages = new ArrayList<Image>();
 		this.produitsVitesses = new ArrayList<Point>();
 		this.produitsPositions = new ArrayList<Point>();
+		this.IObservableEntrepot = null;
 		
 	}
 	
@@ -101,6 +103,7 @@ public class Network {
 				
 				Usine usineMatiere = new UsineMatiere(Integer.parseInt(parameters.get(0)), position, parameters.get(1), images, 
 													  sortieAndInterval[0], Integer.parseInt(sortieAndInterval[1]));
+				
 				usineMatiere.setCurrentImage(usineMatiere.getImageByType("vide"));
 				usines.add(usineMatiere);
 			}
@@ -160,6 +163,7 @@ public class Network {
 				entrees.add(entree);
 				
 				Usine entrepot = new Entrepot(Integer.parseInt(parameters.get(0)), position, parameters.get(1), images, entrees);
+				this.IObservableEntrepot = (Entrepot)entrepot;
 				usines.add(entrepot);
 				
 			}
@@ -367,7 +371,6 @@ public class Network {
 	}
 
 
-
 	public List<Usine> getUsines() {
 		return this.usines;
 	}
@@ -376,7 +379,6 @@ public class Network {
 	public List<Chemin> getChemins() {
 		return chemins;
 	}
-
 
 
 	public void refresh(int currentTime) 
@@ -431,6 +433,44 @@ public class Network {
 		this._refreshManager = new RefreshManager(this.getUsines(), this.productionItems, this.produitsImages, this.produitsPositions, this.produitsVitesses);
 		
 	}
-	
+
+
+	public void createObserverPattern() {
+		
+		Entrepot entrepot = (Entrepot)this.usines.stream()
+				.filter(u -> u.getType().equals("entrepot")).findFirst().get();
+		if(entrepot == null) return;
+		
+		List<Usine> usinesWithoutEntrepot = this.usines.stream().filter(u->!u.getType().equals("entrepot")).collect(Collectors.toList());
+		for(int i =0; i< usinesWithoutEntrepot.size();i++)
+		{
+			entrepot.registerUsine(usinesWithoutEntrepot.get(i));
+		}
+		
+
+		for(int i = 0;i<this.usines.size(); i++)
+		{
+			Usine usine = this.usines.get(i);
+			
+			if(usine.getType().equals("usine-matiere"))
+			{
+				((UsineMatiere) usine).setEntrepot(entrepot);
+			}
+			else if (usine.getType().equals("usine-aile"))
+			{
+				((UsineAile) usine).setEntrepot(entrepot);
+			}
+			else if (usine.getType().equals("usine-assemblage"))
+			{
+				((UsineAssemblage) usine).setEntrepot(entrepot);
+			}
+			else if (usine.getType().equals("usine-moteur"))
+			{
+				((UsineMoteur)usine).setEntrepot(entrepot);
+			}
+		}
+		
+	}
+
 	
 }

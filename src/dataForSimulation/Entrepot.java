@@ -2,6 +2,7 @@ package dataForSimulation;
 
 import java.awt.Image;
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.List;
 
 import observerPattern.IObservable;
@@ -12,6 +13,7 @@ public class Entrepot extends Usine implements IObservable{
 	private int currentAvionQTY;
 	private int maxAvionQTY;
 	private boolean isFull;
+	private List<Usine> usinesObservers;
 	
 	public Entrepot(int id,Point position , String type, List<Image> images, List<ProductionItem> entree)
 	{
@@ -25,29 +27,49 @@ public class Entrepot extends Usine implements IObservable{
 		this.maxAvionQTY = entree.get(0).getNeededQuantity();
 		this.intervalProduction = 0;
 		this.isFull = false;
+		this.usinesObservers = new ArrayList<Usine>();
 	}
 
 	@Override
 	public ProductionItem faitProduit() {
 		return null;
 	}
+	
+	public void stopIfFull()
+	{
+		notifyObserver();
+	}
 
 	@Override
 	public void registerObserver(IObserver o) {
-		// TODO Auto-generated method stub
 		
+	}
+	
+	public void registerUsine(Usine usine) {
+		this.usinesObservers.add(usine);
 	}
 
 	@Override
 	public void unregisterObserver(IObserver o) {
-		// TODO Auto-generated method stub
-		
+		for(int i = 0; i< this.usinesObservers.size(); i++)
+		{
+			if(this.usinesObservers.get(i) == o)
+			{
+				this.usinesObservers.remove(i);
+			}
+		}
 	}
 
+	/**
+	 * should be called notifyObservers but because many classes use it, its stays Observer
+	 */
 	@Override
 	public void notifyObserver() {
-		// TODO Auto-generated method stub
-		
+		if(this.usinesObservers==null) return;
+		for(int i = 0; i<this.usinesObservers.size(); i++)
+		{
+			this.usinesObservers.get(i).UpdateObserver();
+		}
 	}
 
 	public void addOneEntree() {
@@ -67,31 +89,6 @@ public class Entrepot extends Usine implements IObservable{
 		return maxAvionQTY;
 	}
 
-	
-	@Override
-	public void updateCurrentImage(int currentTime) {
-		
-		if( this.currentAvionQTY  > 0 && this.currentAvionQTY  < this.maxAvionQTY/3)
-		{
-			this.setCurrentImage(this.getImageByType("un-tiers"));
-		}
-		else if (this.currentAvionQTY  >= this.maxAvionQTY/3 && this.currentAvionQTY  < this.maxAvionQTY*2/3)
-		{
-			this.setCurrentImage(this.getImageByType("deux-tiers"));
-		}
-		else if (this.currentAvionQTY  >= this.maxAvionQTY*2/3 && this.currentAvionQTY  < this.maxAvionQTY)
-		{
-			this.setCurrentImage(this.getImageByType("plein"));
-			this.isFull = true;
-			
-		}
-		else if ( this.currentAvionQTY == 0)
-		{
-			this.setCurrentImage(this.getImageByType("vide"));
-		}
-		
-	}
-
 	public boolean isFull() {
 		return isFull;
 	}
@@ -99,7 +96,10 @@ public class Entrepot extends Usine implements IObservable{
 	public void setFull(boolean isFull) {
 		this.isFull = isFull;
 	}
-	
-	
 
+	@Override
+	protected void UpdateObserver() {
+		// TODO Auto-generated method stub
+		
+	}
 }

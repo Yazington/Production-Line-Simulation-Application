@@ -10,13 +10,9 @@ import observerPattern.IObserver;
 
 public class UsineMatiere extends Usine implements IObserver{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	private String sortie;
+	private Entrepot entrepot;
 	private boolean entrepotIsFull;
-	private ProductionItem produitFinal;
 	
 	public UsineMatiere(int id, Point position, String type, List<Image> images, String sortie, int intervalProduction)
 	{
@@ -27,25 +23,35 @@ public class UsineMatiere extends Usine implements IObserver{
 		this.sortie = sortie;
 		this.intervalProduction = intervalProduction;
 		this.currentImage = this.getImageByType("vide");
-		
+		this.entrepotIsFull = false;
 	}
 	
 	@Override
 	public ProductionItem faitProduit() {
-		this.setCurrentImage(this.getImageByType("vide"));
+		if(this.entrepotIsFull) return null;
+//		this.setCurrentImage(this.getImageByType("vide"));
 		return new Metal(this.sortie);
 	}
 
 	@Override
 	public void UpdateObserver() {
-		// TODO Auto-generated method stub
-		
+		if(this.entrepot.getCurrentAvionQTY() != this.entrepot.getMaxAvionQTY())
+		{
+			this.entrepotIsFull = false;
+		}
+		else
+		{
+			this.entrepotIsFull = true;
+		}
 	}
 
 	public int getIntervalProduction() {
 		return intervalProduction;
 	}
 
+	public void setEntrepot(Entrepot entrepot) {
+		this.entrepot = entrepot;
+	}	
 	
 	
 }

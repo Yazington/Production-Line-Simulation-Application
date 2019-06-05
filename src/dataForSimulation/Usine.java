@@ -104,5 +104,7 @@ public abstract class Usine{
 	{
 		return this.position;
 	}
+
+	protected abstract void UpdateObserver();
 	
 }

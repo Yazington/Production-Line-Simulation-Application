@@ -59,11 +59,11 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 		{
 			for(int i = 0; i< this.cheminsPoints1.size();i++)
 			{
-				try {
-				Point point1 = this.cheminsPoints1.get(i);
-				Point point2 = this.cheminsPoints2.get(i);
-				g2d.drawLine(point1.x + 16, point1.y + 16, point2.x + 16 , point2.y + 16);
-//				this.reseau.setUsinesAreLoaded(true);
+				try 
+				{
+					Point point1 = this.cheminsPoints1.get(i);
+					Point point2 = this.cheminsPoints2.get(i);
+					g2d.drawLine(point1.x + 16, point1.y + 16, point2.x + 16 , point2.y + 16);
 				}
 				catch(Exception e)
 				{
@@ -90,12 +90,13 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 			
 		}
 		
-		// dessine les produits et avec leurs translations
+		// dessine les produits
 		if(this.produitsPositions!=null && this.produitsImages != null )
 		{
 			for(int i = 0; i<this.produitsPositions.size();i++)
 			{
-				try {
+				try 
+				{
 					g.drawImage(this.produitsImages.get(i), this.produitsPositions.get(i).x, this.produitsPositions.get(i).y, null);
 				}
 				catch(Exception e)
@@ -108,11 +109,13 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 
 		}
 		
+		// donne des vitesses aux produits
 		if(this.produitsPositions!=null)
 		{
 			for(int i = 0; i < this.produitsPositions.size();i++)
 			{
-				try {
+				try 
+				{
 					this.produitsPositions.get(i).translate(this.produitsVitesses.get(i).x, this.produitsVitesses.get(i).y);
 				}
 				catch(Exception e) {
@@ -173,7 +176,6 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 		this.produitsPositions = this.reseau.getProduitsPositions();
 		this.produitsVitesses = this.reseau.getProduitsVitesses();
 		repaint();
-		
 	}
 
 	public Network getNetwork() {
@@ -186,6 +188,7 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 		XMLSourcer xmlSourcer = this.menuFenetre.getXmlSourcer();
 		createNetwork(xmlSourcer);
 		this.reseau.createRefreshManager();
+		this.reseau.createObserverPattern();
 		this.usinesPositions = this.reseau.getCurrentPositions();
 		paintChemins(this.getGraphics());
 		

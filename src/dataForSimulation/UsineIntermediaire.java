@@ -36,6 +36,12 @@ public class UsineIntermediaire extends Usine{
 		return intervalProduction;
 	}
 
+	@Override
+	protected void UpdateObserver() {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 	
 	

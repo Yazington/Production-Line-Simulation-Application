@@ -7,71 +7,38 @@ import java.util.List;
 import dataForSimulation.*;
 import dataForSimulation.ProductionItems.Aile;
 import dataForSimulation.ProductionItems.Metal;
-public class UsineAile extends UsineIntermediaire {
+import observerPattern.IObserver;
+public class UsineAile extends UsineIntermediaire implements IObserver{
 
 	private int currentMetalQty;
 	private int neededMetalQty;
-	private boolean IsFull;
+	private boolean entrepotIsFull;
+	private Entrepot entrepot;
 	
 	public UsineAile(int id, Point position, String type, List<Image> images, String sortie, List<ProductionItem> entree, int intervalProduction)
 	{
 		super(id, position, type, images, sortie, entree, intervalProduction);
 		this.currentMetalQty = 0;
 		this.neededMetalQty = entree.get(0).getNeededQuantity();
-		this.IsFull = false;
+		this.entrepotIsFull = false;
 	} 
 	
-//	@Override
-//	public ProductionItem faitProduit() {
-//		return new ProductionItem(this.sortie);
-//	}
 	
 	@Override
 	public ProductionItem faitProduit()
 	{
-		if(this.currentMetalQty != this.neededMetalQty) return null;
+		if(this.currentMetalQty != this.neededMetalQty || this.entrepotIsFull) return null;
 		return new Aile(this.sortie);
 	}
 	
-//	@Override
-//	public void updateCurrentImage(int currentTime) {
-//		if(this.intervalProduction != 0)
-//		{
-//			if( currentTime  >= 0 && currentTime  < this.intervalProduction/3)
-//			{
-//				this.setCurrentImage(this.getImageByType("un-tiers"));
-//			}
-//			else if (currentTime  >=this.intervalProduction/3 && currentTime  < this.intervalProduction *2/3)
-//			{
-//				this.setCurrentImage(this.getImageByType("deux-tiers"));
-//			}
-//			else if (currentTime  >= this.intervalProduction *2/3 && currentTime  < this.intervalProduction)
-//			{
-//				this.setCurrentImage(this.getImageByType("plein"));
-//
-//				
-//			}
-//			else if ( currentTime == 0 || currentTime >= this.intervalProduction)
-//			{
-//				this.setCurrentImage(this.getImageByType("vide"));
-//				if(Math.abs(this.intervalProduction - currentTime) ==1)
-//				{
-//					this.IsFull = true;
-//				}
-//			}
-//		}
-//		else
-//		{
-//			
-//		}
-//	}
 	
 	public void addOneEntree()
 	{
 		this.currentMetalQty++;
 	}
 
-	public int getCurrentMetalQty() {
+	public int getCurrentMetalQty() 
+	{
 		return currentMetalQty;
 	}
 
@@ -83,14 +50,24 @@ public class UsineAile extends UsineIntermediaire {
 		this.currentMetalQty = currentMetalQty;
 	}
 
-	public boolean isFull() {
-		return IsFull;
+
+	@Override
+	public void UpdateObserver() {
+		if(this.entrepot.getCurrentAvionQTY() != this.entrepot.getMaxAvionQTY())
+		{
+			this.entrepotIsFull = false;
+		}
+		else
+		{
+			this.entrepotIsFull = true;
+		}
+		
 	}
 
-	public void setIsFull(boolean isFull) {
-		IsFull = isFull;
+
+	public void setEntrepot(Entrepot entrepot) {
+		this.entrepot = entrepot;
 	}
-	
 	
 	
 }

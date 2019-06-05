@@ -29,7 +29,6 @@ public class MenuFenetre extends JMenuBar implements IObservable {
 	private static final String MENU_AIDE_TITRE = "Aide";
 	private static final String MENU_AIDE_PROPOS = " propos de...";
 
-	
 	private XMLSourcer xmlSourcer;
 	private IObserver panneauPrincipalO;
 
