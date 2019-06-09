@@ -8,7 +8,7 @@ public class IntervalSell implements IVenteStrategy{
 	
 	public boolean sell()
 	{
-		if(this.currentAvionQTY == 3)
+		if(this.currentAvionQTY == 4)
 			return true;
 		else
 			return false;
