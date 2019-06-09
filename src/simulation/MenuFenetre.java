@@ -2,18 +2,14 @@ package simulation;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.io.IOException;
-import java.util.List;
-
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
-
 import observerPattern.IObservable;
 import observerPattern.IObserver;
 import xmlUtility.*;
@@ -33,7 +29,6 @@ public class MenuFenetre extends JMenuBar implements IObservable {
 	private XMLSourcer xmlSourcer;
 	private IObserver panneauPrincipalO;
 	private int strategie;
-	private JMenuItem menuChoisir;
 	private FenetreStrategie fenetreMenuChoisir;
 
 	public MenuFenetre() {
@@ -98,7 +93,6 @@ public class MenuFenetre extends JMenuBar implements IObservable {
 			this.fenetreMenuChoisir = new FenetreStrategie();
 			
 		});
-		this.menuChoisir = menuChoisir;
 		add(menuSimulation);
 		
 

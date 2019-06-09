@@ -4,9 +4,7 @@ import java.awt.Image;
 import java.awt.Point;
 import java.util.List;
 import dataForSimulation.*;
-import dataForSimulation.ProductionItems.Aile;
 import dataForSimulation.ProductionItems.Avion;
-import dataForSimulation.ProductionItems.Moteur;
 import observerPattern.IObserver;
 
 public class UsineAssemblage extends UsineIntermediaire implements IObserver {

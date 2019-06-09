@@ -1,9 +1,5 @@
 package dataForSimulation.ProductionItems;
 
-
-
-import javax.swing.ImageIcon;
-
 import dataForSimulation.*;
 
 public class Avion extends ProductionItem{

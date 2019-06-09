@@ -3,7 +3,6 @@ package dataForSimulation;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import dataForSimulation.ProductionItems.Metal;
 import observerPattern.IObserver;

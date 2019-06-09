@@ -112,11 +112,6 @@ public class Entrepot extends Usine implements IObservable{
 		
 	}
 
-	public void continueIfNotFull() {
-		// TODO Auto-generated method stub
-		
-	}
-
 
 	public boolean sellProduct()
 	{

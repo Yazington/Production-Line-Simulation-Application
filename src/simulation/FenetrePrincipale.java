@@ -6,9 +6,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.JFrame;
-
-import dataForSimulation.Network;
-import dataForSimulation.UsineMatiere;
 import observerPattern.IObserver;
 
 public class FenetrePrincipale extends JFrame implements PropertyChangeListener {

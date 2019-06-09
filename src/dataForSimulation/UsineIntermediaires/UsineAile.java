@@ -6,7 +6,6 @@ import java.util.List;
 
 import dataForSimulation.*;
 import dataForSimulation.ProductionItems.Aile;
-import dataForSimulation.ProductionItems.Metal;
 import observerPattern.IObserver;
 public class UsineAile extends UsineIntermediaire implements IObserver{
 

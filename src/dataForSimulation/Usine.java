@@ -2,18 +2,8 @@ package dataForSimulation;
 
 import java.awt.Image;
 import java.awt.Point;
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
-import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-
-import observerPattern.IObserver;
-import simulation.Environnement;
 
 public abstract class Usine{
 
@@ -51,7 +41,6 @@ public abstract class Usine{
 	public void setCurrentImage(Image currentImage) {
 		this.currentImage = currentImage;
 	}
-	// TODO: change icone type to image type
 	public Image getImageByType(String type)
 	{
 		if(type.equals("vide"))

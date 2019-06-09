@@ -1,11 +1,6 @@
 package simulation;
 
-import java.util.List;
-
 import javax.swing.SwingWorker;
-
-import dataForSimulation.Usine;
-
 
 public class Environnement extends SwingWorker<Object, String>{
 	private boolean actif = true;

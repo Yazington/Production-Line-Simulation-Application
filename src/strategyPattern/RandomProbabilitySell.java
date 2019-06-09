@@ -9,7 +9,7 @@ public class RandomProbabilitySell implements IVenteStrategy {
 	
 	public boolean sell()
 	{
-		int i = new Random().nextInt(1000);
+		int i = new Random().nextInt(200);
 		if(SELLING_NUMBER == i)
 			return true;
 		else

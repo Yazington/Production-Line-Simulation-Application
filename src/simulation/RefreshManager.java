@@ -446,8 +446,7 @@ public class RefreshManager {
 		{
 			Entrepot entrepot = (Entrepot) usine;
 			stopIfFull(entrepot);
-			continueIfNotFull(entrepot);
-			if(entrepot.getCurrentAvionQTY() == entrepot.getMaxAvionQTY() - 1)
+			if(entrepot.getCurrentAvionQTY() == entrepot.getMaxAvionQTY() - 2)
 			{
 				boolean sellOne = entrepot.sellProduct();
 				if(sellOne) entrepot.removeOneEntree();
@@ -456,11 +455,7 @@ public class RefreshManager {
 		return null;
 		
 	}
-	
-	private void continueIfNotFull(Entrepot entrepot) {
-		entrepot.continueIfNotFull();
-		
-	}
+
 
 	private void stopIfFull(Entrepot entrepot) {
 		entrepot.stopIfFull();
@@ -535,10 +530,7 @@ public class RefreshManager {
 								this.produitsVitesses.remove(i);
 								this.productionItems.remove(i);
 								this.produitsPositions.remove(i);
-//								if(usineAssemblage.getCurrentMoteurQty()> usineAssemblage.getNeededMoteurQty())
-//								{
-//									usineAssemblage.setCurrentMoteurQty(0);
-//								}
+
 								((UsineAssemblage) usineAssemblage).addOneAile();
 							}
 							catch (Exception e)
@@ -562,10 +554,7 @@ public class RefreshManager {
 							this.produitsVitesses.remove(i);
 							this.productionItems.remove(i);
 							this.produitsPositions.remove(i);
-//							if(usineAssemblage.getCurrentMoteurQty()> usineAssemblage.getNeededMoteurQty())
-//							{
-//								usineAssemblage.setCurrentMoteurQty(0);
-//							}
+
 							usineAssemblage.addOneMoteur();
 						}
 						catch (Exception e)

@@ -2,18 +2,13 @@ package dataForSimulation;
 
 import java.awt.Image;
 import java.awt.Point;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
-
 import javax.imageio.ImageIO;
-
 import dataForSimulation.UsineIntermediaires.UsineAile;
 import dataForSimulation.UsineIntermediaires.UsineAssemblage;
 import dataForSimulation.UsineIntermediaires.UsineMoteur;
@@ -30,25 +25,21 @@ public class Network {
 	private List<Usine> usines;
 	private List<Chemin> chemins;
 	private List<ProductionItem> productionItems;
-	private List<Point> usinesPositions;
 	private List<Image> usinesImages;
 	private List<Image> produitsImages;
 	private List<Point> produitsVitesses;
 	private List<Point> produitsPositions;
 	private RefreshManager _refreshManager;
-	private Entrepot IObservableEntrepot;
 
 	public Network(List<String> metadonneesD, List<String> simulationD)
 	{
 		this.metadonneesD = metadonneesD;
 		this.simulationD = simulationD;
 		this.productionItems = new ArrayList<ProductionItem>();
-		this.usinesPositions = new ArrayList<Point>();
 		this.usinesImages = new ArrayList<Image>();
 		this.produitsImages = new ArrayList<Image>();
 		this.produitsVitesses = new ArrayList<Point>();
 		this.produitsPositions = new ArrayList<Point>();
-		this.IObservableEntrepot = null;
 		
 	}
 	
@@ -169,7 +160,6 @@ public class Network {
 				
 				Usine entrepot = new Entrepot(Integer.parseInt(parameters.get(0)), position, parameters.get(1), images, entrees,
 											  intervalSell, randomSell);
-				this.IObservableEntrepot = (Entrepot)entrepot;
 				usines.add(entrepot);
 				
 			}
@@ -268,15 +258,10 @@ public class Network {
 				{
 					if(metadonneesD.get(i).equals("icone")) 
 					{
-						String iconeType = "" ;
 						String path = "";
 						for(int j = i; j< i+3;j++)
 						{
-							if(metadonneesD.get(j).contains("type:"))
-							{
-								iconeType = metadonneesD.get(j).replace("type:","");
-							}
-							else if(metadonneesD.get(j).contains("path:"))
+							if(metadonneesD.get(j).contains("path:"))
 							{
 								path = metadonneesD.get(j).replace("path:","");
 							}
