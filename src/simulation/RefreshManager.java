@@ -52,7 +52,7 @@ public class RefreshManager {
 		if(usine.getType().equals("usine-matiere"))
 		{
 			UsineMatiere usineMatiere = (UsineMatiere) usine;
-			if(currentTime == 0 || currentTime > usineMatiere.getIntervalProduction())
+			if(currentTime == 0 || currentTime > usineMatiere.getIntervalProduction() || usineMatiere.entrepotIsFull())
 			{
 				usine.setCurrentImage(usine.getImageByType("vide"));
 			}
@@ -444,12 +444,29 @@ public class RefreshManager {
 		}
 		else if (usine.getType().equals("entrepot"))
 		{
-			((Entrepot) usine).stopIfFull();
+			Entrepot entrepot = (Entrepot) usine;
+			stopIfFull(entrepot);
+			continueIfNotFull(entrepot);
+			if(entrepot.getCurrentAvionQTY() == entrepot.getMaxAvionQTY() - 1)
+			{
+				boolean sellOne = entrepot.sellProduct();
+				if(sellOne) entrepot.removeOneEntree();
+			}
 		}
 		return null;
 		
 	}
 	
+	private void continueIfNotFull(Entrepot entrepot) {
+		entrepot.continueIfNotFull();
+		
+	}
+
+	private void stopIfFull(Entrepot entrepot) {
+		entrepot.stopIfFull();
+		
+	}
+
 	public void handleCollisions() {
 		updateUsinesAM();
 		updateUsinesAssemblage();

@@ -18,6 +18,8 @@ import dataForSimulation.UsineIntermediaires.UsineAile;
 import dataForSimulation.UsineIntermediaires.UsineAssemblage;
 import dataForSimulation.UsineIntermediaires.UsineMoteur;
 import simulation.RefreshManager;
+import strategyPattern.IntervalSell;
+import strategyPattern.RandomProbabilitySell;
 
 public class Network {
 
@@ -161,8 +163,12 @@ public class Network {
 				ProductionItem entree = new ProductionItem(sortieIntervalEntree[3], Integer.parseInt(sortieIntervalEntree[2]));
 				List<ProductionItem> entrees = new LinkedList<ProductionItem>();
 				entrees.add(entree);
+				RandomProbabilitySell randomSell = new RandomProbabilitySell();
+				IntervalSell intervalSell = new IntervalSell();
 				
-				Usine entrepot = new Entrepot(Integer.parseInt(parameters.get(0)), position, parameters.get(1), images, entrees);
+				
+				Usine entrepot = new Entrepot(Integer.parseInt(parameters.get(0)), position, parameters.get(1), images, entrees,
+											  intervalSell, randomSell);
 				this.IObservableEntrepot = (Entrepot)entrepot;
 				usines.add(entrepot);
 				
@@ -435,7 +441,7 @@ public class Network {
 	}
 
 
-	public void createObserverPattern() {
+	public void createObserverPattern(int strategie) {
 		
 		Entrepot entrepot = (Entrepot)this.usines.stream()
 				.filter(u -> u.getType().equals("entrepot")).findFirst().get();
@@ -470,7 +476,7 @@ public class Network {
 			}
 		}
 		
-	}
-
-	
+		entrepot.setStrategy(strategie);
+		
+	}	
 }

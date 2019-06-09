@@ -26,9 +26,16 @@ public class UsineMatiere extends Usine implements IObserver{
 		this.entrepotIsFull = false;
 	}
 	
+	public boolean entrepotIsFull() {
+		return entrepotIsFull;
+	}
+
 	@Override
 	public ProductionItem faitProduit() {
-		if(this.entrepotIsFull) return null;
+		if(this.entrepotIsFull) 
+		{
+			return null;
+		}
 //		this.setCurrentImage(this.getImageByType("vide"));
 		return new Metal(this.sortie);
 	}
@@ -42,6 +49,7 @@ public class UsineMatiere extends Usine implements IObserver{
 		else
 		{
 			this.entrepotIsFull = true;
+			
 		}
 	}
 

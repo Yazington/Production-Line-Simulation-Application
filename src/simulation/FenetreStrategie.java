@@ -3,6 +3,7 @@ package simulation;
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 public class FenetreStrategie extends JFrame {
 
@@ -19,5 +20,10 @@ public class FenetreStrategie extends JFrame {
 		setVisible(true);
 		setLocationRelativeTo(null);
 		setResizable(false);
+	}
+
+	public int getStrategy() {
+		if(this.panneauStrategie == null) return 0;
+		return panneauStrategie.getStrategie();
 	}
 }

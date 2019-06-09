@@ -14,6 +14,7 @@ import javax.swing.SwingUtilities;
 public class PanneauStrategie extends JPanel {
 
 	private static final long serialVersionUID = 1L;
+	private int strategie = 3;
 
 	public PanneauStrategie() {
 
@@ -25,7 +26,18 @@ public class PanneauStrategie extends JPanel {
 
 		boutonConfirmer.addActionListener((ActionEvent e) -> {
 			// TODO - Appeler la bonne strategie
-			System.out.println(getSelectedButtonText(groupeBoutons));
+			
+			if(getSelectedButtonText(groupeBoutons).contains("1"))
+			{
+				System.out.println("Strategy 1");
+				this.strategie = 1;
+			}
+			else if(getSelectedButtonText(groupeBoutons).contains("2"))
+			{
+				System.out.println("Strategy 2");
+				this.strategie = 2;
+			}
+
 			// Fermer la fenetre du composant
 			SwingUtilities.getWindowAncestor((Component) e.getSource()).dispose();
 		});
@@ -59,7 +71,13 @@ public class PanneauStrategie extends JPanel {
 			}
 		}
 
-		return null;
+		//returns second strategy by default
+		return "2";
 	}
 
+	public int getStrategie() {
+		return strategie;
+	}
+
+	
 }

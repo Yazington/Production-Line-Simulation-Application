@@ -10,6 +10,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 
@@ -31,6 +32,9 @@ public class MenuFenetre extends JMenuBar implements IObservable {
 
 	private XMLSourcer xmlSourcer;
 	private IObserver panneauPrincipalO;
+	private int strategie;
+	private JMenuItem menuChoisir;
+	private FenetreStrategie fenetreMenuChoisir;
 
 	public MenuFenetre() {
 		ajouterMenuFichier();
@@ -58,12 +62,14 @@ public class MenuFenetre extends JMenuBar implements IObservable {
 
 			if (returnValue == JFileChooser.APPROVE_OPTION) {
 				File selectedFile = fileChooser.getSelectedFile();
-//				TODO: createXMLSourcer and get infos
 				XMLSourcer xmlSourcer = new XMLSourcer(selectedFile.getAbsolutePath());
 				xmlSourcer.getData();
 				this.xmlSourcer = xmlSourcer;
+				if(this.fenetreMenuChoisir == null) 
+					this.strategie = 0;
+				else
+					this.strategie = this.fenetreMenuChoisir.getStrategy();
 				notifyObserver();
-				
 			}
 		});
 		
@@ -89,9 +95,12 @@ public class MenuFenetre extends JMenuBar implements IObservable {
 		menuChoisir.addActionListener((ActionEvent e) -> {
 			// Ouvrir la fenetre de selection
 			// TODO - Recuperer la bonne strategie de vente
-			new FenetreStrategie();
+			this.fenetreMenuChoisir = new FenetreStrategie();
+			
 		});
+		this.menuChoisir = menuChoisir;
 		add(menuSimulation);
+		
 
 	}
 
@@ -132,6 +141,10 @@ public class MenuFenetre extends JMenuBar implements IObservable {
 	public void unregisterObserver(IObserver o) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public int getStrategie() {
+		return this.strategie;
 	}
 	
 }

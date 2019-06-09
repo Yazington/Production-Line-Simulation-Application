@@ -7,6 +7,9 @@ import java.util.List;
 
 import observerPattern.IObservable;
 import observerPattern.IObserver;
+import strategyPattern.IVenteStrategy;
+import strategyPattern.IntervalSell;
+import strategyPattern.RandomProbabilitySell;
 
 public class Entrepot extends Usine implements IObservable{
 	
@@ -14,8 +17,12 @@ public class Entrepot extends Usine implements IObservable{
 	private int maxAvionQTY;
 	private boolean isFull;
 	private List<Usine> usinesObservers;
+	private IVenteStrategy intervalSell;
+	private IVenteStrategy randomSell;
+	private int strategie;
 	
-	public Entrepot(int id,Point position , String type, List<Image> images, List<ProductionItem> entree)
+	public Entrepot(int id,Point position , String type, List<Image> images, List<ProductionItem> entree, 
+					IntervalSell intervalSell, RandomProbabilitySell randomSell)
 	{
 		
 		this.id = id;
@@ -28,6 +35,8 @@ public class Entrepot extends Usine implements IObservable{
 		this.intervalProduction = 0;
 		this.isFull = false;
 		this.usinesObservers = new ArrayList<Usine>();
+		this.intervalSell = intervalSell;
+		this.randomSell = randomSell;
 	}
 
 	@Override
@@ -101,5 +110,37 @@ public class Entrepot extends Usine implements IObservable{
 	protected void UpdateObserver() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public void continueIfNotFull() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	public boolean sellProduct()
+	{
+		boolean isSelling = false;
+		
+		if(this.strategie == 2)
+		{
+			isSelling = this.randomSell.sell();
+		}
+		else if (this.strategie == 1)
+		{
+			this.intervalSell.setInterval(this.currentAvionQTY);
+			isSelling = this.intervalSell.sell();
+		}
+		return isSelling;
+	}
+
+	public void setStrategy(int strategie) {
+		this.strategie = strategie;
+		
+		
+	}
+
+	public void removeOneEntree() {
+		this.currentAvionQTY = this.currentAvionQTY - 4 ;
 	}
 }

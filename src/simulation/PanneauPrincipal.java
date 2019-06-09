@@ -188,7 +188,7 @@ public class PanneauPrincipal extends JPanel implements IObserver {
 		XMLSourcer xmlSourcer = this.menuFenetre.getXmlSourcer();
 		createNetwork(xmlSourcer);
 		this.reseau.createRefreshManager();
-		this.reseau.createObserverPattern();
+		this.reseau.createObserverPattern(this.menuFenetre.getStrategie());
 		this.usinesPositions = this.reseau.getCurrentPositions();
 		paintChemins(this.getGraphics());
 		
