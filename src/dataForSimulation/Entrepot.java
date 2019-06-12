@@ -139,6 +139,6 @@ public class Entrepot extends Usine implements IObservable{
 		if(this.strategie == 1)
 			this.currentAvionQTY = this.currentAvionQTY - 3 ;
 		else if (this.strategie == 2)
-			this.currentAvionQTY = this.currentAvionQTY - 4;
+			this.currentAvionQTY = this.currentAvionQTY - 2;
 	}
 }

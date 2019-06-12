@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.2.3" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="true" router="MANHATTAN">  
+  <class id="1" language="java" name="dataForSimulation.Usine" project="simulation-squelette" 
+    file="/simulation-squelette/src/dataForSimulation/Usine.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="335" width="172" x="1352" y="628"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="false" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="2" language="java" name="dataForSimulation.UsineIntermediaire" project="simulation-squelette" 
+    file="/simulation-squelette/src/dataForSimulation/UsineIntermediaire.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="191" width="397" x="715" y="1003"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="false" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="dataForSimulation.Entrepot" project="simulation-squelette" 
+    file="/simulation-squelette/src/dataForSimulation/Entrepot.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="443" width="467" x="1461" y="1003"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="false" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="dataForSimulation.Network" project="simulation-squelette" 
+    file="/simulation-squelette/src/dataForSimulation/Network.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="551" width="288" x="2081" y="37"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="false" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="5" language="java" name="observerPattern.IObservable" project="simulation-squelette" 
+    file="/simulation-squelette/src/observerPattern/IObservable.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="101" width="200" x="2106" y="1486"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="false" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="6" language="java" name="observerPattern.IObserver" project="simulation-squelette" 
+    file="/simulation-squelette/src/observerPattern/IObserver.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="65" width="137" x="887" y="1879"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="false" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="7" language="java" name="dataForSimulation.ProductionItem" project="simulation-squelette" 
+    file="/simulation-squelette/src/dataForSimulation/ProductionItem.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="209" width="146" x="2164" y="628"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="false" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="8" language="java" name="dataForSimulation.UsineIntermediaires.UsineAile" project="simulation-squelette" 
+    file="/simulation-squelette/src/dataForSimulation/UsineIntermediaires/UsineAile.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="227" width="354" x="321" y="1486"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="false" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="9" language="java" name="dataForSimulation.UsineIntermediaires.UsineAssemblage" 
+    project="simulation-squelette" 
+    file="/simulation-squelette/src/dataForSimulation/UsineIntermediaires/UsineAssemblage.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="299" width="396" x="715" y="1486"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="false" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="10" language="java" name="dataForSimulation.UsineIntermediaires.UsineMoteur" project="simulation-squelette" 
+    file="/simulation-squelette/src/dataForSimulation/UsineIntermediaires/UsineMoteur.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="227" width="369" x="1151" y="1486"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="false" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="11" language="java" name="dataForSimulation.Chemin" project="simulation-squelette" 
+    file="/simulation-squelette/src/dataForSimulation/Chemin.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="137" width="94" x="917" y="37"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="false" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="12" language="java" name="dataForSimulation.UsineMatiere" project="simulation-squelette" 
+    file="/simulation-squelette/src/dataForSimulation/UsineMatiere.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="209" width="269" x="1152" y="1003"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="false" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="13" language="java" name="dataForSimulation.ProductionItems.Aile" project="simulation-squelette" 
+    file="/simulation-squelette/src/dataForSimulation/ProductionItems/Aile.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="65" width="156" x="1968" y="1003"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="false" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="14" language="java" name="dataForSimulation.ProductionItems.Avion" project="simulation-squelette" 
+    file="/simulation-squelette/src/dataForSimulation/ProductionItems/Avion.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="65" width="156" x="2556" y="1003"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="false" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="15" language="java" name="dataForSimulation.ProductionItems.Metal" project="simulation-squelette" 
+    file="/simulation-squelette/src/dataForSimulation/ProductionItems/Metal.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="65" width="156" x="2360" y="1003"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="false" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="16" language="java" name="dataForSimulation.ProductionItems.Moteur" project="simulation-squelette" 
+    file="/simulation-squelette/src/dataForSimulation/ProductionItems/Moteur.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="65" width="156" x="2164" y="1003"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="false" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="17" language="java" name="simulation.Environnement" project="simulation-squelette" 
+    file="/simulation-squelette/src/simulation/Environnement.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="137" width="146" x="578" y="37"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="false" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="18" language="java" name="simulation.FenetrePrincipale" project="simulation-squelette" 
+    file="/simulation-squelette/src/simulation/FenetrePrincipale.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="173" width="240" x="56" y="37"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="false" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="19" language="java" name="simulation.FenetreStrategie" project="simulation-squelette" 
+    file="/simulation-squelette/src/simulation/FenetreStrategie.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="155" width="202" x="336" y="37"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="false" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="20" language="java" name="simulation.MenuFenetre" project="simulation-squelette" 
+    file="/simulation-squelette/src/simulation/MenuFenetre.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="425" width="206" x="2752" y="1003"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="false" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="21" language="java" name="simulation.PanneauPrincipal" project="simulation-squelette" 
+    file="/simulation-squelette/src/simulation/PanneauPrincipal.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="353" width="225" x="56" y="1486"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="false" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="22" language="java" name="simulation.PanneauStrategie" project="simulation-squelette" 
+    file="/simulation-squelette/src/simulation/PanneauStrategie.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1160" y="134"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="false" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="23" language="java" name="simulation.RefreshManager" project="simulation-squelette" 
+    file="/simulation-squelette/src/simulation/RefreshManager.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="353" width="443" x="1325" y="37"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="false" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="24" language="java" name="simulation.Simulation" project="simulation-squelette" 
+    file="/simulation-squelette/src/simulation/Simulation.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="83" width="113" x="764" y="37"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="false" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="25" language="java" name="strategyPattern.IntervalSell" project="simulation-squelette" 
+    file="/simulation-squelette/src/strategyPattern/IntervalSell.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="119" width="127" x="2810" y="37"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="false" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="26" language="java" name="strategyPattern.IVenteStrategy" project="simulation-squelette" 
+    file="/simulation-squelette/src/strategyPattern/IVenteStrategy.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="83" width="118" x="2714" y="628"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="false" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="27" language="java" name="strategyPattern.RandomProbabilitySell" project="simulation-squelette" 
+    file="/simulation-squelette/src/strategyPattern/RandomProbabilitySell.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="119" width="152" x="2618" y="37"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="false" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="28" language="java" name="xmlUtility.ForeachUtility.NodeListWrapper" project="simulation-squelette" 
+    file="/simulation-squelette/src/xmlUtility/ForeachUtility.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="119" width="160" x="2416" y="628"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="false" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="29" language="java" name="xmlUtility.ForeachUtility" project="simulation-squelette" 
+    file="/simulation-squelette/src/xmlUtility/ForeachUtility.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="83" width="162" x="2416" y="37"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="false" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="30" language="java" name="xmlUtility.XMLSourcer" project="simulation-squelette" 
+    file="/simulation-squelette/src/xmlUtility/XMLSourcer.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="2412" y="1240"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="false" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <generalization id="31">    
+    <end type="SOURCE" refId="13"/>    
+    <end type="TARGET" refId="7"/>  
+  </generalization>  
+  <realization id="32">    
+    <end type="SOURCE" refId="27"/>    
+    <end type="TARGET" refId="26"/>  
+  </realization>  
+  <realization id="33">    
+    <bendpoint x="1550" y="1486"/>    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="6"/>  
+  </realization>  
+  <realization id="34">    
+    <end type="SOURCE" refId="25"/>    
+    <end type="TARGET" refId="26"/>  
+  </realization>  
+  <generalization id="35">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="2"/>  
+  </generalization>  
+  <generalization id="36">    
+    <end type="SOURCE" refId="14"/>    
+    <end type="TARGET" refId="7"/>  
+  </generalization>  
+  <generalization id="37">    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="7"/>  
+  </generalization>  
+  <nesting id="38">    
+    <end type="SOURCE" refId="29"/>    
+    <end type="TARGET" refId="28"/>  
+  </nesting>  
+  <generalization id="39">    
+    <end type="SOURCE" refId="16"/>    
+    <end type="TARGET" refId="7"/>  
+  </generalization>  
+  <realization id="40">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="6"/>  
+  </realization>  
+  <generalization id="41">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="1"/>  
+  </generalization>  
+  <association id="42">    
+    <end type="SOURCE" refId="4" navigable="false" variant="ASSOCIATION">      
+      <attribute id="43" name="usines">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="44" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true" variant="ASSOCIATION"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="45">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="6"/>  
+  </realization>  
+  <association id="46">    
+    <end type="SOURCE" refId="20" navigable="false" variant="ASSOCIATION">      
+      <attribute id="47" name="xmlSourcer"/>      
+      <multiplicity id="48" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="30" navigable="true" variant="ASSOCIATION"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="49">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="5"/>  
+  </realization>  
+  <generalization id="50">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="1"/>  
+  </generalization>  
+  <association id="51">    
+    <end type="SOURCE" refId="4" navigable="false" variant="ASSOCIATION">      
+      <attribute id="52" name="productionItems">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="53" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true" variant="ASSOCIATION"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="54">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="1"/>  
+  </generalization>  
+  <generalization id="55">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="2"/>  
+  </generalization>  
+  <realization id="56">    
+    <bendpoint x="577" y="1747"/>    
+    <bendpoint x="577" y="1890"/>    
+    <end type="SOURCE" refId="21"/>    
+    <end type="TARGET" refId="6"/>  
+  </realization>  
+  <realization id="57">    
+    <end type="SOURCE" refId="20"/>    
+    <end type="TARGET" refId="5"/>  
+  </realization>  
+  <realization id="58">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="6"/>  
+  </realization>  
+  <generalization id="59">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="2"/>  
+  </generalization>  
+  <classifier-display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="false" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>
