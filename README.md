@@ -1,8 +1,8 @@
 # Production-Line-Simulation-Application
-this is a simple production line simulation for airplanes
+This is a simple production line simulation for airplanes
 
 ## Usage
 To run simulation:
   1. Import project into any Java supported IDE
-  2. Open simulation call
+  2. Open simulation class
   3. Run
