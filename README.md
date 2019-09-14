@@ -6,3 +6,6 @@ To run simulation:
   1. Import project into any Java supported IDE
   2. Open simulation class
   3. Run
+
+
+![](video.gif)
